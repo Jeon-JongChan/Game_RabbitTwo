@@ -1,0 +1,8 @@
+#Unity ignor
+*.meta
+*.dwlt
+*.csproj
+*.sln
+Library/
+Debug/
+ProjectSettings/
