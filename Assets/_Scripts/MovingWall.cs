@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MovingWall : ObjectControl{
+public class MovingWall : ObjectMovement
+{
     //public GameObject movePoint;
     public Transform aim;
     public void ToAim() {

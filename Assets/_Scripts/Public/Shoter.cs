@@ -2,12 +2,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Shoter : ObjectControl
+public class Shoter : ObjectInteraction
 {
 
     [Header("타입 설정")]
     [Tooltip("0 - 자기자신 날리기\n1 - 총알 정한 방향으로 날리기 \n2 - 총알 타겟 향해 날리기(충돌체 배치 필요) \n3 - 회전총알 날리기")]
+    [Range(0,3)]
     public int selectType = 0;
+    [Tooltip("0 번 선택시 0 - 방향날리기 1 - 타겟 충돌 위치에 날리기")]
+    [Range(0, 1)]
+    public int selfShotKey = 0;
 
     [Header("공통 변수")]
     public GameObject bullet;
@@ -70,4 +74,10 @@ public class Shoter : ObjectControl
         yield return new WaitForSeconds(removeBulletTime);
 
     }
+
+    IEnumerator Shoot()
+    {
+        yield return new WaitForSeconds(1f);
+    }
+
 }

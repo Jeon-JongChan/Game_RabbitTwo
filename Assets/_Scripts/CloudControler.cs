@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 [RequireComponent(typeof(Rigidbody2D))]
-public class CloudControler : ObjectControl {
+public class CloudControler : ObjectMovement
+{
     public GameObject MovePoints;
     public GameObject[] arr;
     Rigidbody2D rigidbody;
