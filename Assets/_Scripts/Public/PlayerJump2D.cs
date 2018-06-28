@@ -37,7 +37,6 @@ public class PlayerJump2D : ObjectMovement
             }
 
         }
-        print(jump);
     }
     /// <summary>
     /// 해당 함수를 플레이어가 호출시 점프횟수가 초기화 된다. 다중점프 구현에 필수

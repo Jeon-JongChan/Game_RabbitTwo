@@ -12,7 +12,7 @@ public class ObjectInteraction : ObjectMovement
     /// 발사체를 발사시키는 함수
     /// </summary>
     /// <param name="selectedRayType"> If it is 0, it is OverlapCircle. 1 is RayCast</param>
-    public IEnumerator BulletShot2D(Rigidbody2D rigidbody2D, Vector2 direction, float extinctionTime, float speed = 1f, int layerMask = 1, float rayScale = 1f, int selectedRayType = 0)
+    public IEnumerator BulletShot2D(Rigidbody2D rigidbody2D, Vector2 direction, float extinctionTime, float speed = 1f, int layerMask = 1, float rayScale = 1f, int selectedRayType = 0, bool sleepState = false)
     {
         float startedTime = Time.time;
         float currentTime = startedTime;
@@ -20,15 +20,16 @@ public class ObjectInteraction : ObjectMovement
         /* extinctionTime이 0일 경우 충돌이외에는 사라지지 않는다. */
         if (extinctionTime > 0)
         {
+            print("ObjectInteraction - 가동중 ");
             /* 시작 시간과 현재 시간을 뺀 시간이 소멸시간보다 작을 경우 계속 이동 */
-            while(currentTime - startedTime < extinctionTime)
+            while (currentTime - startedTime < extinctionTime)
             {
                 //print("ObjectInteraction - 남은시간 " + (currentTime - startedTime));
                 /* 충돌한 오브젝트가 없을 경우 이동 */
                 if (!SelectedDetectMethod(rigidbody2D.position, direction, selectedRayType, rayScale, layerMask))
                 {
-                    MovePos(rigidbody2D, direction, speed);
-
+                    MovePos(rigidbody2D, direction, speed, sleepState);
+                    print("ObjectInteraction - 가동중 " );
                     yield return new WaitForEndOfFrame();
                     currentTime = Time.time;
                 }

@@ -13,7 +13,6 @@ public class ShotTrigger : MonoBehaviour {
         shoters = GetComponentsInChildren<Shoter>();
         foreach(Shoter s in shoters)
         {
-            print(s.gameObject.name);
             SetEventFunc += s.SetCollisionTargetDirection;
         }
     }

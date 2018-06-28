@@ -55,12 +55,14 @@ public class ObjectMovement : MonoBehaviour {
         return distanceToMove;
     }
     /// <summary>
-    /// 2D 이동함수, not player
+    /// 2D 이동함수, not player.
     /// </summary>
-    public Vector2 MovePos(Rigidbody2D rb, Vector2 distanceToMove, float speed = 1)
+    /// <param name="sleepState"> 비활성화에서 켜지는 경우 sleep 상태일 경우가 있다. 이 경우 외부충격으로 awake 시켜야 한다.</param>
+    public Vector2 MovePos(Rigidbody2D rb, Vector2 distanceToMove, float speed = 1f, bool sleepState = false)
     {
-        distanceToMove.Normalize(); //가야할 방향이 정해진다.
-        rb.MovePosition(rb.position + (distanceToMove * speed * Time.deltaTime));
+        //distanceToMove.Normalize(); //가야할 방향이 정해진다.
+        if (!sleepState) rb.MovePosition(rb.position + (distanceToMove * speed * Time.deltaTime));
+        else rb.AddForce(distanceToMove * speed);
 
         return distanceToMove;
     }
