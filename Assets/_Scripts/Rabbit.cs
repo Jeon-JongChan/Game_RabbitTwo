@@ -6,7 +6,6 @@ public class Rabbit : ObjectMovement
 {
     //public variable - inspector
     public int speed = 2;
-    public int jumpSpeed = 2;
 
     //Components
     Rigidbody2D playerRb;
@@ -78,5 +77,13 @@ public class Rabbit : ObjectMovement
             aniState = 1;
         }
         jump = false;
+    }
+    public void JumpBugFix()
+    {
+        Debug.Log("PlayerJump2D - 점프버그수정");
+        Vector2 initVelocity = new Vector2(playerRb.velocity.x, 5);
+        playerRb.velocity = initVelocity;
+        jump = false;
+        aniState = 0;
     }
 }

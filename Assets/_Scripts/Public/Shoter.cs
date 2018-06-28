@@ -6,26 +6,31 @@ public class Shoter : ObjectInteraction
 {
 
     [Header("타입 설정")]
+
     [Tooltip("0 - 자기자신 날리기\n1 - 총알 정한 방향으로 날리기 \n2 - 총알 타겟 향해 날리기(충돌체 배치 필요) \n3 - 회전총알 날리기")]
     [Range(0,3)]
-    public int selectType = 0;
+    public int selectedType = 0;
     [Tooltip("0 번 선택시 0 - 방향날리기 1 - 타겟 충돌 위치에 날리기")]
     [Range(0, 1)]
     public int selfShotKey = 0;
 
     [Header("공통 변수")]
-    public GameObject bullet;
+    [Tooltip("발사 포인트가 없을 경우 shoter 중심지가 지정됨")]
+    public GameObject shotPoint = null;
+    [Tooltip("총알이 인식할 대상을 선택 \n-> 안하면 모든 오브젝트를 인식")]
+    public GameObject Target = null;
     [Tooltip("-1 - 타겟지정 \n0 - UP \n 1 - Right\n 2 - Down\n 3- Left")]
-    public int dir = -1;
+    public int shotDir = -1;
     [Range(0,10)]
     public float bulletSpeed = 1;
     [Range(0, 10)]
     [Tooltip("0 is that not remove -> collision destroy")]
-    public float removeBulletTime = 0;
+    public float bulletRemoveTime = 0;
 
     [Header("selectType - 1 or 2 or 3")]
+    public GameObject bullet = null;
     [Tooltip("총알을 한발만 발싸할지 무한대로 발사할지")]
-    public bool infinityTrigger = true;
+    public bool shotInfinityTrigger = true;
     [Range(0,10)]
     public float shotTimeGap = 1f;
     [Range(0, 100)]
@@ -35,49 +40,118 @@ public class Shoter : ObjectInteraction
     [Header("selectType - 3")]
     [Range(0, 180)]
     [Tooltip("회전총알 발사시 발사할 개수")]
-    public int rotationBulletCount = 36;
+    public int bulletRotationCount = 36;
 
     /* needs inner variable */
     GameObject[] bullets;
-    Vector2 startingBulletPoint;
+    Vector2 bulletStartingPoint;
+    Vector2 CollisionTargetDirection = Vector2.zero; //Trigger 객체에서 전달하는 충돌체의 위치 포인트를 가리키는 방향벡터
 
     private void Start()
     {
-        startingBulletPoint = transform.position;
-        print(transform.parent);
-
+        /* 지정된 발사포인트가 없을 경우 shoter의 중심지를 발사포인트로 지정한다. */
+        if (shotPoint == null) bulletStartingPoint = transform.position;
+        else bulletStartingPoint = shotPoint.transform.position;
     }
-
-    IEnumerator ShotOneself(Rigidbody2D oneself,int direction, float bulletSpeed,float removeBulletTime)
+    /// <summary>
+    /// shot 타입을 통해 shoter가 총을 쏘게 도와주는 코루틴
+    /// </summary>
+    IEnumerator ShotStartFunc()
     {
-        Vector2 dir = new Vector2(0,0);
+        int bulletLayermask = 1;
+
+        if (Target != null) bulletLayermask = ~(1 << Target.layer);
+        else bulletLayermask = 0;
+
+        switch(selectedType)
+        {
+            case 0:
+                Rigidbody2D rigidbody = GetComponent<Rigidbody2D>();
+                if (rigidbody != null)
+                {
+                    if (selfShotKey == 0)
+                    {
+                        Vector2 dirVector = CalclulateTheDirection(shotDir);
+                        StartCoroutine( BulletShot2D(rigidbody ,dirVector, bulletRemoveTime, bulletSpeed, bulletLayermask));
+                        print("Shoter.cs - 자기자신을 총알로 사용합니다. 방향 : " + dirVector);
+                    }
+                    else
+                    {
+                        while (CollisionTargetDirection == Vector2.zero)
+                        {
+                            print("Shoter.cs - Target 탐지중");
+                            yield return new WaitForEndOfFrame();
+                        }
+                        StartCoroutine(BulletShot2D(rigidbody, CollisionTargetDirection, bulletRemoveTime, bulletSpeed));
+                    }
+                }
+                else
+                {
+                    Debug.Log("Shoter.cs - 해당 오브젝트에 Rigidbody 가 존재하지 않습니다.");
+                }
+                break;
+            case 1:
+
+                break;
+            case 2:
+                break;
+            case 3:
+                break;
+            default:
+                break;
+        }
+        yield break;
+    }
+    /// <summary>
+    /// 정수형 direction을 받아 정해진 규칙을 통해 방향을 가리키는 벡터를 반환한다.
+    /// </summary>
+    /// <param name="direction">-1 - 타겟지정 \n0 - UP \n 1 - Right\n 2 - Down\n 3- Left</param>
+    Vector2 CalclulateTheDirection(int direction)
+    {
+        Vector2 ret;
         switch (direction)
         {
             case 0:
-                dir = Vector2.up;
+                ret = Vector2.up;
                 break;
             case 1:
-                dir = Vector2.right;
+                ret = Vector2.right;
                 break;
             case 2:
-                dir = Vector2.down;
+                ret = Vector2.down;
                 break;
             case 3:
-                dir = Vector2.left;
+                ret = Vector2.left;
                 break;
             default:
-                print("방향설정 오류");
+                ret = Vector2.zero;
+                print("Shoter.cs - 방향설정 오류");
                 break;
         }
-        MovePos(oneself, dir, bulletSpeed);
 
-        yield return new WaitForSeconds(removeBulletTime);
-
+        return ret;
     }
-
-    IEnumerator Shoot()
+    /// <summary>
+    /// ShotTrigger를 통해 목표의 위치를 갖고 오는 함수
+    /// </summary>
+    public void SetCollisionTargetDirection(Transform tf)
     {
-        yield return new WaitForSeconds(1f);
+        CollisionTargetDirection = -(transform.position - tf.position).normalized;
     }
+    //화면에 보일때 실행되는 구문들
+    private void OnBecameVisible()
+    {
+        StartCoroutine(ShotStartFunc());
+    }
+    //화면에 안보일때 실행되는 구문들
+    private void OnBecameInvisible()
+    {
+        if (selectedType == 0)
+        {
+            print("화면에 안보임");
+            gameObject.SetActive(false);
+            StopAllCoroutines();
+        }
 
+    }
 }

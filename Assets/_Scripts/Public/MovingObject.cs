@@ -66,16 +66,16 @@ public class MovingObject : ObjectMovement
         {
             case 0:
                 StartCoroutine(StartMove(rg2d, dir, speed, accelation));
-                print("슈팅 - movingObject");
+                print("movingObject.cs : 슈팅");
                 break;
             case 1:
                 Vector2 destination = originPos + (dir * distance);
-                print("transform : " + originPos + " destination : " + destination);
+                print("movingObject.cs : transform : " + originPos + " destination : " + destination);
                 StartCoroutine(MoveToDestination(rg2d, destination, speed, accelation));
-                print("목적지 - movingObject");
+                print("movingObject.cs : 목적지");
                 break;
             case 2:
-                print("반복 - movingObject");
+                print("movingObject.cs : 반복");
                 StartCoroutine(ObjectRepeatMove2D(rg2d, direction, distance, speed, repeatCount, stopTime));
                 break;
         }
@@ -94,13 +94,13 @@ public class MovingObject : ObjectMovement
     /* 파괴하거나 비활성화시 동작을 멈추게 한다. */
     private void OnDisable()
     {
-        print("정지 - movingObject");
+        print("movingObject.cs : 정지");
         StopAllCoroutines();
     }
 
     private void OnDestroy()
     {
-        print("정지 - movingObject");
+        print("movingObject.cs : 정지");
         StopAllCoroutines();
     }
 
@@ -108,7 +108,7 @@ public class MovingObject : ObjectMovement
     {
         if(col.gameObject.tag != "Player")
         {
-            print("충돌정지 - movingObject");
+            print("movingObject.cs : 충돌정지");
             StopAllCoroutines();
         }
     }
