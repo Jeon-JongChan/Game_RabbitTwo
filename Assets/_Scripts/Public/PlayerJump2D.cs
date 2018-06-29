@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
-public class PlayerJump2D : ObjectMovement
+public class PlayerJump2D : ObjectInteraction
 {
     [Range(0, 10)]
     public int jumpLevel = 1;

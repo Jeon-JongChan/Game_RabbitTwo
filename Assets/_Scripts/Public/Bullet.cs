@@ -15,15 +15,15 @@ public class Bullet : ObjectInteraction
     float speed;
     int selectedRayType = 0;
     float rayScale = 1f;
-    int layerMask = 1;
+    int layerMask = 0;
+    string targetTag = null;
 
     public void GetRigidbodyComponent()
     {
         rigidbody = GetComponent<Rigidbody2D>();
-        print(rigidbody);
     }
 
-    public void InitBaseProperty(Vector2 bulletStartingPoint, float speed, int layerMask = 1, float extinctionTime = 0, float rayScale = 1f, int selectedRayType = 0)
+    public void InitBaseProperty(Vector2 bulletStartingPoint, float speed, int layerMask = 0, float extinctionTime = 0, float rayScale = 1f)
     {
         initPos = bulletStartingPoint;
         transform.position = initPos;
@@ -31,13 +31,12 @@ public class Bullet : ObjectInteraction
         this.speed = speed;
         this.layerMask = layerMask;
         this.rayScale = rayScale;
-        this.selectedRayType = selectedRayType;
     }
 
     public void Shoot(Vector2 dir)
     {
         gameObject.SetActive(true);
-        BulletShot2D(rigidbody, dir, extinctionTime, speed, layerMask, rayScale, selectedRayType);
+        StartCoroutine(BulletShot2D(rigidbody, dir, extinctionTime, speed, layerMask, rayScale, selectedRayType));
     }
 
     /// <summary>
@@ -48,5 +47,10 @@ public class Bullet : ObjectInteraction
         StopAllCoroutines();
         transform.position = initPos;
         if(gameObject.activeSelf == true )gameObject.SetActive(false);
+    }
+
+    private void OnDisable()
+    {
+        ExitBullet();
     }
 }

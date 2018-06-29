@@ -4,7 +4,7 @@ using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
 [ExecuteInEditMode]
-public class MovingObject : ObjectMovement
+public class MovingObject : ObjectInteraction
 {
     [Header("오브젝트 무빙 타입")]
     [Tooltip(" 0 - 슈팅 1 - 목적지 도달 2 - 반복. 대각선은 지원하지 않습니다.")]

@@ -18,7 +18,9 @@ public class Shoter : ObjectInteraction
     [Tooltip("발사 포인트가 없을 경우 shoter 중심지가 지정됨")]
     public GameObject shotPoint = null;
     [Tooltip("총알이 인식할 대상을 선택 \n-> 안하면 모든 오브젝트를 인식")]
-    public GameObject Target = null;
+    public GameObject target = null;
+    [Tooltip("해당 타겟만 인식시키고 싶을 경우 선택한다.")]
+    public bool onlyTargetDetect = false;
     [Tooltip("-1 - 타겟지정 \n0 - UP \n 1 - Right\n 2 - Down\n 3- Left")]
     [Range(-1,3)]
     public int shotDir = -1;
@@ -56,8 +58,10 @@ public class Shoter : ObjectInteraction
     Vector2 bulletStartingPoint;
     Vector2 CollisionTargetDirection = Vector2.zero; //Trigger 객체에서 전달하는 충돌체의 위치 포인트를 가리키는 방향벡터
     public delegate void BulletDelegate();
-    private static event BulletDelegate ExitBullet;
-    bool shotState = false;
+    private static event BulletDelegate ExitBullet; //현재 사용되는 총알을 모두 비활성화 해야할 경우만 사용
+    bool shotState = false; //화면에 shoter가 안보일경우 반복문 중지를 위해 사용
+    string targetTag = null; // 타겟만 충돌시키고 싶을때 태그가 추가되는 스트링 문.
+    int bulletLayermask = 0; // 충돌에 제외할 레이어가 있는 경우 사용할 것.
 
     private void Start()
     {
@@ -65,6 +69,11 @@ public class Shoter : ObjectInteraction
         /* 지정된 발사포인트가 없을 경우 shoter의 중심지를 발사포인트로 지정한다. */
         if (shotPoint == null) bulletStartingPoint = transform.position;
         else bulletStartingPoint = shotPoint.transform.position;
+
+        /* target만 인식하게 선택했을 경우 target의 태그를 입력한다. */
+        if (!onlyTargetDetect && target != null) targetTag = target.tag;
+
+        //if(target != null) bulletLayermask = 1 << target.layer;
     }
     //화면에 보일때 실행되는 구문들
     private void OnBecameVisible()
@@ -74,6 +83,8 @@ public class Shoter : ObjectInteraction
     //화면에 안보일때 실행되는 구문들
     private void OnBecameInvisible()
     {
+        shotState = false;
+
         if (selectedType == 0)
         {
             print("화면에 안보임");
@@ -87,10 +98,6 @@ public class Shoter : ObjectInteraction
     /// </summary>
     IEnumerator ShotStartFunc()
     {
-        int bulletLayermask = 1;
-
-        if (Target != null) bulletLayermask = ~(1 << Target.layer);
-        else bulletLayermask = 0;
         shotState = true;
 
         switch (selectedType)
@@ -139,9 +146,9 @@ public class Shoter : ObjectInteraction
                     }
                     else
                     {
-                        while(shotState)
+                        while(shotState) //화면에 shoter가 안보이면 비활성화 되고 반복문 종료
                         {
-                            for (int i = 0; i < bulletReadyCount; i++)
+                            for (int i = 0; (i < bulletReadyCount) && shotState ; i++)
                             {
                                 bullets[i].btScript.Shoot(dirVector);
                                 yield return new WaitForSeconds(shotTimeGap);
@@ -218,6 +225,11 @@ public class Shoter : ObjectInteraction
             ExitBullet += tempBs.btScript.ExitBullet; // 총알을 한번에 없애기 위해서 이벤트 변수에 종료 함수를 넣어줍니다.
             bullets.Add(tempBs);
         }
+    }
+
+    IEnumerator SelfShotDetectObject()
+    {
+        while (detectState) yield return new WaitForEndOfFrame();
     }
 
 }

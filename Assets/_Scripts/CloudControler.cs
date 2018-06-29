@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 [RequireComponent(typeof(Rigidbody2D))]
-public class CloudControler : ObjectMovement
+public class CloudControler : ObjectInteraction
 {
     public GameObject MovePoints;
     public GameObject[] arr;
@@ -15,7 +15,7 @@ public class CloudControler : ObjectMovement
             arr[i] = MovePoints.transform.GetChild(i).gameObject;
         }
         rigidbody = GetComponent<Rigidbody2D>();
-        InitVelocity(rigidbody);
+        rigidbody.velocity = Vector2.zero;
     }
 	
 	// Update is called once per frame

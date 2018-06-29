@@ -1814,6 +1814,11 @@ TilemapCollider2D:
   m_UsedByEffector: 0
   m_UsedByComposite: 1
   m_Offset: {x: 0, y: 0}
+--- !u!4 &137225338 stripped
+Transform:
+  m_PrefabParentObject: {fileID: 4160394896539654, guid: 08631bd39e8bc5d4f850f6b17d0316a0,
+    type: 2}
+  m_PrefabInternal: {fileID: 862281808}
 --- !u!1 &361764553
 GameObject:
   m_ObjectHideFlags: 0
@@ -1839,6 +1844,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
+  - {fileID: 137225338}
   - {fileID: 417280751}
   m_Father: {fileID: 0}
   m_RootOrder: 1
@@ -1965,11 +1971,11 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4350631908828742, guid: c37d1956c0be2ec48921a9b213e01cd0, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 3.05
       objectReference: {fileID: 0}
     - target: {fileID: 4350631908828742, guid: c37d1956c0be2ec48921a9b213e01cd0, type: 2}
       propertyPath: m_LocalPosition.y
-      value: 0.13
+      value: 1.87
       objectReference: {fileID: 0}
     - target: {fileID: 4350631908828742, guid: c37d1956c0be2ec48921a9b213e01cd0, type: 2}
       propertyPath: m_LocalPosition.z
@@ -1993,6 +1999,20 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4350631908828742, guid: c37d1956c0be2ec48921a9b213e01cd0, type: 2}
       propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 58572770227226204, guid: c37d1956c0be2ec48921a9b213e01cd0,
+        type: 2}
+      propertyPath: m_Offset.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 58572770227226204, guid: c37d1956c0be2ec48921a9b213e01cd0,
+        type: 2}
+      propertyPath: m_Offset.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1161257200295670, guid: c37d1956c0be2ec48921a9b213e01cd0, type: 2}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -2003,7 +2023,7 @@ Prefab:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    m_TransformParent: {fileID: 417280751}
+    m_TransformParent: {fileID: 361764554}
     m_Modifications:
     - target: {fileID: 4160394896539654, guid: 08631bd39e8bc5d4f850f6b17d0316a0, type: 2}
       propertyPath: m_LocalPosition.x
@@ -2011,7 +2031,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4160394896539654, guid: 08631bd39e8bc5d4f850f6b17d0316a0, type: 2}
       propertyPath: m_LocalPosition.y
-      value: 0.84
+      value: 0.96999997
       objectReference: {fileID: 0}
     - target: {fileID: 4160394896539654, guid: 08631bd39e8bc5d4f850f6b17d0316a0, type: 2}
       propertyPath: m_LocalPosition.z
@@ -2055,7 +2075,7 @@ Prefab:
     - target: {fileID: 114357039431370062, guid: 08631bd39e8bc5d4f850f6b17d0316a0,
         type: 2}
       propertyPath: shotDir
-      value: 0
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 114357039431370062, guid: 08631bd39e8bc5d4f850f6b17d0316a0,
         type: 2}
@@ -2066,6 +2086,16 @@ Prefab:
         type: 2}
       propertyPath: bulletReadyCount
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114357039431370062, guid: 08631bd39e8bc5d4f850f6b17d0316a0,
+        type: 2}
+      propertyPath: rayScale
+      value: 1.75
+      objectReference: {fileID: 0}
+    - target: {fileID: 114357039431370062, guid: 08631bd39e8bc5d4f850f6b17d0316a0,
+        type: 2}
+      propertyPath: bulletRemoveTime
+      value: 10
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 08631bd39e8bc5d4f850f6b17d0316a0, type: 2}
@@ -3538,6 +3568,10 @@ Prefab:
         type: 2}
       propertyPath: m_UsedByEffector
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1967410475590974, guid: 44af0117abc819b4a9d1a301cdf25026, type: 2}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 44af0117abc819b4a9d1a301cdf25026, type: 2}

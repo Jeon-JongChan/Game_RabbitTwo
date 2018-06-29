@@ -44,7 +44,7 @@ public class PlayerCollision : MonoBehaviour {
     {
         if (col.gameObject.tag == groundTag || col.gameObject.tag == obstacleTag)
         {
-            print("PlayerCollision - 그라운드 충돌");
+            //print("PlayerCollision - 그라운드 충돌");
             JumpLandingEvent();
             InitJumpEvent();
             stay = true;

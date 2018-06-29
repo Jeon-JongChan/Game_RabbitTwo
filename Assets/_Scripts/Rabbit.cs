@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Rabbit : ObjectMovement
+public class Rabbit : ObjectInteraction
 {
     //public variable - inspector
     public int speed = 2;
