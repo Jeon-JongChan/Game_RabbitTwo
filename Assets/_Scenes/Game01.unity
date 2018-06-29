@@ -2085,17 +2085,22 @@ Prefab:
     - target: {fileID: 114357039431370062, guid: 08631bd39e8bc5d4f850f6b17d0316a0,
         type: 2}
       propertyPath: bulletReadyCount
-      value: 1
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 114357039431370062, guid: 08631bd39e8bc5d4f850f6b17d0316a0,
         type: 2}
       propertyPath: rayScale
-      value: 1.75
+      value: 2.33
       objectReference: {fileID: 0}
     - target: {fileID: 114357039431370062, guid: 08631bd39e8bc5d4f850f6b17d0316a0,
         type: 2}
       propertyPath: bulletRemoveTime
       value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 114357039431370062, guid: 08631bd39e8bc5d4f850f6b17d0316a0,
+        type: 2}
+      propertyPath: shotInfinityTrigger
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 08631bd39e8bc5d4f850f6b17d0316a0, type: 2}
@@ -3533,45 +3538,6 @@ Prefab:
     - target: {fileID: 4465235765427478, guid: 44af0117abc819b4a9d1a301cdf25026, type: 2}
       propertyPath: m_RootOrder
       value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 114444809437211316, guid: 44af0117abc819b4a9d1a301cdf25026,
-        type: 2}
-      propertyPath: speed
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 114444809437211316, guid: 44af0117abc819b4a9d1a301cdf25026,
-        type: 2}
-      propertyPath: jumpSpeed
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114517085440729576, guid: 44af0117abc819b4a9d1a301cdf25026,
-        type: 2}
-      propertyPath: jumpHeight
-      value: 7
-      objectReference: {fileID: 0}
-    - target: {fileID: 50688013300840442, guid: 44af0117abc819b4a9d1a301cdf25026,
-        type: 2}
-      propertyPath: m_UseAutoMass
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 50688013300840442, guid: 44af0117abc819b4a9d1a301cdf25026,
-        type: 2}
-      propertyPath: m_Mass
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 50688013300840442, guid: 44af0117abc819b4a9d1a301cdf25026,
-        type: 2}
-      propertyPath: m_GravityScale
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 58279705813903280, guid: 44af0117abc819b4a9d1a301cdf25026,
-        type: 2}
-      propertyPath: m_UsedByEffector
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1967410475590974, guid: 44af0117abc819b4a9d1a301cdf25026, type: 2}
-      propertyPath: m_Layer
-      value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 44af0117abc819b4a9d1a301cdf25026, type: 2}

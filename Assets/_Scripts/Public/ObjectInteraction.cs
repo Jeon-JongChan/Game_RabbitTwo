@@ -48,7 +48,7 @@ public class ObjectInteraction : ObjectMovement,IDamageable
         rigidbody2D.gameObject.SetActive(false);
     }
     /// <summary>
-    /// selectedKey를 통해 탐지방법을 전달받고 탐지 결과에 따라 bool 변수를 반환.
+    /// selectedKey를 통해 탐지방법을 전달받고 탐지 결과에 따라 protected 속성인 detectState 변수를 트리거.
     /// </summary>
     protected IEnumerator DetectObject(Vector2 self, Vector2 direction, int selectedKey, float rayScale = 0.5f, int layerMask = 0, float detectTime = 0.01f, string targetTag = null)
     {
@@ -59,21 +59,15 @@ public class ObjectInteraction : ObjectMovement,IDamageable
             switch (selectedKey)
             {
                 case 0:
-                    print("ObjectInteraction - 0 번시작 " + layerMask);
+                   // print("ObjectInteraction - 0 번시작 " + layerMask);
                     ret = RayScript.DetectedOverlapCircle2D(self, rayScale, layerMask);
                     break;
                 case 1:
-                    print("ObjectInteraction - 1 번시작 " + layerMask);
+                    //print("ObjectInteraction - 1 번시작 " + layerMask);
                     ret = RayScript.DetectedRayCast2D(self, direction, rayScale, layerMask);
                     break;
             }
-
-            if (ret == null)
-            {
-                print("ObjectInteraction -  없다");
-                detectState = true;
-            }
-            else
+            if(ret != null)
             {
                 Debug.Log("ObjectInteraction - " + ret.name + "와 충돌했습니다.");
                 if (targetTag == null) detectState = false;

@@ -46,7 +46,7 @@ GameObject:
   - component: {fileID: 114517085440729576}
   - component: {fileID: 58295425551605454}
   - component: {fileID: 58279705813903280}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Rabbit
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -243,8 +243,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 32b7eb6d1b58d9046b5710f931c028fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  health: -1
   speed: 3
-  jumpSpeed: 6
 --- !u!114 &114517085440729576
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -256,6 +256,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ded02e36b4f8fff4c9c69d90d4ce7204, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  health: -1
   jumpLevel: 3
   jumpHeight: 6
 --- !u!212 &212250091987049228
