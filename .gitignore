@@ -2,6 +2,7 @@
 *.dwlt
 *.csproj
 *.sln
+*.vs
 Library/
 Debug/
 ProjectSettings/
