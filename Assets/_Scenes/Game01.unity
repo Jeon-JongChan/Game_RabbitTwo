@@ -2090,7 +2090,7 @@ Prefab:
     - target: {fileID: 114357039431370062, guid: 08631bd39e8bc5d4f850f6b17d0316a0,
         type: 2}
       propertyPath: rayScale
-      value: 2.33
+      value: 0.25
       objectReference: {fileID: 0}
     - target: {fileID: 114357039431370062, guid: 08631bd39e8bc5d4f850f6b17d0316a0,
         type: 2}

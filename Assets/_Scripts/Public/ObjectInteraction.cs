@@ -50,7 +50,7 @@ public class ObjectInteraction : ObjectMovement,IDamageable
     /// <summary>
     /// selectedKey를 통해 탐지방법을 전달받고 탐지 결과에 따라 protected 속성인 detectState 변수를 트리거.
     /// </summary>
-    protected IEnumerator DetectObject(Vector2 self, Vector2 direction, int selectedKey, float rayScale = 0.5f, int layerMask = 0, float detectTime = 0.01f, string targetTag = null)
+    protected IEnumerator DetectObject(Rigidbody2D self, Vector2 direction, int selectedKey, float rayScale = 0.5f, int layerMask = 0, float detectTime = 0.01f, string targetTag = null)
     {
         GameObject ret = null;
         detectState = true;
@@ -60,11 +60,11 @@ public class ObjectInteraction : ObjectMovement,IDamageable
             {
                 case 0:
                    // print("ObjectInteraction - 0 번시작 " + layerMask);
-                    ret = RayScript.DetectedOverlapCircle2D(self, rayScale, layerMask);
+                    ret = RayScript.DetectedOverlapCircle2D(self.position, rayScale, layerMask);
                     break;
                 case 1:
                     //print("ObjectInteraction - 1 번시작 " + layerMask);
-                    ret = RayScript.DetectedRayCast2D(self, direction, rayScale, layerMask);
+                    ret = RayScript.DetectedRayCast2D(self.position, direction, rayScale, layerMask);
                     break;
             }
             if(ret != null)

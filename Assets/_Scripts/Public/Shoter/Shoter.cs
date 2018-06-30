@@ -233,7 +233,7 @@ public class Shoter : ObjectInteraction
     }
     IEnumerator SelfShotDetectObject(Rigidbody2D self, Vector2 direction, int selectedKey, float rayScale = 0.5f, int layerMask = 0, float detectTime = 0.01f, string targetTag = null)
     {
-        StartCoroutine(DetectObject(self.position, direction, selectedKey, rayScale, layerMask, detectTime, targetTag));
+        StartCoroutine(DetectObject(self, direction, selectedKey, rayScale, layerMask, detectTime, targetTag));
         while (detectState) yield return new WaitForEndOfFrame();
         transform.position = bulletStartingPoint;
         gameObject.SetActive(false);

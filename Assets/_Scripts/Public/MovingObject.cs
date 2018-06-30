@@ -81,7 +81,7 @@ public class MovingObject : ObjectInteraction
         }
     }
 
-    IEnumerator StartMove(Rigidbody2D rg2d,Vector2 dir, float speed, float accelation = 0)
+    protected IEnumerator StartMove(Rigidbody2D rg2d,Vector2 dir, float speed, float accelation = 0)
     {
         while (true)
         {
@@ -90,7 +90,13 @@ public class MovingObject : ObjectInteraction
             yield return new WaitForEndOfFrame();
         }
     }
-
+    protected void ToDestination()
+    {
+        Vector2 destination = originPos + (dir * distance);
+        print("movingObject.cs : transform : " + originPos + " destination : " + destination);
+        StartCoroutine(MoveToDestination(rg2d, destination, speed, accelation));
+        print("movingObject.cs : 목적지");
+    }
     /* 파괴하거나 비활성화시 동작을 멈추게 한다. */
     private void OnDisable()
     {
