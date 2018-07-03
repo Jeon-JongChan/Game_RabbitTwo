@@ -109,6 +109,16 @@ namespace PsybleScript
             rb.rotation = Quaternion.Slerp(rb.rotation, rot, rotationSpeed * Time.deltaTime);
         }
         /// <summary>
+        /// 각도를 받아서 라디안으로 전환 후 cos sin 계산을 통해서 벡터로 전환한다.
+        /// </summary>
+        public static Vector2 AngleToVector2(int angle)
+        {
+            Vector2 ret;
+            float radian = Mathf.Deg2Rad * angle;
+            ret = new Vector2(Mathf.Cos(radian), Mathf.Sin(radian));
+            return ret;
+        }
+        /// <summary>
         /// transform을 이용한 점프함수
         /// </summary>
         public static IEnumerator JumpTransform(Transform tf, float jump = 1, float fallSpeed = 0.04f)
@@ -445,7 +455,7 @@ namespace PsybleScript
         /// <summary>
         /// 매개변수로 받은 오브젝트를 repeatDistance만큼 반복이동 시킨다. repeatCount = 0일 경우 무한반복한다.
         /// </summary>
-        public static IEnumerator ObjectRepeatMove(Rigidbody selfRigidbody, int desiredDirection, float repeatDistance, float moveSpeed = 1f, int repeatCount = 0, float stopTime = 0.5f)
+        public  IEnumerator ObjectRepeatMove(Rigidbody selfRigidbody, int desiredDirection, float repeatDistance, float moveSpeed = 1f, int repeatCount = 0, float stopTime = 0.5f)
         {
             int i = 0;
             Vector3 destination;
@@ -673,7 +683,7 @@ namespace PsybleScript
         /// 목표 오브젝트가 있던 곳으로 오브젝트를 이동시키는 함수
         /// </summary>
         /// <param name="targets">도착지점을 가리키는 오브젝트</param>
-        public static IEnumerator ObjectTargetTraceMove2D(Rigidbody2D selfRigidbody, GameObject target, int targetsLen, float speed = 1, float acceleration = 0)
+        public IEnumerator ObjectTargetTraceMove2D(Rigidbody2D selfRigidbody, GameObject target, int targetsLen, float speed = 1, float acceleration = 0)
         {
             float limit = 0.05f * speed; //속도에 따라 타겟에 접근했는지 판단할 거리를 늘려준다.
             Vector2 destination;
@@ -698,7 +708,7 @@ namespace PsybleScript
         /// <summary>
         /// 오브젝트 배열 순서대로 추적해서 오브젝트를 이동시키는 함수
         /// </summary>
-        public static IEnumerator ObjectTargetsTraceMove(Rigidbody selfRigidbody, GameObject[] targets, int targetsLen, float speed = 1, float acceleration = 0)
+        public IEnumerator ObjectTargetsTraceMove(Rigidbody selfRigidbody, GameObject[] targets, int targetsLen, float speed = 1, float acceleration = 0)
         {
             float limit = 0.05f * speed; //속도에 따라 타겟에 접근했는지 판단할 거리를 늘려준다.
             int i = 0;
@@ -730,7 +740,7 @@ namespace PsybleScript
         /// <summary>
         /// 목표 오브젝트가 있던 곳으로 오브젝트를 이동시키는 함수
         /// </summary>
-        public static IEnumerator ObjectTargetTraceMove(Rigidbody selfRigidbody, GameObject target, int targetsLen, float speed = 1, float acceleration = 0)
+        public IEnumerator ObjectTargetTraceMove(Rigidbody selfRigidbody, GameObject target, int targetsLen, float speed = 1, float acceleration = 0)
         {
             float limit = 0.05f * speed; //속도에 따라 타겟에 접근했는지 판단할 거리를 늘려준다.
             Vector3 destination;

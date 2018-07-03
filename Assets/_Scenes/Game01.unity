@@ -2093,6 +2093,21 @@ Prefab:
       propertyPath: m_RootOrder
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 114357039431370062, guid: 08631bd39e8bc5d4f850f6b17d0316a0,
+        type: 2}
+      propertyPath: selectedType
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 114357039431370062, guid: 08631bd39e8bc5d4f850f6b17d0316a0,
+        type: 2}
+      propertyPath: shotDir
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114357039431370062, guid: 08631bd39e8bc5d4f850f6b17d0316a0,
+        type: 2}
+      propertyPath: shotRotationKey
+      value: 2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 08631bd39e8bc5d4f850f6b17d0316a0, type: 2}
   m_IsPrefabParent: 0

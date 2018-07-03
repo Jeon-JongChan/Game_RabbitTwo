@@ -6,7 +6,7 @@ using UnityEngine;
 public class Shoter : ObjectInteraction
 {
 
-    [Header("타입 설정")]
+    [Header("")]
 
     [Tooltip("0 - 자기자신 날리기\n1 - 맵에 보이면 방향지정 날리기 \n2 - 충돌 이벤트 발생 \n3 - 회전")]
     [Range(0,3)]
@@ -15,16 +15,17 @@ public class Shoter : ObjectInteraction
     [Range(0, 1)]
     public int shotKey = 0;
     [Tooltip("3 번 선택시 0 - 순차 회전 발사 1 - 동시 회전 발사 2 - 발사체 이동 후 회전발사")]
-    [Range(0, 1)]
-    public int shotRotationKey = 0; 
+    [Range(0, 2)]
+    public int shotRotationKey = 0;
 
     [Header("공통 변수")]
     [Tooltip("발사 포인트가 없을 경우 shoter 중심지가 지정됨")]
     public GameObject shotPoint = null;
-    [Tooltip("총알이 인식할 대상을 선택 \n-> 안하면 모든 오브젝트를 인식")]
+    [Tooltip("총알이 인식할 대상을 선택. 선택안하면 모두 선택")]
     public GameObject target = null;
-    [Tooltip("해당 타겟만 인식시키고 싶을 경우 선택한다.")]
-    public bool onlyTargetDetect = false;
+    [Tooltip("다중 타겟인식시 개수를 입력하고 tag를 입력.")]
+    [SerializeField]
+    public List<string> collisionTagName;
     [Tooltip("-1 - 타겟지정 \n0 - UP \n 1 - Right\n 2 - Down\n 3- Left")]
     [Range(-1,3)]
     public int shotDir = -1;
@@ -33,9 +34,6 @@ public class Shoter : ObjectInteraction
     [Range(0, 10)]
     [Tooltip("0 is that not remove -> collision destroy")]
     public float bulletRemoveTime = 0;
-    [Range(0, 5)]
-    [Tooltip("총알이 충돌체를 인식하는 범위를 나타냅니다. default = 1")]
-    public float rayScale = 1f;
     [Range(0, 20)]
     [Tooltip("화면에 보일경우 첫 발사를 delay 시킬수 있는 인수입니다. default = 0")]
     public float delayTime = 0;
@@ -64,11 +62,13 @@ public class Shoter : ObjectInteraction
     [Range(0, 1)]
     [Tooltip("매번 날라갈 때마다 각도를 조금씩 비틉니다.. default = 1")]
     public int shotRotateAngle = 1;
+    [Tooltip("발사체 이동선택지 입니다.. default = 0")]
+    public bool shoterMoveTrigger = false;
     [Range(0, 10)]
-    [Tooltip("3_2 선택 : 발사체 이동 거리입니다. default = 0")]
+    [Tooltip("shoterMoveTrigger 선택 : 발사체 이동 거리입니다. default = 0")]
     public float shoterMoveDistance = 0;
     [Range(0, 10)]
-    [Tooltip("3_2 선택 : 발사체 이동 속도입니다. default = 0")]
+    [Tooltip("shoterMoveTrigger 선택 : 발사체 이동 속도입니다. default = 0")]
     public float shoterMoveSpeed = 0;
 
     /* needs inner variable */
@@ -84,9 +84,6 @@ public class Shoter : ObjectInteraction
     public delegate void BulletDelegate();
     private static event BulletDelegate ExitBullet; //현재 사용되는 총알을 모두 비활성화 해야할 경우만 사용
     bool shotState = false; //화면에 shoter가 안보일경우 반복문 중지를 위해 사용
-    string targetTag = null; // 타겟만 충돌시키고 싶을때 태그가 추가되는 스트링 문.
-    int bulletLayermask = 0; // 충돌에 제외할 레이어가 있는 경우 사용할 것.
-    int rayType = 0;
 
     private void Start()
     {
@@ -95,16 +92,17 @@ public class Shoter : ObjectInteraction
         if (shotPoint == null) bulletStartingPoint = transform.position;
         else bulletStartingPoint = shotPoint.transform.position;
 
-        /* target만 인식하게 선택했을 경우 target의 태그를 입력한다. */
-        if (!onlyTargetDetect && target != null) targetTag = target.tag;
+        /* target만 인식하게 선택했을 경우 target의 태그를 collisionTagName에 추가한다. */
+        /* 추가한 태그가 없다면 collisionTagName.Length = 0 이므로 인덱스 0에 추가될 것이다. */
 
-        if (target != null) bulletLayermask = (1 << target.layer);
+        if (target != null) collisionTagName.Add(target.tag);
 
         rg2d = GetComponent<Rigidbody2D>();
     }
     //화면에 보일때 실행되는 구문들
     private void OnBecameVisible()
     {
+        print("shoter.cs - 화면에 보임");
         StartCoroutine(ShotStartFunc());
     }
     //화면에 안보일때 실행되는 구문들
@@ -114,7 +112,7 @@ public class Shoter : ObjectInteraction
 
         if (selectedType == 0)
         {
-            print("화면에 안보임");
+            print("shoter.cs - 화면에 안보임");
             gameObject.SetActive(false);
             StopAllCoroutines();
         }
@@ -137,7 +135,7 @@ public class Shoter : ObjectInteraction
                     if (shotKey == 0)
                     {
                         Vector2 dirVector = CalclulateTheDirection(shotDir);
-                        StartCoroutine( BulletShot2D(rg2d, dirVector, bulletRemoveTime, bulletSpeed, bulletLayermask, rayScale));
+                        StartCoroutine( BulletShot2D(rg2d, dirVector, bulletRemoveTime, bulletSpeed));
                         // 충돌을 감지하는 코루틴을 실행합니다.
                         print("Shoter.cs - 자기자신을 총알로 사용합니다. 방향 : " + dirVector);
                     }
@@ -149,7 +147,7 @@ public class Shoter : ObjectInteraction
                             print("Shoter.cs - Target 탐지중");
                             yield return new WaitForEndOfFrame();
                         }
-                        StartCoroutine(BulletShot2D(rg2d, CollisionTargetDirection, bulletRemoveTime, bulletSpeed, bulletLayermask, rayScale));
+                        StartCoroutine(BulletShot2D(rg2d, CollisionTargetDirection, bulletRemoveTime, bulletSpeed));
                         // 충돌을 감지하는 코루틴을 실행합니다.
                     }
                 }
@@ -159,10 +157,10 @@ public class Shoter : ObjectInteraction
                 }
                 break;
             case 1: // 화면 인식시 총알 발사 시작
-                //bullets = new GameObject[bulletReadyCount];
-                if(bullet != null)
+                    //bullets = new GameObject[bulletReadyCount];
+                if (bullet != null)
                 {
-                    CreateBullet(bulletLayermask); //총알 생성
+                    CreateBullet(); //총알 생성
 
                     Vector2 dirVector = CalclulateTheDirection(shotDir);
 
@@ -194,10 +192,9 @@ public class Shoter : ObjectInteraction
             case 2:
                 if (bullet != null)
                 {
-                    CreateBullet(bulletLayermask); //총알 생성
+                    CreateBullet(); //총알 생성
                     while (shotState)
                     {
-
 
                         /* SetCollisionTargetDirection 함수를 통해 충돌체 위치를 향한 방향을 받아오지 않으면 zero 값을 가지기에 계속 탐지를 기다린다 */
                         while (CollisionTargetDirection == Vector2.zero)
@@ -265,15 +262,25 @@ public class Shoter : ObjectInteraction
             case 3:
                 if (bullet != null)
                 {
-                    CreateBullet(bulletRotationCount * 3,bulletLayermask); //총알 생성
+                    int projectTileMutiple = (int)(bulletRemoveTime / shotTimeGap) + 1 ; //사라지는 시간 대비 쏘는 시간을 계산하여 총 총알 개수를 만들기 위한 곱 정수
+                    CreateBullet(bulletRotationCount * projectTileMutiple); //총알 생성
                     /* 회전 발사에 필요한 변수 선언 */
                     int angle = shotMaxAngle / bulletRotationCount; //발사시 이동각도 설정
                     int currentAngle = shotStartAngle; //시작 각도 및 발사시 현재 각도
                     Vector2 angleDirection; // 각도를 벡터값으로 표현할때 저장할 벡터
+                    Vector2 dirVector;
+
+                    /* 조건문을 따로 설정해서 조건에 따라 발사체를 옮길지 안옮길지 미리 결정한다 - 코드 중복이 줄어드는 효과 */
+                    if (shoterMoveTrigger)
+                    {
+                        dirVector = CalclulateTheDirection(shotDir);
+                        print("shoter.cs - 회전발사대 이동");
+                        //rg2d.position+(dirVector * shoterMoveDistance) 를 통해 해당 목적지 좌표를 표시한다.
+                        StartCoroutine( MoveToDestination(rg2d, rg2d.position + (dirVector * shoterMoveDistance), shoterMoveSpeed) );
+                    }
 
                     while (shotState)
                     {
-                        Vector2 dirVector;
                         /* shotkey 가 0 이면 화면 인식 후, 1이면 트리거를 통한 발사 */
                         /* dirVector를 사용하여 간단하게 구현하게 만든다. */
                         if(shotKey == 1)
@@ -283,31 +290,37 @@ public class Shoter : ObjectInteraction
                             dirVector = CollisionTargetDirection;
                         }
 
-
-                        /* 조건문을 따로 설정해서 조건에 따라 발사체를 옮길지 안옮길지 미리 결정한다 - 코드 중복이 줄어드는 효과 */
-                        if (shotRotationKey == 2)
-                        {
-                            dirVector = CalclulateTheDirection(shotDir);
-                            //rg2d.position+(dirVector * shoterMoveDistance) 를 통해 해당 목적지 좌표를 표시한다.
-                            MoveToDestination(rg2d,rg2d.position+(dirVector * shoterMoveDistance), shoterMoveSpeed);
-                        }
-
-
+                        int currentShotCount = 0; //생성된 총알이 발사된 총알보다 많으므로 인덱스를 맞추기 위한 것
                         if (shotRotationKey == 0) //순차 회전 발사
                         {
-                            if(shotInfinityTrigger)
+                            if (shotInfinityTrigger)
                             {
                                 while(shotState)
                                 {
-                                    for(int i = 0; i < bulletRotationCount; i++)
+                                    for(int i = 0 + currentShotCount; i < bulletRotationCount + currentShotCount && shotState; i++)
                                     {
-                                        //angleDirection = Quaternion.E
+                                        angleDirection = AngleToVector2(currentAngle);
+                                        bullets[i].btScript.Shoot(transform.position,angleDirection);
+                                        currentAngle += angle; //shot 각도를 돌린다.
+                                        yield return new WaitForSeconds(shotWaitRotation);
                                     }
-                                }
+                                    if (currentShotCount != (bulletRotationCount * (projectTileMutiple - 1))) currentShotCount += bulletRotationCount;
+                                    else currentShotCount = 0;
+                                    yield return new WaitForSeconds(shotTimeGap);
+                                } 
                             }
                             else
                             {
-
+                                for (int i = 0 + currentShotCount; i < bulletRotationCount + currentShotCount && shotState; i++)
+                                {
+                                    angleDirection = AngleToVector2(currentAngle);
+                                    bullets[i].btScript.Shoot(transform.position, angleDirection);
+                                    currentAngle += angle; //shot 각도를 돌린다.
+                                    yield return new WaitForSeconds(shotWaitRotation);
+                                }
+                                if (currentShotCount != (bulletRotationCount * (projectTileMutiple - 1))) currentShotCount += bulletRotationCount;
+                                else currentShotCount = 0;
+                                yield return new WaitForSeconds(shotTimeGap);
                             }
                         }
                         else if(shotRotationKey == 1) // 동시 회전 발사
@@ -316,17 +329,33 @@ public class Shoter : ObjectInteraction
                             {
                                 while (shotState)
                                 {
-
+                                    for (int i = 0 + currentShotCount; i < bulletRotationCount + currentShotCount && shotState; i++)
+                                    {
+                                        angleDirection = AngleToVector2(currentAngle);
+                                        bullets[i].btScript.Shoot(transform.position, angleDirection);
+                                        currentAngle += angle; //shot 각도를 돌린다.
+                                        yield return new WaitForFixedUpdate();
+                                    }
+                                    if (currentShotCount != (bulletRotationCount * (projectTileMutiple - 1))) currentShotCount += bulletRotationCount;
+                                    else currentShotCount = 0;
+                                    yield return new WaitForSeconds(shotTimeGap);
 
                                 }
                             }
                             else
                             {
-
+                                for (int i = 0 + currentShotCount; i < bulletRotationCount + currentShotCount && shotState; i++)
+                                {
+                                    angleDirection = AngleToVector2(currentAngle);
+                                    bullets[i].btScript.Shoot(transform.position, angleDirection);
+                                    currentAngle += angle; //shot 각도를 돌린다.
+                                    yield return new WaitForFixedUpdate();
+                                }
+                                if (currentShotCount != (bulletRotationCount * (projectTileMutiple - 1))) currentShotCount += bulletRotationCount;
+                                else currentShotCount = 0;
+                                yield return new WaitForSeconds(shotTimeGap);
                             }
                         }
-
-
                     }
                 }
                 else
@@ -340,9 +369,6 @@ public class Shoter : ObjectInteraction
         yield break;
     }
 
-    void InfinityTriggerShot()
-    { 
-}
 
     /// <summary>
     /// 정수형 direction을 받아 정해진 규칙을 통해 방향을 가리키는 벡터를 반환한다.
@@ -383,7 +409,7 @@ public class Shoter : ObjectInteraction
     /// <summary>
     /// Shoter.cs 종속함수, 발사할 총알을 생성한다.
     /// </summary>
-    void CreateBullet(int bulletLayermask)
+    void CreateBullet()
     {
         BulletStruct tempBs;
         /* BulletStruct라는 구조체를 사용하여 총알 오브젝트와 그 오브젝트 컴포넌트인 Bullet을 저장 */
@@ -393,7 +419,7 @@ public class Shoter : ObjectInteraction
             tempBs.obj.SetActive(false); //생성시 총알이 보이면 안되므로 비활성화 시켜준다.
             tempBs.btScript = tempBs.obj.GetComponent<Bullet>();
 
-            tempBs.btScript.InitBaseProperty(bulletStartingPoint, bulletSpeed, bulletLayermask, bulletRemoveTime, rayScale, rayType);
+            tempBs.btScript.InitBaseProperty(bulletStartingPoint, bulletSpeed, collisionTagName, bulletRemoveTime);
             tempBs.btScript.GetRigidbodyComponent();
 
             ExitBullet += tempBs.btScript.ExitBullet; // 총알을 한번에 없애기 위해서 이벤트 변수에 종료 함수를 넣어줍니다.
@@ -401,9 +427,9 @@ public class Shoter : ObjectInteraction
         }
     }
     /// <summary>
-    /// Shoter.cs 종속함수, 발사할 총알을 생성한다.
+    /// Shoter.cs 종속함수, 회전 발사할 총알을 생성한다. 
     /// </summary>
-    void CreateBullet(int projectTileCount,int bulletLayermask)
+    void CreateBullet(int projectTileCount)
     {
         BulletStruct tempBs;
         /* BulletStruct라는 구조체를 사용하여 총알 오브젝트와 그 오브젝트 컴포넌트인 Bullet을 저장 */
@@ -413,7 +439,7 @@ public class Shoter : ObjectInteraction
             tempBs.obj.SetActive(false); //생성시 총알이 보이면 안되므로 비활성화 시켜준다.
             tempBs.btScript = tempBs.obj.GetComponent<Bullet>();
 
-            tempBs.btScript.InitBaseProperty(bulletStartingPoint, bulletSpeed, bulletLayermask, bulletRemoveTime, rayScale, rayType);
+            tempBs.btScript.InitBaseProperty(bulletStartingPoint, bulletSpeed, collisionTagName, bulletRemoveTime);
             tempBs.btScript.GetRigidbodyComponent();
 
             ExitBullet += tempBs.btScript.ExitBullet; // 총알을 한번에 없애기 위해서 이벤트 변수에 종료 함수를 넣어줍니다.
@@ -422,19 +448,33 @@ public class Shoter : ObjectInteraction
     }
     private void OnTriggerEnter2D(Collider2D col)
     {
-        if (target != null && col.CompareTag(target.tag))
+        if (collisionTagName.Count == 0)
         {
-            if (shotKey == 0 || shotKey == 3)
+            print("shoter.cs - 모두 충돌 발생 : selectedType");
+            LifeInteraction interaction = col.gameObject.GetComponent<LifeInteraction>();
+            if (interaction != null) interaction.TakeHit(1);
+            transform.position = bulletStartingPoint;
+            gameObject.SetActive(false);
+        }
+        else if (selectedType == 0 || selectedType == 3)
+        {
+            foreach (var v in collisionTagName)
             {
-                if (shotKey == 0)
+                if (col.CompareTag(v))
                 {
-                    transform.position = bulletStartingPoint;
-                    gameObject.SetActive(false);
-                }
-                else if (shotRotationKey == 2)
-                {
-                    ObjectInteraction interaction = col.gameObject.GetComponent<ObjectInteraction>();
-                    interaction.TakeHit(1);
+                    LifeInteraction interaction = col.gameObject.GetComponent<LifeInteraction>();
+                    print("shoter.cs - 충돌 발생 : selectedType");
+                    if (selectedType == 0)
+                    {
+                        print("shoter.cs - shotkey : 0");
+                        if (interaction != null) interaction.TakeHit(1);
+                        transform.position = bulletStartingPoint;
+                        gameObject.SetActive(false);
+                    }
+                    else if (shoterMoveTrigger)
+                    {
+                        if(interaction != null) interaction.TakeHit(1);
+                    }
                 }
             }
         }

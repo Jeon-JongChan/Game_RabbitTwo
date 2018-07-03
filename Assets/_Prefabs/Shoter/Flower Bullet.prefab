@@ -37,7 +37,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1598810662961052}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 2.4399998, y: -0.90000004, z: 0}
+  m_LocalPosition: {x: 6.7299995, y: 1.1599998, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -50,7 +50,7 @@ Rigidbody2D:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1598810662961052}
-  m_BodyType: 1
+  m_BodyType: 0
   m_Simulated: 1
   m_UseFullKinematicContacts: 1
   m_UseAutoMass: 0
@@ -89,17 +89,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 024e001f5bef8494a8155dc2b656363b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: -1
-  selectedType: 2
+  selectedType: 1
   shotKey: 0
   shotRotationKey: 0
   shotPoint: {fileID: 0}
   target: {fileID: 1967410475590974, guid: 44af0117abc819b4a9d1a301cdf25026, type: 2}
-  onlyTargetDetect: 0
-  shotDir: 3
+  collisionTagName: []
+  shotDir: 0
   bulletSpeed: 3
   bulletRemoveTime: 10
-  rayScale: 0.25
   delayTime: 0
   bullet: {fileID: 1596562467733624, guid: b06db0611c5bc85489f523f8c8ae9d73, type: 2}
   shotInfinityTrigger: 1

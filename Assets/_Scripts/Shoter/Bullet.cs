@@ -6,39 +6,43 @@ using UnityEngine;
 public class Bullet : ObjectInteraction
 {
     /* make bullet, Immediately input value */
-    Rigidbody2D rigidbody;
+    public Rigidbody2D rd2d;
 
     /* if shoot, Immediately input value */
     Vector2 direction;
     Vector2 initPos;
+    List<string> tags;
     float extinctionTime;
     float speed;
-    int selectedRayType = 0;
-    float rayScale = 1f;
-    int layerMask = 0;
-    string targetTag = null;
+
+    bool returnTrigger = false;
 
     public void GetRigidbodyComponent()
     {
-        rigidbody = GetComponent<Rigidbody2D>();
+        rd2d = GetComponent<Rigidbody2D>();
     }
 
 
-    public void InitBaseProperty(Vector2 bulletStartingPoint, float speed, int layerMask = 0, float extinctionTime = 0, float rayScale = 1f, int selectedRayType = 0)
+    public void InitBaseProperty(Vector2 bulletStartingPoint, float speed, List<string> tags , float extinctionTime = 0, bool returnTrigger = true)
     {
         initPos = bulletStartingPoint;
         transform.position = initPos;
         this.extinctionTime = extinctionTime;
         this.speed = speed;
-        this.layerMask = layerMask;
-        this.rayScale = rayScale;
-        this.selectedRayType = 0;
+        this.tags = tags;
+        this.returnTrigger = returnTrigger;
     }
 
     public void Shoot(Vector2 dir)
     {
         gameObject.SetActive(true);
-        StartCoroutine(BulletShot2D(rigidbody, dir, extinctionTime, speed, layerMask, rayScale, selectedRayType));
+        StartCoroutine(BulletShot2D(rd2d, dir, extinctionTime, speed));
+    }
+    public void Shoot(Vector2 bulletStartingPoint, Vector2 dir)
+    {
+        transform.position = bulletStartingPoint;
+        gameObject.SetActive(true);
+        StartCoroutine(BulletShot2D(rd2d, dir, extinctionTime, speed));
     }
 
     /// <summary>
@@ -50,14 +54,23 @@ public class Bullet : ObjectInteraction
         transform.position = initPos;
         if(gameObject.activeSelf == true )gameObject.SetActive(false);
     }
-
+    public void SetReturnBullet()
+    {
+        returnTrigger = true;
+    }
     private void OnDisable()
     {
-        ExitBullet();
+        if (!returnTrigger) ExitBullet();
     }
 
     private void OnTriggerEnter2D(Collider2D col)
     {
-        ExitBullet();
+        foreach (var v in tags)
+        {
+            if (col.CompareTag(v))
+            {
+                ExitBullet();
+            }
+        }
     }
 }

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Rabbit : ObjectInteraction
+public class Rabbit : LifeInteraction
 {
     //public variable - inspector
     public int speed = 2;

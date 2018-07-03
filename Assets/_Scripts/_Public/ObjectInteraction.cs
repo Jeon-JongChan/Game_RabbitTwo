@@ -3,25 +3,19 @@ using System.Collections.Generic;
 using UnityEngine;
 using PsybleScript;
 
-public class ObjectInteraction : ObjectMovement,IDamageable
+public class ObjectInteraction : ObjectMovement
 {
-    [Tooltip("이것은 해당 오브젝트의 체력입니다. \n-1일경우 무적입니다.")]
-    public int health = -1;
-
-    //상속 받은 자식만 변수 사용이 가능하다. static 선언이 없으면 상속받은 객체마다 다른 메모리 공간을 가지게 된다.
-    protected bool detectState = true;
-    protected bool dead = false;
-
+    protected bool detectState = false;
 
     /// <summary>
     /// 발사체를 발사시키는 함수
     /// </summary>
     /// <param name="selectedRayType"> If it is 0, it is OverlapCircle. 1 is RayCast</param>
-    public IEnumerator BulletShot2D(Rigidbody2D rigidbody2D, Vector2 direction, float extinctionTime, float speed = 1f,int layerMask = 0, float rayScale = 0.5f, int selectedRayType = 0, string targetTag = null, bool sleepState = false)
+    public IEnumerator BulletShot2D(Rigidbody2D rigidbody2D, Vector2 direction, float extinctionTime, float speed = 1f, bool sleepState = false)
     {
         float startedTime = Time.time;
         float currentTime = startedTime;
-
+        sleepState = false;
         /* extinctionTime이 0일 경우 충돌이외에는 사라지지 않는다. */
         if (extinctionTime > 0)
         {
@@ -31,7 +25,7 @@ public class ObjectInteraction : ObjectMovement,IDamageable
                 //print("ObjectInteraction - 남은시간 " + (currentTime - startedTime));
                     //Debug.DrawRay(rigidbody2D.position, Vector2.up * rayScale, Color.red);
                 MovePos(rigidbody2D, direction, speed, sleepState);
-                yield return new WaitForEndOfFrame();
+                yield return new WaitForFixedUpdate();
                 currentTime = Time.time;
             }
         }
@@ -41,7 +35,7 @@ public class ObjectInteraction : ObjectMovement,IDamageable
             //Debug.DrawRay(rigidbody2D.position, Vector2.up * rayScale, Color.red, 5);
             MovePos(rigidbody2D, direction, speed);
 
-            yield return new WaitForEndOfFrame();
+            yield return new WaitForFixedUpdate();
         }
         // 오브젝트와 충돌하고 나면 비활성화 한다.
         Debug.Log("ObjectInteraction - 총알의 움직임이 종료되었습니다.");
@@ -59,7 +53,7 @@ public class ObjectInteraction : ObjectMovement,IDamageable
             switch (selectedKey)
             {
                 case 0:
-                   // print("ObjectInteraction - 0 번시작 " + layerMask);
+                    // print("ObjectInteraction - 0 번시작 " + layerMask);
                     ret = RayScript.DetectedOverlapCircle2D(self.position, rayScale, layerMask);
                     break;
                 case 1:
@@ -67,7 +61,7 @@ public class ObjectInteraction : ObjectMovement,IDamageable
                     ret = RayScript.DetectedRayCast2D(self.position, direction, rayScale, layerMask);
                     break;
             }
-            if(ret != null)
+            if (ret != null)
             {
                 Debug.Log("ObjectInteraction - " + ret.name + "와 충돌했습니다.");
                 if (targetTag == null) detectState = false;
@@ -82,31 +76,5 @@ public class ObjectInteraction : ObjectMovement,IDamageable
 
     }
 
-    public Vector2 AngleToVector2(int angle)
-    {
-        Vector2 ret;
-        float radian = Mathf.Deg2Rad * angle;
-        ret = new Vector2(Mathf.Cos(radian),Mathf.Sin(radian));
-        return ret;
-    }
 
-    public void TakeHit(int Damage)
-    {
-        if(health > 0)
-        {
-            health -= Damage;
-        }
-        else if(health == 0)
-        {
-            Die();
-        }
-        else if(health < 0)
-        {
-            Debug.Log("ObjectInteraction.cs - it's invincibility");
-        }
-    }
-    void Die()
-    {
-        dead = true;
-    }
 }
