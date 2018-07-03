@@ -38,7 +38,7 @@ public class ObjectInteraction : ObjectMovement
             yield return new WaitForFixedUpdate();
         }
         // 오브젝트와 충돌하고 나면 비활성화 한다.
-        Debug.Log("ObjectInteraction - 총알의 움직임이 종료되었습니다.");
+        //Debug.Log("ObjectInteraction - 총알의 움직임이 종료되었습니다.");
         rigidbody2D.gameObject.SetActive(false);
     }
     /// <summary>

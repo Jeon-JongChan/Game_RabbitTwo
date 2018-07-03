@@ -9,7 +9,7 @@ public class Bullet : ObjectInteraction
     public Rigidbody2D rd2d;
 
     /* if shoot, Immediately input value */
-    Vector2 direction;
+    public Vector2 direction;
     Vector2 initPos;
     List<string> tags;
     float extinctionTime;
@@ -35,14 +35,21 @@ public class Bullet : ObjectInteraction
 
     public void Shoot(Vector2 dir)
     {
+        direction = dir;
         gameObject.SetActive(true);
-        StartCoroutine(BulletShot2D(rd2d, dir, extinctionTime, speed));
+        StartCoroutine(BulletShot2D(rd2d, direction, extinctionTime, speed));
     }
     public void Shoot(Vector2 bulletStartingPoint, Vector2 dir)
     {
         transform.position = bulletStartingPoint;
+        direction = dir;
         gameObject.SetActive(true);
-        StartCoroutine(BulletShot2D(rd2d, dir, extinctionTime, speed));
+        StartCoroutine(BulletShot2D(rd2d, direction, extinctionTime, speed));
+    }
+    public void Shoot()
+    {
+        gameObject.SetActive(true);
+        StartCoroutine(BulletShot2D(rd2d,-direction, extinctionTime, speed));
     }
 
     /// <summary>
@@ -69,7 +76,10 @@ public class Bullet : ObjectInteraction
         {
             if (col.CompareTag(v))
             {
+                LifeInteraction interaction = col.gameObject.GetComponent<LifeInteraction>();
+                if (interaction != null) interaction.TakeHit(1);
                 ExitBullet();
+                break;
             }
         }
     }

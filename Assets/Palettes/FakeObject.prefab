@@ -21,7 +21,7 @@ GameObject:
   - component: {fileID: 4576060112225214}
   - component: {fileID: 2569400268573427162}
   m_Layer: 31
-  m_Name: FakePlatform
+  m_Name: FakeObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

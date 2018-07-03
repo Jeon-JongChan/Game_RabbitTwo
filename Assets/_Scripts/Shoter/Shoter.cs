@@ -6,7 +6,7 @@ using UnityEngine;
 public class Shoter : ObjectInteraction
 {
 
-    [Header("")]
+    [Header("발사 타입 설정")]
 
     [Tooltip("0 - 자기자신 날리기\n1 - 맵에 보이면 방향지정 날리기 \n2 - 충돌 이벤트 발생 \n3 - 회전")]
     [Range(0,3)]
@@ -15,7 +15,7 @@ public class Shoter : ObjectInteraction
     [Range(0, 1)]
     public int shotKey = 0;
     [Tooltip("3 번 선택시 0 - 순차 회전 발사 1 - 동시 회전 발사 2 - 발사체 이동 후 회전발사")]
-    [Range(0, 2)]
+    [Range(0, 1)]
     public int shotRotationKey = 0;
 
     [Header("공통 변수")]
@@ -59,10 +59,12 @@ public class Shoter : ObjectInteraction
     [Range(0, 1)]
     [Tooltip("3_0 선택 : 총알이 날라가는 시간 gap. default = 0.05f")]
     public float shotWaitRotation = 0.05f;
-    [Range(0, 1)]
+    [Range(0, 10)]
     [Tooltip("매번 날라갈 때마다 각도를 조금씩 비틉니다.. default = 1")]
     public int shotRotateAngle = 1;
-    [Tooltip("발사체 이동선택지 입니다.. default = 0")]
+    [Tooltip("발사체 리터닝선택지 입니다. ")]
+    public bool shoterReturnTrigger = false;
+    [Tooltip("발사체 이동선택지 입니다.")]
     public bool shoterMoveTrigger = false;
     [Range(0, 10)]
     [Tooltip("shoterMoveTrigger 선택 : 발사체 이동 거리입니다. default = 0")]
@@ -102,7 +104,7 @@ public class Shoter : ObjectInteraction
     //화면에 보일때 실행되는 구문들
     private void OnBecameVisible()
     {
-        print("shoter.cs - 화면에 보임");
+        //print("shoter.cs - 화면에 보임");
         StartCoroutine(ShotStartFunc());
     }
     //화면에 안보일때 실행되는 구문들
@@ -164,25 +166,15 @@ public class Shoter : ObjectInteraction
 
                     Vector2 dirVector = CalclulateTheDirection(shotDir);
 
-                    if (shotInfinityTrigger == false)
+                    do //화면에 shoter가 안보이면 비활성화 되고 반복문 종료
                     {
-                        for(int i = 0; i < bulletReadyCount; i++)
+                        for (int i = 0; (i < bulletReadyCount) && shotState; i++)
                         {
                             bullets[i].btScript.Shoot(dirVector);
                             yield return new WaitForSeconds(shotTimeGap);
                         }
-                    }
-                    else
-                    {
-                        while(shotState) //화면에 shoter가 안보이면 비활성화 되고 반복문 종료
-                        {
-                            for (int i = 0; (i < bulletReadyCount) && shotState ; i++)
-                            {
-                                bullets[i].btScript.Shoot(dirVector);
-                                yield return new WaitForSeconds(shotTimeGap);
-                            }
-                        }
-                    }
+                        yield return new WaitForEndOfFrame();//동작 오류가 나더라도 게임이 멈추지 않도록 - 무한반복이 돌면 안되기에
+                    } while (shotState && shotInfinityTrigger); //화면에 shoter가 안보이면 비활성화 되고 반복문 종료
                 }
                 else
                 {
@@ -204,52 +196,30 @@ public class Shoter : ObjectInteraction
                         if (shotKey == 0)
                         {
                             Vector2 dirVector = CalclulateTheDirection(shotDir);
-
-                            if (shotInfinityTrigger == false)
+                            do
                             {
-                                for (int i = 0; i < bulletReadyCount; i++)
+                                for (int i = 0; (i < bulletReadyCount) && shotState; i++)
                                 {
                                     bullets[i].btScript.Shoot(dirVector);
                                     yield return new WaitForSeconds(shotTimeGap);
                                 }
-                                CollisionTargetDirection = Vector2.zero; //타겟 위치를 초기화 하여 다음 이벤트를 기다리게 만든다.
-                            }
-                            else
-                            {
-                                while (shotState) //화면에 shoter가 안보이면 비활성화 되고 반복문 종료
-                                {
-                                    for (int i = 0; (i < bulletReadyCount) && shotState; i++)
-                                    {
-                                        bullets[i].btScript.Shoot(dirVector);
-                                        yield return new WaitForSeconds(shotTimeGap);
-                                    }
-                                }
-                            }
+                            } while (shotState && shotInfinityTrigger); //화면에 shoter가 안보이면 비활성화 되고 반복문 종료
+                            CollisionTargetDirection = Vector2.zero; //타겟 위치를 초기화 하여 다음 이벤트를 기다리게 만든다.
                         }
                         else
                         {
-                            if (shotInfinityTrigger == false)
+                            do //화면에 shoter가 안보이면 비활성화 되고 반복문 종료
                             {
-                                for (int i = 0; i < bulletReadyCount; i++)
+                                for (int i = 0; (i < bulletReadyCount) && shotState; i++)
                                 {
                                     bullets[i].btScript.Shoot(CollisionTargetDirection);
                                     yield return new WaitForSeconds(shotTimeGap);
                                 }
-                                CollisionTargetDirection = Vector2.zero; //타겟 위치를 초기화 하여 다음 이벤트를 기다리게 만든다.
-                            }
-                            else
-                            {
-                                while (shotState) //화면에 shoter가 안보이면 비활성화 되고 반복문 종료
-                                {
-                                    for (int i = 0; (i < bulletReadyCount) && shotState; i++)
-                                    {
-                                        bullets[i].btScript.Shoot(CollisionTargetDirection);
-                                        yield return new WaitForSeconds(shotTimeGap);
-                                    }
-                                }
-                            }
+                            } while (shotState && shotInfinityTrigger);
+                            CollisionTargetDirection = Vector2.zero; //타겟 위치를 초기화 하여 다음 이벤트를 기다리게 만든다.
                         }
 
+                        yield return new WaitForEndOfFrame();//동작 오류가 나더라도 게임이 멈추지 않도록 - 무한반복이 돌면 안되기에
 
                     }
                 }
@@ -263,21 +233,12 @@ public class Shoter : ObjectInteraction
                 if (bullet != null)
                 {
                     int projectTileMutiple = (int)(bulletRemoveTime / shotTimeGap) + 1 ; //사라지는 시간 대비 쏘는 시간을 계산하여 총 총알 개수를 만들기 위한 곱 정수
-                    CreateBullet(bulletRotationCount * projectTileMutiple); //총알 생성
+                    CreateBullet(bulletRotationCount * projectTileMutiple); //총알 생성. 90도에서 180도를 쏠때 + 1을 안해주면 마지막 각도에서는 총알이 안나옴. ex) 1과 2는 총 2개의 숫자지만 2 - 1= 1임
                     /* 회전 발사에 필요한 변수 선언 */
                     int angle = shotMaxAngle / bulletRotationCount; //발사시 이동각도 설정
                     int currentAngle = shotStartAngle; //시작 각도 및 발사시 현재 각도
                     Vector2 angleDirection; // 각도를 벡터값으로 표현할때 저장할 벡터
                     Vector2 dirVector;
-
-                    /* 조건문을 따로 설정해서 조건에 따라 발사체를 옮길지 안옮길지 미리 결정한다 - 코드 중복이 줄어드는 효과 */
-                    if (shoterMoveTrigger)
-                    {
-                        dirVector = CalclulateTheDirection(shotDir);
-                        print("shoter.cs - 회전발사대 이동");
-                        //rg2d.position+(dirVector * shoterMoveDistance) 를 통해 해당 목적지 좌표를 표시한다.
-                        StartCoroutine( MoveToDestination(rg2d, rg2d.position + (dirVector * shoterMoveDistance), shoterMoveSpeed) );
-                    }
 
                     while (shotState)
                     {
@@ -289,73 +250,171 @@ public class Shoter : ObjectInteraction
                             while (CollisionTargetDirection == Vector2.zero) yield return new WaitForEndOfFrame();
                             dirVector = CollisionTargetDirection;
                         }
+                        /* 한번만 옮기면 되므로 shoterMoveTrigger = false 로 꺼준다. */
+                        if (shoterMoveTrigger)
+                        {
+                            dirVector = CalclulateTheDirection(shotDir);
+                            print("shoter.cs - 회전발사대 이동");
+                            //rg2d.position+(dirVector * shoterMoveDistance) 를 통해 해당 목적지 좌표를 표시한다.
+                            StartCoroutine(MoveToDestination(rg2d, rg2d.position + (dirVector * shoterMoveDistance), shoterMoveSpeed));
+                            shoterMoveTrigger = false;
+                        }
 
                         int currentShotCount = 0; //생성된 총알이 발사된 총알보다 많으므로 인덱스를 맞추기 위한 것
-                        if (shotRotationKey == 0) //순차 회전 발사
+                        int cnt = 1; //각도 비틀때 사용하는 카운터
+                        if (shoterReturnTrigger) //리터닝 총
                         {
-                            if (shotInfinityTrigger)
+                            if (shotRotationKey == 0) //순차 회전 발사
                             {
-                                while(shotState)
+
+                                do
                                 {
-                                    for(int i = 0 + currentShotCount; i < bulletRotationCount + currentShotCount && shotState; i++)
+                                    currentAngle = shotStartAngle;
+                                    for (int i = 0 + currentShotCount; i < bulletRotationCount + currentShotCount && shotState; i++)
                                     {
                                         angleDirection = AngleToVector2(currentAngle);
-                                        bullets[i].btScript.Shoot(transform.position,angleDirection);
+                                        bullets[i].btScript.SetReturnBullet(); //시간초가 다 되도 그 자리에서 멈추도록 한다. 충돌시에는 제자리로 돌아온다.
+                                        bullets[i].btScript.Shoot(angleDirection);
                                         currentAngle += angle; //shot 각도를 돌린다.
                                         yield return new WaitForSeconds(shotWaitRotation);
                                     }
-                                    if (currentShotCount != (bulletRotationCount * (projectTileMutiple - 1))) currentShotCount += bulletRotationCount;
-                                    else currentShotCount = 0;
-                                    yield return new WaitForSeconds(shotTimeGap);
-                                } 
+
+                                    if (currentShotCount != (bulletRotationCount * (projectTileMutiple - 1)))
+                                    {
+                                        currentShotCount += bulletRotationCount;
+                                        currentAngle = shotStartAngle + shotRotateAngle * cnt++;
+                                        yield return new WaitForSeconds(shotTimeGap);
+                                        continue;
+                                    }
+                                    else
+                                    {
+                                        currentShotCount = 0;
+                                        yield return new WaitForSeconds(bulletRemoveTime);
+                                        while (currentShotCount != (bulletRotationCount * (projectTileMutiple)))
+                                        {
+                                            for (int i = 0 + currentShotCount; i < bulletRotationCount + currentShotCount && shotState; i++)
+                                            {
+                                                bullets[i].btScript.Shoot();
+                                                yield return new WaitForSeconds(shotWaitRotation);
+                                                print("실행");
+                                            }
+                                            currentShotCount += bulletRotationCount;
+                                        }
+                                        /* 다시 초기 설정부터 쏘기위한 설정부분 */
+                                        currentShotCount = 0;
+                                        currentAngle = shotStartAngle;
+                                        cnt = 1;
+                                    }
+                                    yield return new WaitForSeconds(bulletRemoveTime);
+                                } while (shotState && shotInfinityTrigger);
+
                             }
-                            else
+                            else if (shotRotationKey == 1) // 동시 회전 발사
                             {
-                                for (int i = 0 + currentShotCount; i < bulletRotationCount + currentShotCount && shotState; i++)
+                                do
                                 {
-                                    angleDirection = AngleToVector2(currentAngle);
-                                    bullets[i].btScript.Shoot(transform.position, angleDirection);
-                                    currentAngle += angle; //shot 각도를 돌린다.
-                                    yield return new WaitForSeconds(shotWaitRotation);
-                                }
-                                if (currentShotCount != (bulletRotationCount * (projectTileMutiple - 1))) currentShotCount += bulletRotationCount;
-                                else currentShotCount = 0;
-                                yield return new WaitForSeconds(shotTimeGap);
+                                    for (int i = 0 + currentShotCount; i < bulletRotationCount + currentShotCount && shotState; i++)
+                                    {
+                                        angleDirection = AngleToVector2(currentAngle);
+                                        bullets[i].btScript.SetReturnBullet(); //시간초가 다 되도 그 자리에서 멈추도록 한다. 충돌시에는 제자리로 돌아온다.
+                                        bullets[i].btScript.Shoot(angleDirection);
+                                        currentAngle += angle; //shot 각도를 돌린다.
+                                        yield return new WaitForEndOfFrame();
+                                    }
+                                    if (currentShotCount != (bulletRotationCount * (projectTileMutiple - 1)))
+                                    {
+                                        currentShotCount += bulletRotationCount;
+                                        currentAngle = shotStartAngle + shotRotateAngle * cnt++;
+                                        yield return new WaitForSeconds(shotTimeGap);
+                                        continue;
+                                    }
+                                    else
+                                    {
+                                        currentShotCount = 0;
+                                        yield return new WaitForSeconds(bulletRemoveTime);
+                                        while (currentShotCount != (bulletRotationCount * (projectTileMutiple)))
+                                        {
+                                            for (int i = 0 + currentShotCount; i < bulletRotationCount + currentShotCount && shotState; i++)
+                                            {
+                                                bullets[i].btScript.Shoot();
+                                                yield return new WaitForEndOfFrame();
+                                            }
+                                            currentShotCount += bulletRotationCount;
+                                            yield return new WaitForSeconds(shotTimeGap);
+                                        }
+                                        /* 다시 초기 설정부터 쏘기위한 설정부분 */
+                                        currentShotCount = 0;
+                                        currentAngle = shotStartAngle;
+                                        cnt = 1;
+                                    }
+                                    yield return new WaitForSeconds(bulletRemoveTime);
+                                } while (shotState && shotInfinityTrigger);
                             }
                         }
-                        else if(shotRotationKey == 1) // 동시 회전 발사
+                        else
                         {
-                            if (shotInfinityTrigger)
+                            if (shotRotationKey == 0) //순차 회전 발사
                             {
-                                while (shotState)
+                                do
                                 {
+                                    currentAngle = shotStartAngle;
                                     for (int i = 0 + currentShotCount; i < bulletRotationCount + currentShotCount && shotState; i++)
                                     {
                                         angleDirection = AngleToVector2(currentAngle);
                                         bullets[i].btScript.Shoot(transform.position, angleDirection);
                                         currentAngle += angle; //shot 각도를 돌린다.
-                                        yield return new WaitForFixedUpdate();
+                                        yield return new WaitForSeconds(shotWaitRotation);
                                     }
-                                    if (currentShotCount != (bulletRotationCount * (projectTileMutiple - 1))) currentShotCount += bulletRotationCount;
-                                    else currentShotCount = 0;
-                                    yield return new WaitForSeconds(shotTimeGap);
-
-                                }
+                                    if (currentShotCount != (bulletRotationCount * (projectTileMutiple - 1)))
+                                    {
+                                        currentShotCount += bulletRotationCount;
+                                        currentAngle = shotStartAngle + shotRotateAngle * cnt++;
+                                        yield return new WaitForSeconds(shotTimeGap);
+                                        continue;
+                                    }
+                                    else
+                                    {
+                                        /* 다시 초기 설정부터 쏘기위한 설정부분 */
+                                        currentShotCount = 0;
+                                        currentAngle = shotStartAngle;
+                                        cnt = 1;
+                                    }
+                                    yield return new WaitForSeconds(bulletRemoveTime);
+                                }while (shotState && shotInfinityTrigger) ;
+                                
                             }
-                            else
+                            else if (shotRotationKey == 1) // 동시 회전 발사
                             {
-                                for (int i = 0 + currentShotCount; i < bulletRotationCount + currentShotCount && shotState; i++)
+                                do
                                 {
-                                    angleDirection = AngleToVector2(currentAngle);
-                                    bullets[i].btScript.Shoot(transform.position, angleDirection);
-                                    currentAngle += angle; //shot 각도를 돌린다.
-                                    yield return new WaitForFixedUpdate();
-                                }
-                                if (currentShotCount != (bulletRotationCount * (projectTileMutiple - 1))) currentShotCount += bulletRotationCount;
-                                else currentShotCount = 0;
-                                yield return new WaitForSeconds(shotTimeGap);
+                                    currentAngle = shotStartAngle;
+                                    for (int i = 0 + currentShotCount; i < bulletRotationCount + currentShotCount && shotState; i++)
+                                    {
+                                        angleDirection = AngleToVector2(currentAngle);
+                                        bullets[i].btScript.Shoot(transform.position, angleDirection);
+                                        currentAngle += angle; //shot 각도를 돌린다.
+                                        yield return new WaitForEndOfFrame();
+                                    }
+                                    if (currentShotCount != (bulletRotationCount * (projectTileMutiple - 1)))
+                                    {
+                                        currentShotCount += bulletRotationCount;
+                                        currentAngle = shotStartAngle + shotRotateAngle * cnt++;
+                                        yield return new WaitForSeconds(shotTimeGap);
+                                        continue;
+                                    }
+                                    else
+                                    {
+                                        /* 다시 초기 설정부터 쏘기위한 설정부분 */
+                                        currentShotCount = 0;
+                                        currentAngle = shotStartAngle;
+                                        cnt = 1;
+                                    }
+                                    yield return new WaitForSeconds(bulletRemoveTime);
+                                } while (shotState && shotInfinityTrigger);
+
                             }
                         }
+                        yield return new WaitForEndOfFrame();//동작 오류가 나더라도 게임이 멈추지 않도록 - 무한반복이 돌면 안되기에
                     }
                 }
                 else
