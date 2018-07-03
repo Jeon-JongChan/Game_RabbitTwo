@@ -85,6 +85,21 @@ namespace PsybleScript
             }
             rb.MovePosition(destination);
         }
+        //목적지까지 가는 함수
+        public static IEnumerator MoveToDestination(Rigidbody rb, Vector3 destination, float speed = 1f, float accelation = 0)
+        {
+            float gap = 0.02f * speed;
+            Vector3 dir = destination - rb.position;
+            dir.Normalize();
+
+            while (Vector3.Distance(rb.position, destination) > gap)
+            {
+                MovePos(rb, dir, speed);
+                speed += accelation;
+                yield return new WaitForEndOfFrame();
+            }
+            rb.MovePosition(destination);
+        }
 
         public static void Turn(Rigidbody rb, Vector3 moveRotation, float rotationSpeed = 1f)
         {

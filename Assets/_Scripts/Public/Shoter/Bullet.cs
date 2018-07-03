@@ -23,12 +23,6 @@ public class Bullet : ObjectInteraction
         rigidbody = GetComponent<Rigidbody2D>();
     }
 
-    IEnumerator SelfShotDetectObject(Rigidbody2D self, Vector2 direction, int selectedKey, float rayScale = 0.5f, int layerMask = 0, float detectTime = 0.01f, string targetTag = null)
-    {
-        StartCoroutine(DetectObject(self, direction, selectedKey, rayScale, layerMask, detectTime, targetTag));
-        while (detectState) yield return new WaitForEndOfFrame();
-        ExitBullet();
-    }
 
     public void InitBaseProperty(Vector2 bulletStartingPoint, float speed, int layerMask = 0, float extinctionTime = 0, float rayScale = 1f, int selectedRayType = 0)
     {
@@ -45,7 +39,6 @@ public class Bullet : ObjectInteraction
     {
         gameObject.SetActive(true);
         StartCoroutine(BulletShot2D(rigidbody, dir, extinctionTime, speed, layerMask, rayScale, selectedRayType));
-        StartCoroutine(SelfShotDetectObject(rigidbody, dir, selectedRayType,rayScale,layerMask));
     }
 
     /// <summary>
@@ -59,6 +52,11 @@ public class Bullet : ObjectInteraction
     }
 
     private void OnDisable()
+    {
+        ExitBullet();
+    }
+
+    private void OnTriggerEnter2D(Collider2D col)
     {
         ExitBullet();
     }

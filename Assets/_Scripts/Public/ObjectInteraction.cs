@@ -81,6 +81,15 @@ public class ObjectInteraction : ObjectMovement,IDamageable
         }
 
     }
+
+    public Vector2 AngleToVector2(int angle)
+    {
+        Vector2 ret;
+        float radian = Mathf.Deg2Rad * angle;
+        ret = new Vector2(Mathf.Cos(radian),Mathf.Sin(radian));
+        return ret;
+    }
+
     public void TakeHit(int Damage)
     {
         if(health > 0)
