@@ -4,7 +4,7 @@ using UnityEngine;
 using PsybleScript;
 
 [RequireComponent(typeof(Rigidbody2D))]
-public class PlayerJump2D : ObjectMovement
+public class PlayerJump2D : ObjectMovement2D
 {
     [Range(0, 10)]
     public int jumpLevel = 1;

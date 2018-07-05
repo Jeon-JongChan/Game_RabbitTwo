@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using PsybleScript;
 
-public class ObjectInteraction : ObjectMovement
+public class ObjectInteraction : ObjectMovement2D
 {
     protected bool detectState = false;
     protected Transform CollisionTargetTransform = null; //Trigger 객체에서 전달하는 충돌체의 위치 포인트를 가리키는 방향벡터
@@ -78,10 +78,11 @@ public class ObjectInteraction : ObjectMovement
     }
 
     /// <summary>
-    /// ShotTrigger를 통해 목표의 위치를 갖고 오는 함수
+    /// Trigger를 통해 목표의 위치를 갖고 오는 함수
     /// </summary>
     public virtual void SetCollisionTargetDirection(Transform tf)
     {
         CollisionTargetTransform = tf;
     }
+
 }

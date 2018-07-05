@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using PsybleScript;
 
-public class LifeInteraction : ObjectMovement,IDamageable
+public class LifeInteraction : ObjectMovement2D,IDamageable
 {
     [Tooltip("이것은 해당 오브젝트의 체력입니다. \n-1일경우 무적입니다.")]
     public int health = -1;

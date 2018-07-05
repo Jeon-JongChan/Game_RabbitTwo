@@ -15,11 +15,18 @@ public class Bullet : ObjectInteraction
     float extinctionTime;
     float speed;
 
+    /* needs components */
+    SpriteRenderer sr;
+    CircleCollider2D circle;
+
+    /* needs variable */
     bool returnTrigger = false;
 
     public void GetRigidbodyComponent()
     {
         rd2d = GetComponent<Rigidbody2D>();
+        sr = GetComponent<SpriteRenderer>();
+        circle = GetComponent<CircleCollider2D>();
     }
 
 
@@ -35,6 +42,11 @@ public class Bullet : ObjectInteraction
 
     public void Shoot(Vector2 dir)
     {
+        if(returnTrigger)
+        {
+            sr.enabled = true;
+            circle.enabled = true;
+        }
         direction = dir;
         gameObject.SetActive(true);
         StartCoroutine(BulletShot2D(rd2d, direction, extinctionTime, speed));
@@ -48,6 +60,11 @@ public class Bullet : ObjectInteraction
     }
     public void Shoot()
     {
+        if (returnTrigger)
+        {
+            sr.enabled = true;
+            circle.enabled = true;
+        }
         gameObject.SetActive(true);
         StartCoroutine(BulletShot2D(rd2d,-direction, extinctionTime, speed));
     }
@@ -57,9 +74,17 @@ public class Bullet : ObjectInteraction
     /// </summary>
     public void ExitBullet()
     {
-        StopAllCoroutines();
-        transform.position = initPos;
-        if(gameObject.activeSelf == true )gameObject.SetActive(false);
+        if (!returnTrigger)
+        {
+            StopAllCoroutines();
+            transform.position = initPos;
+            if (gameObject.activeSelf == true) gameObject.SetActive(false);
+        }
+        else
+        {
+            sr.enabled = false;
+            circle.enabled = false;
+        }
     }
     public void SetReturnBullet()
     {
