@@ -82,7 +82,7 @@ public class Shoter : ObjectInteraction
     }
     List<BulletStruct> bullets;
     Vector2 bulletStartingPoint;
-    Vector2 CollisionTargetDirection = Vector2.zero; //Trigger 객체에서 전달하는 충돌체의 위치 포인트를 가리키는 방향벡터
+    Vector2 CollisionTargetDirection = Vector2.zero;
     public delegate void BulletDelegate();
     private static event BulletDelegate ExitBullet; //현재 사용되는 총알을 모두 비활성화 해야할 경우만 사용
     bool shotState = false; //화면에 shoter가 안보일경우 반복문 중지를 위해 사용
@@ -147,7 +147,7 @@ public class Shoter : ObjectInteraction
                         while (CollisionTargetDirection == Vector2.zero)
                         {
                             print("Shoter.cs - Target 탐지중");
-                            yield return new WaitForEndOfFrame();
+                            yield return new WaitForFixedUpdate();
                         }
                         StartCoroutine(BulletShot2D(rg2d, CollisionTargetDirection, bulletRemoveTime, bulletSpeed));
                         // 충돌을 감지하는 코루틴을 실행합니다.
@@ -173,7 +173,7 @@ public class Shoter : ObjectInteraction
                             bullets[i].btScript.Shoot(dirVector);
                             yield return new WaitForSeconds(shotTimeGap);
                         }
-                        yield return new WaitForEndOfFrame();//동작 오류가 나더라도 게임이 멈추지 않도록 - 무한반복이 돌면 안되기에
+                        yield return new WaitForFixedUpdate(); ;//동작 오류가 나더라도 게임이 멈추지 않도록 - 무한반복이 돌면 안되기에
                     } while (shotState && shotInfinityTrigger); //화면에 shoter가 안보이면 비활성화 되고 반복문 종료
                 }
                 else
@@ -191,7 +191,7 @@ public class Shoter : ObjectInteraction
                         /* SetCollisionTargetDirection 함수를 통해 충돌체 위치를 향한 방향을 받아오지 않으면 zero 값을 가지기에 계속 탐지를 기다린다 */
                         while (CollisionTargetDirection == Vector2.zero)
                         {
-                            yield return new WaitForEndOfFrame();
+                            yield return new WaitForFixedUpdate();
                         }
                         if (shotKey == 0)
                         {
@@ -219,7 +219,7 @@ public class Shoter : ObjectInteraction
                             CollisionTargetDirection = Vector2.zero; //타겟 위치를 초기화 하여 다음 이벤트를 기다리게 만든다.
                         }
 
-                        yield return new WaitForEndOfFrame();//동작 오류가 나더라도 게임이 멈추지 않도록 - 무한반복이 돌면 안되기에
+                        yield return new WaitForFixedUpdate();//동작 오류가 나더라도 게임이 멈추지 않도록 - 무한반복이 돌면 안되기에
 
                     }
                 }
@@ -247,7 +247,7 @@ public class Shoter : ObjectInteraction
                         if(shotKey == 1)
                         {
                             /* SetCollisionTargetDirection 함수를 통해 충돌체 위치를 향한 방향을 받아오지 않으면 zero 값을 가지기에 계속 탐지를 기다린다 */
-                            while (CollisionTargetDirection == Vector2.zero) yield return new WaitForEndOfFrame();
+                            while (CollisionTargetDirection == Vector2.zero) yield return new WaitForFixedUpdate();
                             dirVector = CollisionTargetDirection;
                         }
                         /* 한번만 옮기면 되므로 shoterMoveTrigger = false 로 꺼준다. */
@@ -319,7 +319,7 @@ public class Shoter : ObjectInteraction
                                         bullets[i].btScript.SetReturnBullet(); //시간초가 다 되도 그 자리에서 멈추도록 한다. 충돌시에는 제자리로 돌아온다.
                                         bullets[i].btScript.Shoot(angleDirection);
                                         currentAngle += angle; //shot 각도를 돌린다.
-                                        yield return new WaitForEndOfFrame();
+                                        yield return new WaitForFixedUpdate();
                                     }
                                     if (currentShotCount != (bulletRotationCount * (projectTileMutiple - 1)))
                                     {
@@ -337,7 +337,7 @@ public class Shoter : ObjectInteraction
                                             for (int i = 0 + currentShotCount; i < bulletRotationCount + currentShotCount && shotState; i++)
                                             {
                                                 bullets[i].btScript.Shoot();
-                                                yield return new WaitForEndOfFrame();
+                                                yield return new WaitForFixedUpdate();
                                             }
                                             currentShotCount += bulletRotationCount;
                                             yield return new WaitForSeconds(shotTimeGap);
@@ -393,7 +393,7 @@ public class Shoter : ObjectInteraction
                                         angleDirection = AngleToVector2(currentAngle);
                                         bullets[i].btScript.Shoot(transform.position, angleDirection);
                                         currentAngle += angle; //shot 각도를 돌린다.
-                                        yield return new WaitForEndOfFrame();
+                                        yield return new WaitForFixedUpdate();
                                     }
                                     if (currentShotCount != (bulletRotationCount * (projectTileMutiple - 1)))
                                     {
@@ -414,7 +414,7 @@ public class Shoter : ObjectInteraction
 
                             }
                         }
-                        yield return new WaitForEndOfFrame();//동작 오류가 나더라도 게임이 멈추지 않도록 - 무한반복이 돌면 안되기에
+                        yield return new WaitForFixedUpdate();//동작 오류가 나더라도 게임이 멈추지 않도록 - 무한반복이 돌면 안되기에
                     }
                 }
                 else
@@ -458,13 +458,7 @@ public class Shoter : ObjectInteraction
 
         return ret;
     }
-    /// <summary>
-    /// ShotTrigger를 통해 목표의 위치를 갖고 오는 함수
-    /// </summary>
-    public void SetCollisionTargetDirection(Transform tf)
-    {
-        CollisionTargetDirection = -(transform.position - tf.position).normalized;
-    }
+
     /// <summary>
     /// Shoter.cs 종속함수, 발사할 총알을 생성한다.
     /// </summary>
@@ -537,5 +531,10 @@ public class Shoter : ObjectInteraction
                 }
             }
         }
+    }
+    public override void SetCollisionTargetDirection(Transform tf)
+    {
+        base.SetCollisionTargetDirection(tf);
+        CollisionTargetDirection = - (transform.position - CollisionTargetTransform.position).normalized;
     }
 }

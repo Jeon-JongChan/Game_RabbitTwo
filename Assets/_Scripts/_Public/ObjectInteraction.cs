@@ -6,7 +6,8 @@ using PsybleScript;
 public class ObjectInteraction : ObjectMovement
 {
     protected bool detectState = false;
-
+    protected Transform CollisionTargetTransform = null; //Trigger 객체에서 전달하는 충돌체의 위치 포인트를 가리키는 방향벡터
+    protected bool state = true;
     /// <summary>
     /// 발사체를 발사시키는 함수
     /// </summary>
@@ -76,5 +77,11 @@ public class ObjectInteraction : ObjectMovement
 
     }
 
-
+    /// <summary>
+    /// ShotTrigger를 통해 목표의 위치를 갖고 오는 함수
+    /// </summary>
+    public virtual void SetCollisionTargetDirection(Transform tf)
+    {
+        CollisionTargetTransform = tf;
+    }
 }
