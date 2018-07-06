@@ -10,14 +10,15 @@ public class Trigger : MonoBehaviour {
     public string[] targetTag;
 
     public delegate void voidDelegate(Transform tf);
-    private static event voidDelegate SetEventFunc;
+    private event voidDelegate SetEventFunc;
 
     private void Start()
     {
-        var childsComponents = GetComponentsInChildren<ObjectInteraction>();
+        var childsComponents = gameObject.transform.GetComponentsInChildren<ObjectInteraction>();
         try {
             foreach (ObjectInteraction o in childsComponents)
             {
+                print(gameObject.name + " " +o.gameObject.name);
                 SetEventFunc += o.SetCollisionTargetDirection;
             }
         }

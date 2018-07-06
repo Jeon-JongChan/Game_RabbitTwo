@@ -14,7 +14,7 @@ public class Shoter : ObjectInteraction
     [Tooltip("0, 2 번 선택시 0 - 방향날리기 1 - 타겟 충돌 위치에 날리기 \n3번 선택시 0 - 화면에 보이자 마자 1 - 트리거에 걸렸을때")]
     [Range(0, 1)]
     public int shotKey = 0;
-    [Tooltip("3 번 선택시 0 - 순차 회전 발사 1 - 동시 회전 발사 2 - 발사체 이동 후 회전발사")]
+    [Tooltip("3 번 선택시 0 - 순차 회전 발사 1 - 동시 회전 발사")]
     [Range(0, 1)]
     public int shotRotationKey = 0;
 
@@ -54,7 +54,7 @@ public class Shoter : ObjectInteraction
     public int bulletRotationCount = 36;
     [Tooltip("총알이 날라갈 최대 각도입니다.")]
     public int shotMaxAngle = 360;
-    [Tooltip("발사를 시작할 각도 입니다. 0 - UP \n 1 - Right\n 2 - Down\n 3- Left")]
+    [Tooltip("발사를 시작할 각도 입니다.")]
     public int shotStartAngle = 0;
     [Range(0, 1)]
     [Tooltip("3_0 선택 : 총알이 날라가는 시간 gap. default = 0.05f")]
@@ -319,7 +319,7 @@ public class Shoter : ObjectInteraction
                                         bullets[i].btScript.SetReturnBullet(); //시간초가 다 되도 그 자리에서 멈추도록 한다. 충돌시에는 제자리로 돌아온다.
                                         bullets[i].btScript.Shoot(angleDirection);
                                         currentAngle += angle; //shot 각도를 돌린다.
-                                        yield return new WaitForFixedUpdate();
+                                        //yield return new WaitForFixedUpdate();
                                     }
                                     if (currentShotCount != (bulletRotationCount * (projectTileMutiple - 1)))
                                     {
@@ -337,7 +337,7 @@ public class Shoter : ObjectInteraction
                                             for (int i = 0 + currentShotCount; i < bulletRotationCount + currentShotCount && shotState; i++)
                                             {
                                                 bullets[i].btScript.Shoot();
-                                                yield return new WaitForFixedUpdate();
+                                                //yield return new WaitForFixedUpdate();
                                             }
                                             currentShotCount += bulletRotationCount;
                                             yield return new WaitForSeconds(shotTimeGap);
@@ -393,7 +393,7 @@ public class Shoter : ObjectInteraction
                                         angleDirection = AngleToVector2(currentAngle);
                                         bullets[i].btScript.Shoot(transform.position, angleDirection);
                                         currentAngle += angle; //shot 각도를 돌린다.
-                                        yield return new WaitForFixedUpdate();
+                                        //yield return new WaitForFixedUpdate();
                                     }
                                     if (currentShotCount != (bulletRotationCount * (projectTileMutiple - 1)))
                                     {

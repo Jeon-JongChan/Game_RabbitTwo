@@ -26,7 +26,7 @@ public class Trab : ObjectInteraction {
     Vector2 dir = new Vector2(0,0);
     bool catchState = false;
     bool arrivedState = false;
-    float gap = 0.01f;
+    float gap = 0.1f;
 
     private void Start()
     {
