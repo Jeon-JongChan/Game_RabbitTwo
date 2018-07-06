@@ -26,9 +26,9 @@ public class Shoter : ObjectInteraction
     [Tooltip("다중 타겟인식시 개수를 입력하고 tag를 입력.")]
     [SerializeField]
     public List<string> collisionTagName;
-    [Tooltip("-1 - 타겟지정 \n0 - UP \n 1 - Right\n 2 - Down\n 3- Left")]
+    [Tooltip("날릴 각도를 지정해 주세요.")]
     [Range(-1,3)]
-    public int shotDir = -1;
+    public int shootAngle = 0;
     [Range(0,10)]
     public float bulletSpeed = 1;
     [Range(0, 10)]
@@ -136,7 +136,7 @@ public class Shoter : ObjectInteraction
                 {
                     if (shotKey == 0)
                     {
-                        Vector2 dirVector = CalclulateTheDirection(shotDir);
+                        Vector2 dirVector = AngleToVector2(shootAngle);
                         StartCoroutine( BulletShot2D(rg2d, dirVector, bulletRemoveTime, bulletSpeed));
                         // 충돌을 감지하는 코루틴을 실행합니다.
                         print("Shoter.cs - 자기자신을 총알로 사용합니다. 방향 : " + dirVector);
@@ -164,7 +164,7 @@ public class Shoter : ObjectInteraction
                 {
                     CreateBullet(); //총알 생성
 
-                    Vector2 dirVector = CalclulateTheDirection(shotDir);
+                    Vector2 dirVector = AngleToVector2(shootAngle);
 
                     do //화면에 shoter가 안보이면 비활성화 되고 반복문 종료
                     {
@@ -195,7 +195,7 @@ public class Shoter : ObjectInteraction
                         }
                         if (shotKey == 0)
                         {
-                            Vector2 dirVector = CalclulateTheDirection(shotDir);
+                            Vector2 dirVector = AngleToVector2(shootAngle);
                             do
                             {
                                 for (int i = 0; (i < bulletReadyCount) && shotState; i++)
@@ -253,7 +253,7 @@ public class Shoter : ObjectInteraction
                         /* 한번만 옮기면 되므로 shoterMoveTrigger = false 로 꺼준다. */
                         if (shoterMoveTrigger)
                         {
-                            dirVector = CalclulateTheDirection(shotDir);
+                            dirVector = AngleToVector2(shootAngle);
                             print("shoter.cs - 회전발사대 이동");
                             //rg2d.position+(dirVector * shoterMoveDistance) 를 통해 해당 목적지 좌표를 표시한다.
                             StartCoroutine(MoveToDestination(rg2d, rg2d.position + (dirVector * shoterMoveDistance), shoterMoveSpeed));
@@ -428,36 +428,6 @@ public class Shoter : ObjectInteraction
         yield break;
     }
 
-
-    /// <summary>
-    /// 정수형 direction을 받아 정해진 규칙을 통해 방향을 가리키는 벡터를 반환한다.
-    /// </summary>
-    /// <param name="direction">-1 - 타겟지정 \n0 - UP \n 1 - Right\n 2 - Down\n 3- Left</param>
-    Vector2 CalclulateTheDirection(int direction)
-    {
-        Vector2 ret;
-        switch (direction)
-        {
-            case 0:
-                ret = Vector2.up;
-                break;
-            case 1:
-                ret = Vector2.right;
-                break;
-            case 2:
-                ret = Vector2.down;
-                break;
-            case 3:
-                ret = Vector2.left;
-                break;
-            default:
-                ret = Vector2.zero;
-                print("Shoter.cs - 방향설정 오류");
-                break;
-        }
-
-        return ret;
-    }
 
     /// <summary>
     /// Shoter.cs 종속함수, 발사할 총알을 생성한다.

@@ -21,11 +21,12 @@ public class GuideMissile : ObjectInteraction{
     public float limitSpeed = 10f;
 
     /* needs variable */
-    Rigidbody2D rg2D;
+    Rigidbody2D rg2d;
+    bool stopState = true;
 
-	// Use this for initialization
-	void Start () {
-        rg2D = GetComponent<Rigidbody2D>();
+    // Use this for initialization
+    void Start () {
+        rg2d = GetComponent<Rigidbody2D>();
     }
 	
 	// Update is called once per frame
@@ -43,42 +44,53 @@ public class GuideMissile : ObjectInteraction{
             while ((CollisionTargetTransform == null) && useTrigger) yield return new WaitForFixedUpdate(); //트리거가 타겟을 발생하기 전까지 반복
 
             float finalSpeed = speed;
-            bool s = true;
             while (state)
             {
-                rg2D.velocity = Vector2.zero;
-                if (useTrigger) StartCoroutine(MoveToDestination(rg2D, CollisionTargetTransform.position, finalSpeed));
-                else if (target != null) StartCoroutine(MoveToDestination(rg2D, target.transform.position, finalSpeed));
+                stopState = true;
+                if (useTrigger) StartCoroutine(MoveToGuideMissile(target.transform.position, finalSpeed));
+                else if (target != null) StartCoroutine(MoveToGuideMissile(target.transform.position, finalSpeed));
                 else
                 {
                     Debug.Log("target이 존재하지 않습니다.");
                     break;
                 }
-
                 yield return new WaitForSeconds(delayTimeToFindTarget);
-                StopCoroutine("MoveToDestination");
+                stopState = false;
                 if (finalSpeed < limitSpeed) finalSpeed += accelation;
             }
+
         }
+        CollisionTargetTransform = null;
+    }
+    IEnumerator MoveToGuideMissile(Vector2 destination,float speed)
+    {
+        //float gap = 0.02f * speed;
+        Vector2 dir = destination - rg2d.position;
+        dir.Normalize();
+        while (stopState)
+        {
+            MovePos(rg2d, dir, speed, false);
+            yield return new WaitForFixedUpdate();
+        }
+    }
+
+    void CollisionReaction()
+    {
+        rg2d.velocity = Vector2.zero;
+        state = false;
+        stopState = false;
     }
 
     private void OnTriggerEnter2D(Collider2D col)
     {
         if (target != null)
         {
-            if (col.CompareTag(target.tag))
-            {
-                rg2D.velocity = Vector2.zero;
-                state = false;
-            }
+            if (col.CompareTag(target.tag)) CollisionReaction();
+            
         }
         else if(useTrigger)
         {
-            if (col.CompareTag(CollisionTargetTransform.tag))
-            {
-                rg2D.velocity = Vector2.zero;
-                state = false;
-            }
+            if (col.CompareTag(CollisionTargetTransform.tag)) CollisionReaction();
         }
     }
 
