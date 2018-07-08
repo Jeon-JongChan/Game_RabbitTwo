@@ -61,6 +61,7 @@ GameObject:
   - component: {fileID: 232032763600822592}
   - component: {fileID: 233729029576387668}
   - component: {fileID: 95929867648142054}
+  - component: {fileID: 114049723842609196}
   m_Layer: 0
   m_Name: BasicTrab
   m_TagString: Untagged
@@ -104,8 +105,8 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1453673456402838}
-  m_LocalRotation: {x: -0, y: -0, z: 0.4182841, w: 0.90831625}
-  m_LocalPosition: {x: 2.0406704, y: 2.2593844, z: 0}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 2.2, y: 0.29, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4939903080849072}
@@ -187,7 +188,7 @@ Rigidbody2D:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1575175217571592}
-  m_BodyType: 2
+  m_BodyType: 1
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
@@ -207,7 +208,7 @@ Rigidbody2D:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1453673456402838}
-  m_BodyType: 0
+  m_BodyType: 1
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
@@ -263,6 +264,25 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &114049723842609196
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1453673456402838}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d97f869c4866cde4784d0544b3003064, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shootAngle: 270
+  distance: 1
+  limitDistance: 1
+  catchTime: 4
+  speed: 1
+  accelation: 0
+  limitSpeed: 4
+  useTrigger: 1
 --- !u!212 &212549394916067058
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -456,10 +476,10 @@ DistanceJoint2D:
   m_BreakForce: Infinity
   m_BreakTorque: Infinity
   m_AutoConfigureConnectedAnchor: 0
-  m_Anchor: {x: 0, y: 0}
+  m_Anchor: {x: -0.08583355, y: -0.75233364}
   m_ConnectedAnchor: {x: 0, y: -0.25}
   m_AutoConfigureDistance: 1
-  m_Distance: 2.2220182
+  m_Distance: 1.4676933
   m_MaxDistanceOnly: 0
 --- !u!233 &233295052251408926
 HingeJoint2D:
@@ -473,17 +493,17 @@ HingeJoint2D:
   m_ConnectedRigidBody: {fileID: 50526950783425502}
   m_BreakForce: Infinity
   m_BreakTorque: Infinity
-  m_AutoConfigureConnectedAnchor: 1
+  m_AutoConfigureConnectedAnchor: 0
   m_Anchor: {x: 0, y: 0}
-  m_ConnectedAnchor: {x: -0.0000001490116, y: 0.46349013}
-  m_UseMotor: 0
+  m_ConnectedAnchor: {x: 0, y: 0.46349025}
+  m_UseMotor: 1
   m_Motor:
-    m_MotorSpeed: 0
+    m_MotorSpeed: 1
     m_MaximumMotorForce: 10000
   m_UseLimits: 0
   m_AngleLimits:
     m_LowerAngle: 0
-    m_UpperAngle: 180
+    m_UpperAngle: 270
 --- !u!233 &233729029576387668
 HingeJoint2D:
   m_ObjectHideFlags: 1
@@ -498,10 +518,10 @@ HingeJoint2D:
   m_BreakTorque: Infinity
   m_AutoConfigureConnectedAnchor: 1
   m_Anchor: {x: 0, y: 0}
-  m_ConnectedAnchor: {x: 0.094677255, y: 1.0789999}
-  m_UseMotor: 0
+  m_ConnectedAnchor: {x: 0.09467697, y: 1.079}
+  m_UseMotor: 1
   m_Motor:
-    m_MotorSpeed: 0
+    m_MotorSpeed: 1
     m_MaximumMotorForce: 10000
   m_UseLimits: 0
   m_AngleLimits:
@@ -519,14 +539,14 @@ HingeJoint2D:
   m_ConnectedRigidBody: {fileID: 50736037092629732}
   m_BreakForce: Infinity
   m_BreakTorque: Infinity
-  m_AutoConfigureConnectedAnchor: 1
+  m_AutoConfigureConnectedAnchor: 0
   m_Anchor: {x: 0, y: 0}
-  m_ConnectedAnchor: {x: -0.000000029802319, y: 0.42751008}
-  m_UseMotor: 0
+  m_ConnectedAnchor: {x: 0, y: 0.42751002}
+  m_UseMotor: 1
   m_Motor:
-    m_MotorSpeed: 0
+    m_MotorSpeed: 1
     m_MaximumMotorForce: 10000
   m_UseLimits: 0
   m_AngleLimits:
-    m_LowerAngle: 30
-    m_UpperAngle: 150
+    m_LowerAngle: 0
+    m_UpperAngle: 270

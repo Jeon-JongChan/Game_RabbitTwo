@@ -86,4 +86,8 @@ public class Rabbit : LifeInteraction
         jump = false;
         aniState = 0;
     }
+    public void LimitVelocity(int condition)
+    {
+
+    }
 }

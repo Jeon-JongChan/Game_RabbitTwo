@@ -27,7 +27,6 @@ public class Shoter : ObjectInteraction
     [SerializeField]
     public List<string> collisionTagName;
     [Tooltip("날릴 각도를 지정해 주세요.")]
-    [Range(-1,3)]
     public int shootAngle = 0;
     [Range(0,10)]
     public float bulletSpeed = 1;

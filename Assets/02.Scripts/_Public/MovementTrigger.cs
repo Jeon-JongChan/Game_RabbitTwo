@@ -4,26 +4,28 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /* 트리거에 자식객체는 ObjectInteraction을 반드시 가지고 있어야 한다. - 상속도 가능 */
-public class Trigger : MonoBehaviour {
+public class MovementTrigger : MonoBehaviour {
 
     [SerializeField]
     public string[] targetTag;
+    [SerializeField]
+    public GameObject[] usingTriggerObjects;
 
     public delegate void voidDelegate(Transform tf);
     private event voidDelegate SetEventFunc;
 
     private void Start()
     {
-        var childsComponents = GetComponentsInChildren<ObjectInteraction>();
-        try {
-            foreach (ObjectInteraction o in childsComponents)
+        if (usingTriggerObjects.Length > 0)
+        {
+            foreach (var v in usingTriggerObjects)
             {
-                SetEventFunc += o.SetCollisionTargetDirection;
+                SetEventFunc += v.GetComponent<ObjectInteraction>().SetCollisionTargetDirection;
             }
         }
-        catch(Exception e)
+        else
         {
-            Debug.Log("Trigger.cs - 에러" + e.Message);
+            Debug.Log("MovementTrigger.cs - there aren't Trigger Target");
         }
     }
 

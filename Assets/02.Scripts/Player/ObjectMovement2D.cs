@@ -24,13 +24,13 @@ namespace PsybleScript
         /// 2D 이동함수, not player.
         /// </summary>
         /// <param name="sleepState"> 비활성화에서 켜지는 경우 sleep 상태일 경우가 있다. 이 경우 외부충격으로 awake 시켜야 한다.</param>
-        public Vector2 MovePos(Rigidbody2D rb, Vector2 distanceToMove, float speed = 1f, bool sleepState = false)
+        public Vector2 MovePos(Rigidbody2D rb, Vector2 direction, float speed , bool sleepState = false)
         {
             //distanceToMove.Normalize(); //가야할 방향이 정해진다.
-            if (!sleepState) rb.MovePosition(rb.position + (distanceToMove * speed * Time.deltaTime));
-            else rb.AddForce(distanceToMove * speed * 10);
+            if (!sleepState) rb.MovePosition(rb.position + (direction * speed * Time.deltaTime));
+            else rb.AddForce(direction * speed * 10);
 
-            return distanceToMove;
+            return direction;
         }
         /// <summary>
         /// Velocity를 이용한 2D 이동함수.not player
@@ -79,7 +79,7 @@ namespace PsybleScript
 
             while (Vector2.Distance(rb.position, destination) > gap)
             {
-                MovePos(rb, dir, speed);
+                MovePos(rb, dir, speed, false);
                 speed += accelation;
                 yield return new WaitForFixedUpdate();
             }
@@ -412,6 +412,32 @@ namespace PsybleScript
             }
 
             yield return null;
+        }
+        public IEnumerator ObjectRepeatMove2D(Rigidbody2D selfRigidbody, Vector2 direction, float repeatDistance, float moveSpeed = 1f, int repeatCount = 0, float stopTime = 0.5f)
+        {
+            int repeat = 0; // 반복 횟수
+            bool whileState = false;
+            float toleranceGap = 0.1f;
+            Vector2 source = selfRigidbody.position;
+            Vector2 destination = source + (direction * repeatDistance);
+
+            if (repeatCount == 0) whileState = true;
+
+            while(whileState || repeat < repeatCount)
+            {
+                while(Vector2.Distance(selfRigidbody.position, destination) < toleranceGap)
+                {
+                    MovePos(selfRigidbody, direction, moveSpeed);
+                    yield return new WaitForFixedUpdate();
+                }
+                while (Vector2.Distance(selfRigidbody.position, source) < toleranceGap)
+                {
+                    MovePos(selfRigidbody, -direction, moveSpeed);
+                    yield return new WaitForFixedUpdate();
+                }
+                repeat++;
+                yield return new WaitForFixedUpdate();
+            }
         }
 
         /// <summary>
