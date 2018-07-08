@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using PsybleScript;
 
-public class ObjectInteraction : ObjectMovement2D
-{
+public class ObjectInteraction : ObjectMovement2D, ISaveObject{
     protected bool detectState = false;
     protected Transform CollisionTargetTransform = null; //Trigger 객체에서 전달하는 충돌체의 위치 포인트를 가리키는 방향벡터
     protected bool state = true;
+    protected Vector2 initPos = Vector2.zero;
     /// <summary>
     /// 발사체를 발사시키는 함수
     /// </summary>
@@ -85,4 +85,25 @@ public class ObjectInteraction : ObjectMovement2D
         CollisionTargetTransform = tf;
     }
 
+    /***************************  세이브 구현에 필요한  공통 함수들 *****************************/
+    public virtual void SaveInitState()
+    {
+        initPos = transform.position;
+    }
+
+    public virtual void SaveState()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public virtual void SaveLoad()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public virtual void LoadInitState()
+    {
+        if (!state) state = true;
+        if ((Vector2)(transform.position) != initPos) transform.position = initPos;
+    }
 }

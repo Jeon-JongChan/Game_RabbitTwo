@@ -10,7 +10,6 @@ public class Bullet : ObjectInteraction
 
     /* if shoot, Immediately input value */
     public Vector2 direction;
-    Vector2 initPos;
     List<string> tags;
     float extinctionTime;
     float speed;
@@ -101,7 +100,7 @@ public class Bullet : ObjectInteraction
         {
             if (col.CompareTag(v))
             {
-                LifeInteraction interaction = col.gameObject.GetComponent<LifeInteraction>();
+                IDamageable interaction = col.gameObject.GetComponent<IDamageable>();
                 if (interaction != null) interaction.TakeHit(1);
                 ExitBullet();
                 break;

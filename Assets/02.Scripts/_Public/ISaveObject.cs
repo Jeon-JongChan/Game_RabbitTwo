@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-interface ISaveCurrentState {
+interface ISaveObject {
     void SaveInitState();
     void SaveState();
     void SaveLoad();
+    void LoadInitState();
 }

@@ -7,6 +7,7 @@ public class FallingObject : MonoBehaviour {
 
     /* inspector variable */
     [Range(3,10)]
+    [Tooltip("물체가 움직일때 플레이어를 죽이지 않을 속도제한입니다.")]
     public float limitVelocity = 3f;
 
     /* needs component */

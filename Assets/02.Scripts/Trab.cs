@@ -24,7 +24,6 @@ public class Trab : ObjectInteraction {
     Animator animator;
 
     /* need variable */
-    Vector2 initPos;
     Vector2 dir = new Vector2(0,0);
     bool catchState = false;
     bool arrivedState = false;
@@ -32,7 +31,7 @@ public class Trab : ObjectInteraction {
 
     private void Start()
     {
-        initPos = transform.position;
+        SaveInitState();
         rg2d = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         animator.SetInteger("aniState", 0);

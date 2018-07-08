@@ -6,12 +6,10 @@ public class PlayerCollision : MonoBehaviour {
 
     // Inspector 변수들
     public GameObject player;
-    public string groundTag = "Untagged";
-    public string obstacleTag = "Untagged";
+    public string[] collisionTag;
 
     //Components
     PlayerJump2D pj;
-    Rabbit rabbit;
 
     //필요 변수들
     bool stay = true;
@@ -33,21 +31,31 @@ public class PlayerCollision : MonoBehaviour {
         else
         {
             pj = GameObject.Find(playerName).GetComponent<PlayerJump2D>();
-            rabbit = GameObject.Find(playerName).GetComponent<Rabbit>();
+            var playerScript = GameObject.Find(playerName).GetComponent<Rabbit>();
             InitJumpEvent += pj.JumpStateReset;
-            JumpLandingEvent += rabbit.LandingAnimation;
-            BugFix = rabbit.JumpBugFix;
+            if (playerScript != null)
+            {
+                JumpLandingEvent += playerScript.LandingAnimation;
+                BugFix = playerScript.JumpBugFix;
+            }
         }
        
     }
     private void OnTriggerEnter2D(Collider2D col)
     {
-        if (col.gameObject.tag == groundTag || col.gameObject.tag == obstacleTag)
+        if(collisionTag.Length > 0)
         {
-            //print("PlayerCollision - 그라운드 충돌");
-            JumpLandingEvent();
-            InitJumpEvent();
-            stay = true;
+            foreach(var v in collisionTag)
+            {
+                if (col.CompareTag(v))
+                {
+                    //print("PlayerCollision - 그라운드 충돌");
+                    JumpLandingEvent();
+                    InitJumpEvent();
+                    stay = true;
+                    break;
+                }
+            }
         }
     }
     private void OnTriggerStay2D(Collider2D collision)
