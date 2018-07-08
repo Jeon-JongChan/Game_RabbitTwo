@@ -16,9 +16,8 @@ public class PlayerCollision : MonoBehaviour {
 
     //이벤트 변수
     public delegate void JumpDelgate();
-    public static event JumpDelgate InitJumpEvent;
-    public static event JumpDelgate JumpLandingEvent;
-    static event JumpDelgate BugFix;
+    public event JumpDelgate InitJumpEvent;
+    public event JumpDelgate JumpLandingEvent;
 
     private void Awake()
     {
@@ -31,12 +30,11 @@ public class PlayerCollision : MonoBehaviour {
         else
         {
             pj = GameObject.Find(playerName).GetComponent<PlayerJump2D>();
-            var playerScript = GameObject.Find(playerName).GetComponent<Rabbit>();
+            var playerScript = GameObject.Find(playerName).GetComponent<Player>();
             InitJumpEvent += pj.JumpStateReset;
             if (playerScript != null)
             {
-                JumpLandingEvent += playerScript.LandingAnimation;
-                BugFix = playerScript.JumpBugFix;
+                JumpLandingEvent += playerScript.LandingAnimation;;
             }
         }
        
@@ -62,7 +60,6 @@ public class PlayerCollision : MonoBehaviour {
     {
         if(stay == false)
         {
-            BugFix();
         }
     }
 

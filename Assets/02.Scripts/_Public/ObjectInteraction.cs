@@ -4,10 +4,14 @@ using UnityEngine;
 using PsybleScript;
 
 public class ObjectInteraction : ObjectMovement2D, ISaveObject{
+
+
     protected bool detectState = false;
     protected Transform CollisionTargetTransform = null; //Trigger 객체에서 전달하는 충돌체의 위치 포인트를 가리키는 방향벡터
     protected bool state = true;
     protected Vector2 initPos = Vector2.zero;
+
+
     /// <summary>
     /// 발사체를 발사시키는 함수
     /// </summary>

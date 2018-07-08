@@ -132,9 +132,10 @@ namespace PsybleScript
         /// <summary>
         /// velocity를 이용한 점프함수
         /// </summary>
-        public void Jump(Rigidbody2D rb, float jumpHeight = 2f, ForceMode2D forceMode = ForceMode2D.Impulse)
+        public void Jump(Rigidbody2D rb, float jumpPower, ForceMode2D forceMode)
         {
-            rb.AddForce(Vector2.up * jumpHeight, forceMode);
+            rb.velocity = Vector2.zero;
+            rb.AddForce(Vector2.up * jumpPower, forceMode);
         }
 
         //방향 설정 열거형 변수들 - 가독성증가를 위해 사용

@@ -31,7 +31,7 @@ public class PlayerJump2D : ObjectMovement2D
         {
             if (jumpState < jumpLevel)
             {
-                Jump(playerRb, jumpHeight);
+                Jump(playerRb, jumpHeight,ForceMode2D.Impulse);
                 //print("PlayerJump2D - 점프 : " + jumpState);
                 jumpState++;
                 jump = true;
@@ -50,5 +50,14 @@ public class PlayerJump2D : ObjectMovement2D
         playerRb.velocity = initVelocity;
         jumpState = 0;
         jump = false;
+    }
+
+    public void JumpLevelPlus(int plusValue)
+    {
+        jumpLevel += plusValue;
+    }
+    public void JumpLevelMinus(int plusValue)
+    {
+        jumpLevel -= plusValue;
     }
 }

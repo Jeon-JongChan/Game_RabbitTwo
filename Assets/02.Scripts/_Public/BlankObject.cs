@@ -7,6 +7,7 @@ public class BlankObject : ObjectInteraction {
     /* inspector variable */
     [Header("TYPE")]
     [Tooltip("0 - 투명해집니다. 콜리더는 존재합니다.\n1 - 주기적으로 깜박입니다. \n2 - 불규칙적으로 깜빡입니다. 최대 최소값을 지정해야 합니다.")]
+    [Range(0,2)]
     public int selectType = 0;
     public bool useTrigger = false;
     [Tooltip("체크해제시 충돌체는 꺼지지 않습니다.")]
