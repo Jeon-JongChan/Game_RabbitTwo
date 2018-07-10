@@ -95,7 +95,9 @@ public class Player : LifeInteraction
 
         while(end - start < limitTime)
         {
-            end += Time.deltaTime;
+            yield return new WaitForFixedUpdate();
+            end += Time.fixedDeltaTime;
+
             if (Mathf.Abs(playerRb.velocity.x) > limit || Mathf.Abs(playerRb.velocity.y) > limit)
             {
                 tempVector.x = Mathf.Clamp(playerRb.velocity.x, -limit, limit);
@@ -103,9 +105,8 @@ public class Player : LifeInteraction
                 playerRb.velocity = tempVector;
             }
 
-            yield return new WaitForFixedUpdate();
         }
         speed = initSpeed;
-        Debug.Log("Player.cs - 디버프 종료");
+        Debug.Log("Player.cs - " + limitTime + " 디버프 종료" + start + " " + end);
     }
 }

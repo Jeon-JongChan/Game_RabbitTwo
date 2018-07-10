@@ -48,7 +48,7 @@ public class PlayerInteraction : MonoBehaviour {
             srComponent.enabled = false;
         }
     }
-    IEnumerator ControlJump()
+    public IEnumerator ControlJump()
     {
         DisableObject();
         playerJumpInstance.JumpLevelPlus(addJumpLevel);

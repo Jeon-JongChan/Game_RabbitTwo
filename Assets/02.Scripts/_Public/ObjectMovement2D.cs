@@ -35,17 +35,6 @@ namespace PsybleScript
         /// <summary>
         /// Velocity를 이용한 2D 이동함수.not player
         /// </summary>
-        public Vector2 MovePos(Rigidbody2D rb, Vector2 distanceToMove, float speed = 1)
-        {
-            distanceToMove = distanceToMove.normalized * speed;
-
-            rb.velocity = distanceToMove;
-
-            return distanceToMove;
-        }
-        /// <summary>
-        /// Velocity를 이용한 2D 이동함수.not player
-        /// </summary>
         public Vector2 Move(Rigidbody2D rb, Vector2 distanceToMove, float speed = 1)
         {
             distanceToMove = distanceToMove.normalized * speed;
@@ -65,21 +54,6 @@ namespace PsybleScript
             while (Vector2.Distance(rb.position, destination) > gap)
             {
                 MovePos(rb, dir, speed, sleepState);
-                speed += accelation;
-                yield return new WaitForFixedUpdate();
-            }
-            rb.MovePosition(destination);
-        }
-        //목적지까지 가는 함수
-        public IEnumerator MoveToDestination(Rigidbody2D rb, Vector2 destination, float speed , float accelation)
-        {
-            float gap = 0.02f * speed;
-            Vector2 dir = destination - rb.position;
-            dir.Normalize();
-
-            while (Vector2.Distance(rb.position, destination) > gap)
-            {
-                MovePos(rb, dir, speed, false);
                 speed += accelation;
                 yield return new WaitForFixedUpdate();
             }

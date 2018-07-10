@@ -6,7 +6,6 @@ using UnityEngine;
 public class Bullet : ObjectInteraction
 {
     /* make bullet, Immediately input value */
-    public Rigidbody2D rd2d;
 
     /* if shoot, Immediately input value */
     public Vector2 direction;
@@ -15,13 +14,14 @@ public class Bullet : ObjectInteraction
     float speed;
 
     /* needs components */
+    Rigidbody2D rd2d;
     SpriteRenderer sr;
     CircleCollider2D circle;
 
     /* needs variable */
     bool returnTrigger = false;
 
-    public void GetRigidbodyComponent()
+    public void GetBulletComponent()
     {
         rd2d = GetComponent<Rigidbody2D>();
         sr = GetComponent<SpriteRenderer>();
@@ -31,7 +31,7 @@ public class Bullet : ObjectInteraction
 
     public void InitBaseProperty(Vector2 bulletStartingPoint, float speed, List<string> tags , float extinctionTime = 0, bool returnTrigger = true)
     {
-        initPos = bulletStartingPoint;
+        SaveState(false, false, bulletStartingPoint);
         transform.position = initPos;
         this.extinctionTime = extinctionTime;
         this.speed = speed;
@@ -39,32 +39,26 @@ public class Bullet : ObjectInteraction
         this.returnTrigger = returnTrigger;
     }
 
-    public void Shoot(Vector2 dir)
-    {
-        if(returnTrigger)
-        {
-            sr.enabled = true;
-            circle.enabled = true;
-        }
-        direction = dir;
-        gameObject.SetActive(true);
-        StartCoroutine(BulletShot2D(rd2d, direction, extinctionTime, speed));
-    }
+    /// <summary>
+    /// 회전 발사에 사용됩니다.
+    /// </summary>
     public void Shoot(Vector2 bulletStartingPoint, Vector2 dir)
     {
+        if (sr != null) sr.enabled = true;
+        if (circle != null) circle.enabled = true;
+        if (!gameObject.activeSelf) gameObject.SetActive(true);
         transform.position = bulletStartingPoint;
         direction = dir;
-        gameObject.SetActive(true);
         StartCoroutine(BulletShot2D(rd2d, direction, extinctionTime, speed));
     }
+    /// <summary>
+    /// 리터닝 발사에 사용됩니다. 위치를 복원 시키지 않습니다.
+    /// </summary>
     public void Shoot()
     {
-        if (returnTrigger)
-        {
-            sr.enabled = true;
-            circle.enabled = true;
-        }
-        gameObject.SetActive(true);
+        if (sr != null) sr.enabled = true;
+        if (circle != null) circle.enabled = true;
+        if (!gameObject.activeSelf) gameObject.SetActive(true);
         StartCoroutine(BulletShot2D(rd2d,-direction, extinctionTime, speed));
     }
 
@@ -73,17 +67,14 @@ public class Bullet : ObjectInteraction
     /// </summary>
     public void ExitBullet()
     {
-        if (!returnTrigger)
-        {
-            StopAllCoroutines();
-            transform.position = initPos;
-            if (gameObject.activeSelf == true) gameObject.SetActive(false);
-        }
-        else
-        {
-            sr.enabled = false;
-            circle.enabled = false;
-        }
+        if (sr != null) sr.enabled = false;
+        if (circle != null) circle.enabled = false;
+    }
+    public override bool LoadState()
+    {
+        if (sr != null) sr.enabled = true;
+        if (circle != null) circle.enabled = true;
+        return base.LoadState();
     }
     public void SetReturnBullet()
     {

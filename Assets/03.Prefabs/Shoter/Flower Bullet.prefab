@@ -36,8 +36,8 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1598810662961052}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 6.7299995, y: 1.1599998, z: 0}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -95,7 +95,7 @@ MonoBehaviour:
   shotPoint: {fileID: 0}
   target: {fileID: 1967410475590974, guid: 44af0117abc819b4a9d1a301cdf25026, type: 2}
   collisionTagName: []
-  shotDir: 0
+  shootAngle: 0
   bulletSpeed: 3
   bulletRemoveTime: 10
   delayTime: 0
@@ -108,6 +108,8 @@ MonoBehaviour:
   shotStartAngle: 0
   shotWaitRotation: 0.05
   shotRotateAngle: 1
+  shoterReturnTrigger: 0
+  shoterMoveTrigger: 0
   shoterMoveDistance: 0
   shoterMoveSpeed: 0
 --- !u!212 &212315999661080468

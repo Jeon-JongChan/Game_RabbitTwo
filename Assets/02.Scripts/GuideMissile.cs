@@ -27,6 +27,7 @@ public class GuideMissile : ObjectInteraction{
     // Use this for initialization
     void Start () {
         rg2d = GetComponent<Rigidbody2D>();
+        SaveState(true, gameObject.activeSelf, transform.position);
     }
 	
 	// Update is called once per frame
@@ -73,7 +74,7 @@ public class GuideMissile : ObjectInteraction{
             yield return new WaitForFixedUpdate();
         }
     }
-
+    /* 충돌시 반응입니다. */
     void CollisionReaction()
     {
         rg2d.velocity = Vector2.zero;
@@ -94,4 +95,13 @@ public class GuideMissile : ObjectInteraction{
         }
     }
 
+    public override void SaveState(bool selfState, bool selfActive, Vector2 pos)
+    {
+        base.SaveState(selfState, selfActive, pos);
+    }
+    public override bool LoadState()
+    {
+        state = initState;
+        return base.LoadState();
+    }
 }

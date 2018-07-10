@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /* 트리거에 자식객체는 ObjectInteraction을 반드시 가지고 있어야 한다. - 상속도 가능 */
-public class MovementTrigger : MonoBehaviour {
+public class TriggerNonChild : MonoBehaviour {
 
     [SerializeField]
     public string[] targetTag;
@@ -20,7 +20,7 @@ public class MovementTrigger : MonoBehaviour {
         {
             foreach (var v in usingTriggerObjects)
             {
-                SetEventFunc += v.GetComponent<ObjectInteraction>().SetCollisionTargetDirection;
+                SetEventFunc += v.GetComponent<ObjectInteraction>().SetCollisionTarget;
             }
         }
         else
@@ -36,7 +36,7 @@ public class MovementTrigger : MonoBehaviour {
         {
             if(col.CompareTag(v))
             {
-                print("Trigger - 대상을 감지했습니다.");
+                print("MovementTrigger - 대상을 감지했습니다.");
                 SetEventFunc(col.transform);
             }
         }

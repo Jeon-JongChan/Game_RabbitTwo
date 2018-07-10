@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using PsybleScript;
 
 public class BlankObject : ObjectInteraction {
 
@@ -16,12 +17,16 @@ public class BlankObject : ObjectInteraction {
     public int delayTime = 0;
 
     [Header("SelectType 1")]
-    public float blankTime = 1f;
+    [Range(2,10)]
+    [Tooltip("너무 빠르게 깜빡이면 사물이 끼어들어 오작동성이 높아짐.")]
+    public float blankTime = 2f;
 
     [Header("SelectType 2")]
     [Tooltip("시간차를 너무 크게 안하는것을 추천합니다.")]
-    public int maxTime = 2;
-    public int minTime = 1;
+    [Range(2, 10)]
+    public int maxTime = 4;
+    [Range(2, 10)]
+    public int minTime = 2;
 
     /* needs components */
     SpriteRenderer srComponets = null;
@@ -30,59 +35,75 @@ public class BlankObject : ObjectInteraction {
     /* needs variable */
     bool SpriteRendererTrigger = true;
     bool ColliderTrigger = true;
+    bool startStatus = false; //코루틴이 반복 호출되는 것을 막아줍니다.
+
+    /* 세이브 변수 */
+    bool colActive;
+    bool srActive;
 
     private void Start()
     {
         srComponets = GetComponent<SpriteRenderer>();
         col = GetComponent<BoxCollider2D>();
+        SaveState(false, gameObject.activeSelf, transform.position);
     }
 
     private void OnBecameVisible()
     {
-        StartCoroutine(StartBlank());
+        if (!startStatus)
+        {
+            StartCoroutine(StartBlank(srComponets, col));
+            startStatus = true;
+        }
     }
-
-    public override void LoadInitState()
+    public override void SaveState(bool selfState, bool selfActive, Vector2 pos)
     {
-        base.LoadInitState();
-        if (!srComponets.enabled) srComponets.enabled = true;
-        if (!col.enabled && col != null) col.enabled = true;
+        if (!col.enabled && col != null) colActive = col.enabled;
+        if (!srComponets.enabled) srActive = srComponets.enabled;
+        base.SaveState(selfState, selfActive, pos);
+    }
+    public override bool LoadState()
+    {
+        startStatus = initState;
+        if (!srComponets.enabled) srComponets.enabled = srActive;
+        if (!col.enabled && col != null) col.enabled = colActive;
+        return base.LoadState();
     }
 
-    IEnumerator StartBlank()
+    IEnumerator StartBlank(SpriteRenderer srComponets, Collider2D col)
     {
         yield return new WaitForSeconds(delayTime); //일정시간동안 시작을 딜레이 합니다.
         int randomTime;
         while ((CollisionTargetTransform == null) && useTrigger) yield return new WaitForFixedUpdate(); //트리거가 타겟을 발생하기 전까지 반복
-        switch (selectType)
+        while (startStatus)
         {
-            case 0:
-                ReverseComponentState();
-                break;
-            case 1:
-                //while 이 스위치 밖에 있을 경우 코드 실행 시간이 증가하므로 원하던 효과가 발생하지 않는다.
-                while (state)
-                {
-                    /* bool 값을 처음 true로 저장 후 역전시켜가면서 깜빡이는 효과를 줍니다. */
-                    ReverseComponentState();
+            if (RayScript.DetectedOverlapCircle2D(transform.position, 0.2f) != null)
+            {
+                yield return new WaitForFixedUpdate();
+                continue;
+            }
+            switch (selectType)
+            {
+                case 0:
+                    ReverseComponentState(srComponets, col);
+                    break;
+                case 1:
+                    //while 이 스위치 밖에 있을 경우 코드 실행 시간이 증가하므로 원하던 효과가 발생하지 않는다.
                     yield return new WaitForSeconds(blankTime);
-                }
-                break;
-            case 2:
-                while (state)
-                {
+                    /* bool 값을 처음 true로 저장 후 역전시켜가면서 깜빡이는 효과를 줍니다. */
+                    ReverseComponentState(srComponets, col);
+                    break;
+                case 2:
                     randomTime = Random.Range(minTime, maxTime + 1); // 랜덤한 시간마다 깜빡입니다.
                     yield return new WaitForSeconds(randomTime);
 
-                    ReverseComponentState();
-                    print("깜빡이는중 2 ");
-                }
-                break;
+                    ReverseComponentState(srComponets, col);
+                    break;
+            }
         }
-        yield return new WaitForFixedUpdate();
     }
 
-    void ReverseComponentState()
+    void ReverseComponentState(SpriteRenderer srComponets, Collider2D col)
     {
         SpriteRendererTrigger = !SpriteRendererTrigger;
         ColliderTrigger = !ColliderTrigger;

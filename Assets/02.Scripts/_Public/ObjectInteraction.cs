@@ -8,7 +8,11 @@ public class ObjectInteraction : ObjectMovement2D, ISaveObject{
 
     protected bool detectState = false;
     protected Transform CollisionTargetTransform = null; //Trigger 객체에서 전달하는 충돌체의 위치 포인트를 가리키는 방향벡터
+
+    /* 초기화에 영향을 주는 변수들 */
+    protected bool initState = true;
     protected bool state = true;
+    protected bool active = true;
     protected Vector2 initPos = Vector2.zero;
 
 
@@ -84,30 +88,23 @@ public class ObjectInteraction : ObjectMovement2D, ISaveObject{
     /// <summary>
     /// Trigger를 통해 목표의 위치를 갖고 오는 함수
     /// </summary>
-    public virtual void SetCollisionTargetDirection(Transform tf)
+    public virtual void SetCollisionTarget(Transform tf)
     {
         CollisionTargetTransform = tf;
     }
 
     /***************************  세이브 구현에 필요한  공통 함수들 *****************************/
-    public virtual void SaveInitState()
+    public virtual void SaveState(bool selfState, bool selfActive, Vector2 pos)
     {
-        initPos = transform.position;
+        initState = selfState;
+        active = selfActive;
+        initPos = pos;
     }
 
-    public virtual void SaveState()
+    public virtual bool LoadState()
     {
-        throw new System.NotImplementedException();
-    }
-
-    public virtual void SaveLoad()
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public virtual void LoadInitState()
-    {
-        if (!state) state = true;
         if ((Vector2)(transform.position) != initPos) transform.position = initPos;
+        gameObject.SetActive(active);
+        return initState;
     }
 }

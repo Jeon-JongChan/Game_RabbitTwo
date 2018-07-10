@@ -18,7 +18,7 @@ public class Trigger : MonoBehaviour {
         try {
             foreach (ObjectInteraction o in childsComponents)
             {
-                SetEventFunc += o.SetCollisionTargetDirection;
+                SetEventFunc += o.SetCollisionTarget;
             }
         }
         catch(Exception e)

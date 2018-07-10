@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 interface ISaveObject {
-    void SaveInitState();
-    void SaveState();
-    void SaveLoad();
-    void LoadInitState();
+    void SaveState(bool selfState, bool selfActive,Vector2 pos);
+    bool LoadState();
 }

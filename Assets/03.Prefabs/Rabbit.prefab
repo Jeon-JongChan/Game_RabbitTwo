@@ -72,8 +72,8 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1967410475590974}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.805, z: 0}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4323491866529730}
@@ -230,8 +230,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 1967410475590974}
-  groundTag: Ground
-  obstacleTag: Obstacle
+  collisionTag: []
 --- !u!114 &114444809437211316
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -256,7 +255,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ded02e36b4f8fff4c9c69d90d4ce7204, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: -1
   jumpLevel: 3
   jumpHeight: 6
 --- !u!212 &212250091987049228

@@ -26,11 +26,11 @@ public class Shoter : ObjectInteraction
     [Tooltip("다중 타겟인식시 개수를 입력하고 tag를 입력.")]
     [SerializeField]
     public List<string> collisionTagName;
-    [Tooltip("날릴 각도를 지정해 주세요.")]
+    [Tooltip("날릴 각도를 지정해 주세요.\n0 - right\n90 - up\n180 - left\n270 - down")]
     public int shootAngle = 0;
     [Range(0,10)]
     public float bulletSpeed = 1;
-    [Range(0, 10)]
+    [Range(0, 5)]
     [Tooltip("0 is that not remove -> collision destroy")]
     public float bulletRemoveTime = 0;
     [Range(0, 20)]
@@ -48,12 +48,12 @@ public class Shoter : ObjectInteraction
     public int bulletReadyCount = 10;
 
     [Header("selectType - 3")]
-    [Range(0, 180)]
+    [Range(0, 36)]
     [Tooltip("회전총알 발사시 발사할 개수 - shotAngle / 개수 = 각도")]
-    public int bulletRotationCount = 36;
-    [Tooltip("총알이 날라갈 최대 각도입니다.")]
+    public int bulletRotationCount = 18;
+    [Tooltip("총알이 날라갈 최대 각도입니다. 반시계 방향을 원하면 음수로 주세요")]
     public int shotMaxAngle = 360;
-    [Tooltip("발사를 시작할 각도 입니다.")]
+    [Tooltip("발사를 시작할 각도 입니다.\n0 - right\n90 - up\n180 - left\n270 - down")]
     public int shotStartAngle = 0;
     [Range(0, 1)]
     [Tooltip("3_0 선택 : 총알이 날라가는 시간 gap. default = 0.05f")]
@@ -82,9 +82,14 @@ public class Shoter : ObjectInteraction
     List<BulletStruct> bullets;
     Vector2 bulletStartingPoint;
     Vector2 CollisionTargetDirection = Vector2.zero;
-    public delegate void BulletDelegate();
-    private static event BulletDelegate ExitBullet; //현재 사용되는 총알을 모두 비활성화 해야할 경우만 사용
+    public delegate bool BulletDelegate();
+    public event BulletDelegate LoadInitBullet; //현재 사용되는 총알을 모두 비활성화 해야할 경우만 사용
     bool shotState = false; //화면에 shoter가 안보일경우 반복문 중지를 위해 사용
+    int projectTileMutiple = 0; //회전 총알에서 생성할때 여유를 주기위해 정해진 생성 개수에 곱해줄 인수.
+
+    /* save 변수 */
+    Vector2 saveStartingPoint;
+    bool saveMoveTrigger;
 
     private void Start()
     {
@@ -99,11 +104,26 @@ public class Shoter : ObjectInteraction
         if (target != null) collisionTagName.Add(target.tag);
 
         rg2d = GetComponent<Rigidbody2D>();
+
+        switch(selectedType)
+        {
+            case 1:
+            case 2:
+                CreateBullet(bulletReadyCount); //총알 생성
+                break;
+            case 3:
+                projectTileMutiple = (int)(bulletRemoveTime / shotTimeGap) + 1; //사라지는 시간 대비 쏘는 시간을 계산하여 총 총알 개수를 만들기 위한 곱 정수
+                CreateBullet(bulletRotationCount * projectTileMutiple); //총알 생성. 90도에서 180도를 쏠때 + 1을 안해주면 마지막 각도에서는 총알이 안나옴. ex) 1과 2는 총 2개의 숫자지만 2 - 1= 1임
+                break;
+        }
+        SaveState(shotState, gameObject.activeSelf, transform.position);
     }
+
     //화면에 보일때 실행되는 구문들
     private void OnBecameVisible()
     {
-        //print("shoter.cs - 화면에 보임");
+        LoadState();
+        shotState = true;
         StartCoroutine(ShotStartFunc());
     }
     //화면에 안보일때 실행되는 구문들
@@ -111,10 +131,13 @@ public class Shoter : ObjectInteraction
     {
         shotState = false;
 
-        if (selectedType == 0)
+        if (selectedType == 0 || selectedType == 1 || (selectedType * shotKey == 0))
         {
-            print("shoter.cs - 화면에 안보임");
-            gameObject.SetActive(false);
+            StopAllCoroutines();
+        }
+        else if((CollisionTargetTransform != null))
+        {
+            print("shoter.cs - 화면에 안보임" + bullets.Count);
             StopAllCoroutines();
         }
 
@@ -124,8 +147,6 @@ public class Shoter : ObjectInteraction
     /// </summary>
     IEnumerator ShotStartFunc()
     {
-        shotState = true;
-
         yield return new WaitForSeconds(delayTime);//delay를 줘서 각 shoter마다 발사시작을 다르게 할 수 있다.
 
         switch (selectedType)
@@ -161,7 +182,6 @@ public class Shoter : ObjectInteraction
                     //bullets = new GameObject[bulletReadyCount];
                 if (bullet != null)
                 {
-                    CreateBullet(); //총알 생성
 
                     Vector2 dirVector = AngleToVector2(shootAngle);
 
@@ -169,7 +189,7 @@ public class Shoter : ObjectInteraction
                     {
                         for (int i = 0; (i < bulletReadyCount) && shotState; i++)
                         {
-                            bullets[i].btScript.Shoot(dirVector);
+                            bullets[i].btScript.Shoot(bulletStartingPoint, dirVector);
                             yield return new WaitForSeconds(shotTimeGap);
                         }
                         yield return new WaitForFixedUpdate(); ;//동작 오류가 나더라도 게임이 멈추지 않도록 - 무한반복이 돌면 안되기에
@@ -183,10 +203,8 @@ public class Shoter : ObjectInteraction
             case 2:
                 if (bullet != null)
                 {
-                    CreateBullet(); //총알 생성
                     while (shotState)
                     {
-
                         /* SetCollisionTargetDirection 함수를 통해 충돌체 위치를 향한 방향을 받아오지 않으면 zero 값을 가지기에 계속 탐지를 기다린다 */
                         while (CollisionTargetDirection == Vector2.zero)
                         {
@@ -199,7 +217,7 @@ public class Shoter : ObjectInteraction
                             {
                                 for (int i = 0; (i < bulletReadyCount) && shotState; i++)
                                 {
-                                    bullets[i].btScript.Shoot(dirVector);
+                                    bullets[i].btScript.Shoot(bulletStartingPoint, dirVector);
                                     yield return new WaitForSeconds(shotTimeGap);
                                 }
                             } while (shotState && shotInfinityTrigger); //화면에 shoter가 안보이면 비활성화 되고 반복문 종료
@@ -211,7 +229,7 @@ public class Shoter : ObjectInteraction
                             {
                                 for (int i = 0; (i < bulletReadyCount) && shotState; i++)
                                 {
-                                    bullets[i].btScript.Shoot(CollisionTargetDirection);
+                                    bullets[i].btScript.Shoot(bulletStartingPoint ,CollisionTargetDirection);
                                     yield return new WaitForSeconds(shotTimeGap);
                                 }
                             } while (shotState && shotInfinityTrigger);
@@ -231,8 +249,6 @@ public class Shoter : ObjectInteraction
             case 3:
                 if (bullet != null)
                 {
-                    int projectTileMutiple = (int)(bulletRemoveTime / shotTimeGap) + 1 ; //사라지는 시간 대비 쏘는 시간을 계산하여 총 총알 개수를 만들기 위한 곱 정수
-                    CreateBullet(bulletRotationCount * projectTileMutiple); //총알 생성. 90도에서 180도를 쏠때 + 1을 안해주면 마지막 각도에서는 총알이 안나옴. ex) 1과 2는 총 2개의 숫자지만 2 - 1= 1임
                     /* 회전 발사에 필요한 변수 선언 */
                     int angle = shotMaxAngle / bulletRotationCount; //발사시 이동각도 설정
                     int currentAngle = shotStartAngle; //시작 각도 및 발사시 현재 각도
@@ -265,7 +281,6 @@ public class Shoter : ObjectInteraction
                         {
                             if (shotRotationKey == 0) //순차 회전 발사
                             {
-
                                 do
                                 {
                                     currentAngle = shotStartAngle;
@@ -273,7 +288,7 @@ public class Shoter : ObjectInteraction
                                     {
                                         angleDirection = AngleToVector2(currentAngle);
                                         bullets[i].btScript.SetReturnBullet(); //시간초가 다 되도 그 자리에서 멈추도록 한다. 충돌시에는 제자리로 돌아온다.
-                                        bullets[i].btScript.Shoot(angleDirection);
+                                        bullets[i].btScript.Shoot(transform.position, angleDirection);
                                         currentAngle += angle; //shot 각도를 돌린다.
                                         yield return new WaitForSeconds(shotWaitRotation);
                                     }
@@ -282,7 +297,7 @@ public class Shoter : ObjectInteraction
                                     {
                                         currentShotCount += bulletRotationCount;
                                         currentAngle = shotStartAngle + shotRotateAngle * cnt++;
-                                        yield return new WaitForSeconds(shotTimeGap);
+                                        yield return new WaitForSeconds(bulletRemoveTime);
                                         continue;
                                     }
                                     else
@@ -316,7 +331,7 @@ public class Shoter : ObjectInteraction
                                     {
                                         angleDirection = AngleToVector2(currentAngle);
                                         bullets[i].btScript.SetReturnBullet(); //시간초가 다 되도 그 자리에서 멈추도록 한다. 충돌시에는 제자리로 돌아온다.
-                                        bullets[i].btScript.Shoot(angleDirection);
+                                        bullets[i].btScript.Shoot(transform.position, angleDirection);
                                         currentAngle += angle; //shot 각도를 돌린다.
                                         //yield return new WaitForFixedUpdate();
                                     }
@@ -368,7 +383,7 @@ public class Shoter : ObjectInteraction
                                     {
                                         currentShotCount += bulletRotationCount;
                                         currentAngle = shotStartAngle + shotRotateAngle * cnt++;
-                                        yield return new WaitForSeconds(shotTimeGap);
+                                        yield return new WaitForSeconds(bulletRemoveTime);
                                         continue;
                                     }
                                     else
@@ -427,29 +442,8 @@ public class Shoter : ObjectInteraction
         yield break;
     }
 
-
     /// <summary>
-    /// Shoter.cs 종속함수, 발사할 총알을 생성한다.
-    /// </summary>
-    void CreateBullet()
-    {
-        BulletStruct tempBs;
-        /* BulletStruct라는 구조체를 사용하여 총알 오브젝트와 그 오브젝트 컴포넌트인 Bullet을 저장 */
-        for (int i = 0; i < bulletReadyCount; i++)
-        {
-            tempBs.obj = Instantiate(bullet, transform) as GameObject;
-            tempBs.obj.SetActive(false); //생성시 총알이 보이면 안되므로 비활성화 시켜준다.
-            tempBs.btScript = tempBs.obj.GetComponent<Bullet>();
-
-            tempBs.btScript.InitBaseProperty(bulletStartingPoint, bulletSpeed, collisionTagName, bulletRemoveTime);
-            tempBs.btScript.GetRigidbodyComponent();
-
-            ExitBullet += tempBs.btScript.ExitBullet; // 총알을 한번에 없애기 위해서 이벤트 변수에 종료 함수를 넣어줍니다.
-            bullets.Add(tempBs);
-        }
-    }
-    /// <summary>
-    /// Shoter.cs 종속함수, 회전 발사할 총알을 생성한다. 
+    /// Shoter.cs 종속함수, 발사할 총알을 생성한다. 
     /// </summary>
     void CreateBullet(int projectTileCount)
     {
@@ -458,13 +452,13 @@ public class Shoter : ObjectInteraction
         for (int i = 0; i < projectTileCount; i++)
         {
             tempBs.obj = Instantiate(bullet, transform) as GameObject;
-            tempBs.obj.SetActive(false); //생성시 총알이 보이면 안되므로 비활성화 시켜준다.
+            //tempBs.obj.SetActive(false); //생성시 총알이 보이면 안되므로 비활성화 시켜준다.
             tempBs.btScript = tempBs.obj.GetComponent<Bullet>();
 
             tempBs.btScript.InitBaseProperty(bulletStartingPoint, bulletSpeed, collisionTagName, bulletRemoveTime);
-            tempBs.btScript.GetRigidbodyComponent();
+            tempBs.btScript.GetBulletComponent();
 
-            ExitBullet += tempBs.btScript.ExitBullet; // 총알을 한번에 없애기 위해서 이벤트 변수에 종료 함수를 넣어줍니다.
+            LoadInitBullet += tempBs.btScript.LoadState; // 총알을 한번에 없애기 위해서 이벤트 변수에 종료 함수를 넣어줍니다.
             bullets.Add(tempBs);
         }
     }
@@ -501,9 +495,24 @@ public class Shoter : ObjectInteraction
             }
         }
     }
-    public override void SetCollisionTargetDirection(Transform tf)
+    public override void SetCollisionTarget(Transform tf)
     {
-        base.SetCollisionTargetDirection(tf);
+        base.SetCollisionTarget(tf);
         CollisionTargetDirection = - (transform.position - CollisionTargetTransform.position).normalized;
+    }
+
+    /* 세이브 함수들 */
+    public override void SaveState(bool selfState, bool selfActive, Vector2 pos)
+    {
+        base.SaveState(selfState, selfActive, pos);
+        saveStartingPoint = bulletStartingPoint;
+        saveMoveTrigger = shoterMoveTrigger;
+    }
+    public override bool LoadState()
+    {
+        shoterMoveTrigger = saveMoveTrigger;
+        bulletStartingPoint = saveStartingPoint;
+        LoadInitBullet();
+        return base.LoadState();
     }
 }
