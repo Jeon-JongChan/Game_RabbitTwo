@@ -3,6 +3,7 @@
 *.csproj
 *.sln
 *.vs
+*.vscode
 Library/
 Debug/
 ProjectSettings/
