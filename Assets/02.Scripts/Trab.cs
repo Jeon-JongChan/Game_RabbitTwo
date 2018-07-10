@@ -14,7 +14,7 @@ public class Trab : ObjectInteraction {
     public float accelation = 0;
     [Tooltip("target을 쫒아갈때 한계 속도입니다. default = 10")]
     [Range(1, 4)]
-    public float limitSpeed = 4f;
+    public float limitActiveTime = 4f;
     public bool tracerTarget = false;
 
     /* needs component */
@@ -57,7 +57,7 @@ public class Trab : ObjectInteraction {
 
         StartCoroutine(MoveToDestination(rg2d, destination, speed , 0, true));
 
-        yield return new WaitForFixedUpdate();
+        yield return new WaitForSeconds(limitActiveTime);
     }
     private void OnTriggerEnter2D(Collider2D col)
     {
