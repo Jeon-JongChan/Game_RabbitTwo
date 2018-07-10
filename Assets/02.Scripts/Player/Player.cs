@@ -19,11 +19,13 @@ public class Player : LifeInteraction
     float x = 0, y = 0;
     int aniState = 0;
     bool jump = false;
+    float initSpeed;
 
 	// Use this for initialization
 	void Start () {
         playerRb = GetComponent<Rigidbody2D>();
         playerAnimator = GetComponent<Animator>();
+        initSpeed = speed;
 	}
 	
 	// Update is called once per frame
@@ -90,7 +92,6 @@ public class Player : LifeInteraction
         float end = start;
 
         Vector2 tempVector;
-        float initSpeed = speed;
         speed = limit;
 
         while(end - start < limitTime)
@@ -107,6 +108,7 @@ public class Player : LifeInteraction
 
         }
         speed = initSpeed;
+        yield return new WaitForFixedUpdate();
         Debug.Log("Player.cs - " + limitTime + " 디버프 종료" + start + " " + end);
     }
 }

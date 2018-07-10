@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-interface ISaveObject {
+public interface ISaveObject {
     void SaveState(bool selfState, bool selfActive,Vector2 pos);
     bool LoadState();
 }
