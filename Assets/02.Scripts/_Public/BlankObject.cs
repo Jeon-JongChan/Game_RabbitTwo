@@ -31,16 +31,19 @@ public class BlankObject : ObjectInteraction {
     /* needs components */
     SpriteRenderer srComponets = null;
     Collider2D col = null;
+    public Rigidbody2D rg2d;
 
     /* needs variable */
     bool SpriteRendererTrigger = true;
     bool ColliderTrigger = true;
     bool startStatus = false; //코루틴이 반복 호출되는 것을 막아줍니다.
+    float detectRange = 5f;
 
     /* 세이브 변수 */
     bool colActive;
     bool srActive;
 
+    
     private void Start()
     {
         srComponets = GetComponent<SpriteRenderer>();
@@ -52,7 +55,8 @@ public class BlankObject : ObjectInteraction {
     {
         if (!startStatus)
         {
-            StartCoroutine(StartBlank(srComponets, col));
+            StartCoroutine(StartBlank(srComponets, col,detectRange));
+            StartCoroutine(DetectObject(rg2d,Vector2.up,0,detectRange));
             startStatus = true;
         }
     }
@@ -70,18 +74,20 @@ public class BlankObject : ObjectInteraction {
         return base.LoadState();
     }
 
-    IEnumerator StartBlank(SpriteRenderer srComponets, Collider2D col)
+    IEnumerator StartBlank(SpriteRenderer srComponets, Collider2D col,float detectRange)
     {
         yield return new WaitForSeconds(delayTime); //일정시간동안 시작을 딜레이 합니다.
         int randomTime;
+        GameObject g;
         while ((CollisionTargetTransform == null) && useTrigger) yield return new WaitForFixedUpdate(); //트리거가 타겟을 발생하기 전까지 반복
         while (startStatus)
         {
-            if (RayScript.DetectedOverlapCircle2D(transform.position, 0.2f) != null)
-            {
-                yield return new WaitForFixedUpdate();
-                continue;
-            }
+            // if ((g = RayScript.DetectedOverlapCircle2D(transform.position, detectRange)) != null)
+            // {
+            //     print("실행");
+            //     yield return new WaitForFixedUpdate();
+            // }
+            if(!detectState) print("실행");
             switch (selectType)
             {
                 case 0:

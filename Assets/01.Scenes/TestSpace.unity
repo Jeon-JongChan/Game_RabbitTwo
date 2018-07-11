@@ -1471,6 +1471,31 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 08631bd39e8bc5d4f850f6b17d0316a0, type: 2}
   m_IsPrefabParent: 0
+--- !u!1 &1761011747 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1780639308231042, guid: f14dd59587acbfd439477105a31eb59e,
+    type: 2}
+  m_PrefabInternal: {fileID: 1449619887}
+--- !u!50 &1761011748
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1761011747}
+  m_BodyType: 2
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!4 &1964394690 stripped
 Transform:
   m_PrefabParentObject: {fileID: 4830979536354242, guid: 6c9568def0e10c842a1960649279542e,
