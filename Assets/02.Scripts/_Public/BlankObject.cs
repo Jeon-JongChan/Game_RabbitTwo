@@ -31,19 +31,17 @@ public class BlankObject : ObjectInteraction {
     /* needs components */
     SpriteRenderer srComponets = null;
     Collider2D col = null;
-    public Rigidbody2D rg2d;
 
     /* needs variable */
     bool SpriteRendererTrigger = true;
     bool ColliderTrigger = true;
     bool startStatus = false; //코루틴이 반복 호출되는 것을 막아줍니다.
-    float detectRange = 5f;
+    float detectRange = 0.5f;
 
     /* 세이브 변수 */
     bool colActive;
     bool srActive;
 
-    
     private void Start()
     {
         srComponets = GetComponent<SpriteRenderer>();
@@ -55,8 +53,7 @@ public class BlankObject : ObjectInteraction {
     {
         if (!startStatus)
         {
-            StartCoroutine(StartBlank(srComponets, col,detectRange));
-            StartCoroutine(DetectObject(rg2d,Vector2.up,0,detectRange));
+            if(!startStatus)StartCoroutine(StartBlank(srComponets, col,detectRange));
             startStatus = true;
         }
     }
@@ -78,16 +75,22 @@ public class BlankObject : ObjectInteraction {
     {
         yield return new WaitForSeconds(delayTime); //일정시간동안 시작을 딜레이 합니다.
         int randomTime;
-        GameObject g;
+        int layerMask = 1 << 9;
+        float detectDelayTime = blankTime;
         while ((CollisionTargetTransform == null) && useTrigger) yield return new WaitForFixedUpdate(); //트리거가 타겟을 발생하기 전까지 반복
         while (startStatus)
         {
-            // if ((g = RayScript.DetectedOverlapCircle2D(transform.position, detectRange)) != null)
-            // {
-            //     print("실행");
-            //     yield return new WaitForFixedUpdate();
-            // }
-            if(!detectState) print("실행");
+            while (RayScript.DetectedOverlapCircle2D(transform.position, detectRange, layerMask) != null)
+            {
+                if(!detectState)
+                {
+                    detectState = true;
+                    offComponentState(srComponets, col);
+                }
+                print("실행");
+                yield return new WaitForSeconds(detectDelayTime);
+            }
+            if(detectState) detectState = false;
             switch (selectType)
             {
                 case 0:
@@ -113,6 +116,15 @@ public class BlankObject : ObjectInteraction {
     {
         SpriteRendererTrigger = !SpriteRendererTrigger;
         ColliderTrigger = !ColliderTrigger;
+
+        srComponets.enabled = SpriteRendererTrigger;
+        if(col != null && colliderOffTrigger) col.enabled = ColliderTrigger;
+    }
+
+    void offComponentState(SpriteRenderer srComponets, Collider2D col)
+    {
+        SpriteRendererTrigger = false;
+        ColliderTrigger = false;
 
         srComponets.enabled = SpriteRendererTrigger;
         if(col != null && colliderOffTrigger) col.enabled = ColliderTrigger;

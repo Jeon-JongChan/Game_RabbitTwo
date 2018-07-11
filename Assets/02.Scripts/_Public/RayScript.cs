@@ -26,8 +26,9 @@ namespace PsybleScript
         /// <summary>
         /// self를 기준으로 오브젝트를 탐지하는 원형 ray를 생성한다.
         /// </summary>
-        public static GameObject DetectedOverlapCircle2D(Vector2 selfPosition, float radius = 0.5f, int layerMask = 0)
+        public static GameObject DetectedOverlapCircle2D(Vector2 selfPosition, float radius , int layerMask)
         {
+                        print("레이어 마스크 " + layerMask);
             Collider2D hit2D;
             //레이 캐스트를 입력받은 방향으로 길이만큼 쏜다.
             hit2D = Physics2D.OverlapCircle(selfPosition, radius, layerMask);
@@ -38,6 +39,23 @@ namespace PsybleScript
             }
 
             return hit2D.gameObject;
+        }
+
+                /// <summary>
+        /// self를 기준으로 오브젝트를 탐지하는 원형 ray를 생성한다.
+        /// </summary>
+        public static Collider2D[] DetectedOverlapCircles2D(Vector2 selfPosition, float radius , int layerMask)
+        {
+            Collider2D[] hit2D;
+            //레이 캐스트를 입력받은 방향으로 길이만큼 쏜다.
+            hit2D = Physics2D.OverlapCircleAll(selfPosition, radius, layerMask);
+            //if noting, return null
+            if (hit2D.Length == 0)
+            {
+                return null;
+            }
+
+            return hit2D;
         }
     }
 }

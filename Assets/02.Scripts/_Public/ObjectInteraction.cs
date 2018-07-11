@@ -63,7 +63,7 @@ public class ObjectInteraction : ObjectMovement2D, ISaveObject{
             {
                 case 0:
                     // print("ObjectInteraction - 0 번시작 " + layerMask);
-                    //ret = RayScript.DetectedOverlapCircle2D(self.position, rayScale, layerMask);
+                    ret = RayScript.DetectedOverlapCircle2D(self.position, rayScale, layerMask);
                     break;
                 case 1:
                     //print("ObjectInteraction - 1 번시작 " + layerMask);
