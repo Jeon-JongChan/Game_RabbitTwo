@@ -74,4 +74,21 @@ public class PlayerInteraction : MonoBehaviour {
             }
         }
     }
+    private void OnTriggerStay2D(Collider2D col)
+    {
+        if(gameObject.CompareTag("Water"))
+        {
+            playerJumpInstance.SetJumpLevel(1);
+            playerJumpInstance.JumpStateReset(false);
+            playerInstance.LimitVelocity(0, limitPlayer);
+        }
+    }
+    private void OnTriggerExit2D(Collider2D col) {
+        if(gameObject.CompareTag("Water"))
+        {
+            print("실행 " + col.name);
+            playerInstance.ClearLimitState();
+            playerJumpInstance.SetJumpLevel(3);
+        }
+    }
 }

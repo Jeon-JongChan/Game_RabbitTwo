@@ -31,7 +31,7 @@ public class Bullet : ObjectInteraction
 
     public void InitBaseProperty(Vector2 bulletStartingPoint, float speed, List<string> tags , float extinctionTime = 0, bool returnTrigger = true)
     {
-        SaveState(false, false, bulletStartingPoint);
+        SaveState(true, false, bulletStartingPoint);
         transform.position = initPos;
         this.extinctionTime = extinctionTime;
         this.speed = speed;

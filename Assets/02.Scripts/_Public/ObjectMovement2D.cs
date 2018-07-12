@@ -70,6 +70,17 @@ namespace PsybleScript
             return ret;
         }
         /// <summary>
+        /// 반사각을 벡터로 반환합니다.
+        /// </summary>
+        public Vector2 GetReflectAngleVector2D(Collision2D col,Vector2 incidenceAngle)
+        {
+            Vector2 ret;
+            Vector2 nomalVector = col.contacts[0].normal;
+            incidenceAngle = incidenceAngle.normalized;
+            ret = Vector2.Reflect(incidenceAngle,nomalVector);
+            return ret;
+        }
+        /// <summary>
         /// transform을 이용한 점프함수
         /// </summary>
         public IEnumerator JumpTransform(Transform tf, float jump = 1, float fallSpeed = 0.04f)

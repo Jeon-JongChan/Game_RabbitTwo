@@ -11,13 +11,21 @@ public class PlayerCollision : MonoBehaviour {
     //Components
     PlayerJump2D pj;
 
+    //static 변수들. 플레이어 충돌체가 3개이므로 특정 상황마다 3번씩 실행되는것을 막음.
+    static bool stay = false;
+    static bool exit = false;
+
     //필요 변수들
-    bool stay = true;
+    float reduceSpeed;
 
     //이벤트 변수
-    public delegate void JumpDelgate();
+    public delegate void voidDelgate();
+    public delegate void JumpDelgate(bool resetJumpPower);
+    public delegate IEnumerator LimitDelgate(float time, float speed);
     public event JumpDelgate InitJumpEvent;
-    public event JumpDelgate JumpLandingEvent;
+    public event LimitDelgate LimitPlayerEvent;
+    public event voidDelgate JumpLandingEvent;
+    public event voidDelgate ClearLimitStateEvent; 
 
     private void Awake()
     {
@@ -34,7 +42,10 @@ public class PlayerCollision : MonoBehaviour {
             InitJumpEvent += pj.JumpStateReset;
             if (playerScript != null)
             {
-                JumpLandingEvent += playerScript.LandingAnimation;;
+                JumpLandingEvent += playerScript.LandingAnimation;
+                LimitPlayerEvent += playerScript.LimitVelocity;
+                reduceSpeed = playerScript.reduceWaterSpeed;
+                ClearLimitStateEvent += playerScript.ClearLimitState;
             }
         }
        
@@ -49,17 +60,30 @@ public class PlayerCollision : MonoBehaviour {
                 {
                     //print("PlayerCollision - 그라운드 충돌");
                     JumpLandingEvent();
-                    InitJumpEvent();
-                    stay = true;
+                    InitJumpEvent(true);
                     break;
                 }
             }
         }
     }
-    private void OnTriggerStay2D(Collider2D collision)
+    private void OnTriggerStay2D(Collider2D col)
     {
-        if(stay == false)
+        if(col.CompareTag("Water") && stay)
         {
+            stay = false;
+            pj.JumpLevelMinus(pj.jumpLevel - 1);
+            InitJumpEvent(false);
+            LimitPlayerEvent(0,reduceSpeed / 10);
+            stay = true;
+        }
+    }
+    private void OnTriggerExit2D(Collider2D col) {
+        if(col.CompareTag("Water") && exit)
+        {
+            print("실행 " + col.name);
+            exit = false;
+            pj.JumpLevelPlus(pj.jumpLevel - 1);
+            ClearLimitStateEvent();
         }
     }
 
