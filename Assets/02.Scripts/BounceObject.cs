@@ -20,7 +20,7 @@ public class BounceObject : ObjectInteraction {
     CircleCollider2D circle;
 
     /* needs variable */
-    bool returnTrigger = false;
+
 
     public void GetBulletComponent()
     {
@@ -29,14 +29,13 @@ public class BounceObject : ObjectInteraction {
         circle = GetComponent<CircleCollider2D>();
     }
 
-	public void InitBaseProperty(Vector2 bulletStartingPoint, float speed, List<string> tags , float extinctionTime = 0, bool returnTrigger = true)
+	public void InitBaseProperty(Vector2 bulletStartingPoint, float speed, List<string> tags , float extinctionTime = 0)
     {
         SaveState(false, false, bulletStartingPoint);
         transform.position = initPos;
         this.extinctionTime = extinctionTime;
         this.speed = speed;
         this.tags = tags;
-        this.returnTrigger = returnTrigger;
     }
 	// Use this for initialization
 	private void Awake() {
@@ -110,7 +109,7 @@ public class BounceObject : ObjectInteraction {
     private void OnCollisionEnter2D(Collision2D col) {
         if(!otherBallCollisionTrigger)
         {
-            if(!col.gameObject.CompareTag("BounceBall")) direction = GetReflectAngleVector2D(col, direction);
+            if(!col.gameObject.CompareTag("BOUNCEBALL")) direction = GetReflectAngleVector2D(col, direction);
         }
         else direction = GetReflectAngleVector2D(col, direction);
 

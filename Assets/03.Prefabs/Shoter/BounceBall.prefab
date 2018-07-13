@@ -20,9 +20,9 @@ GameObject:
   m_Component:
   - component: {fileID: 4605034693086068}
   - component: {fileID: 212432901295607386}
-  - component: {fileID: 114281613158005860}
   - component: {fileID: 50705201698192562}
   - component: {fileID: 58860398644578972}
+  - component: {fileID: 114522815002710696}
   m_Layer: 9
   m_Name: BounceBall
   m_TagString: Untagged
@@ -61,7 +61,7 @@ Rigidbody2D:
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 0
 --- !u!58 &58860398644578972
 CircleCollider2D:
@@ -78,7 +78,7 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.3
---- !u!114 &114281613158005860
+--- !u!114 &114522815002710696
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -86,12 +86,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1977230429587072}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 38d0f018b63025244be4d290e573b5f0, type: 3}
+  m_Script: {fileID: 11500000, guid: 8f6bc54c59b17fd4d983837d6a900ce3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   direction: {x: 0, y: 0}
-  otherBallCollisionTrigger: 1
-  disapperCollisionPlayer: 1
+  otherBallCollisionTrigger: 0
+  disapperCollisionPlayer: 0
 --- !u!212 &212432901295607386
 SpriteRenderer:
   m_ObjectHideFlags: 1

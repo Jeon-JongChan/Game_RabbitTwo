@@ -23,11 +23,10 @@ namespace PsybleScript
         /// <summary>
         /// 2D 이동함수, not player.
         /// </summary>
-        /// <param name="sleepState"> 비활성화에서 켜지는 경우 sleep 상태일 경우가 있다. 이 경우 외부충격으로 awake 시켜야 한다.</param>
-        public Vector2 MovePos(Rigidbody2D rb, Vector2 direction, float speed , bool sleepState = false)
+        public Vector2 MovePos(Rigidbody2D rb, Vector2 direction, float speed , bool phsicsState = false)
         {
             //distanceToMove.Normalize(); //가야할 방향이 정해진다.
-            if (!sleepState) rb.MovePosition(rb.position + (direction * speed * Time.deltaTime));
+            if (!phsicsState) rb.MovePosition(rb.position + (direction * speed * Time.deltaTime));
             else rb.AddForce(direction * speed * 10);
 
             return direction;

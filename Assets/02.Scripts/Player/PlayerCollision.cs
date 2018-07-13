@@ -16,7 +16,7 @@ public class PlayerCollision : MonoBehaviour {
     static bool exit = false;
 
     //필요 변수들
-    float reduceSpeed;
+
 
     //이벤트 변수
     public delegate void voidDelgate();
@@ -44,7 +44,6 @@ public class PlayerCollision : MonoBehaviour {
             {
                 JumpLandingEvent += playerScript.LandingAnimation;
                 LimitPlayerEvent += playerScript.LimitVelocity;
-                reduceSpeed = playerScript.reduceWaterSpeed;
                 ClearLimitStateEvent += playerScript.ClearLimitState;
             }
         }
@@ -64,26 +63,6 @@ public class PlayerCollision : MonoBehaviour {
                     break;
                 }
             }
-        }
-    }
-    private void OnTriggerStay2D(Collider2D col)
-    {
-        if(col.CompareTag("Water") && stay)
-        {
-            stay = false;
-            pj.JumpLevelMinus(pj.jumpLevel - 1);
-            InitJumpEvent(false);
-            LimitPlayerEvent(0,reduceSpeed / 10);
-            stay = true;
-        }
-    }
-    private void OnTriggerExit2D(Collider2D col) {
-        if(col.CompareTag("Water") && exit)
-        {
-            print("실행 " + col.name);
-            exit = false;
-            pj.JumpLevelPlus(pj.jumpLevel - 1);
-            ClearLimitStateEvent();
         }
     }
 

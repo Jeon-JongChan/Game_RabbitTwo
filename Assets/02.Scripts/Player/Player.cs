@@ -6,8 +6,9 @@ public class Player : LifeInteraction
 {
     //public variable - inspector
     public float speed = 2;
-    public float reduceWaterSpeed = -1;
-
+    public float BarrierdelayTime = 5f;
+    public GameObject barrier;
+    
     //Components
     Rigidbody2D playerRb;
     /*  오른쪽 스탠딩 0   왼쪽 스탠딩 1
@@ -15,14 +16,18 @@ public class Player : LifeInteraction
      *  오른쪽 점프 4    왼쪽 점프5
      */
     Animator playerMoveAnimator;
-
     //need virable
     float x = 0, y = 0;
     float initSpeed;
     int aniState = 0;
     bool jump = false;
-    bool limitState = false;
+    bool limitState = false;  
     bool barrierState = false;
+    public bool BarrierState{
+        get{return barrierState;}
+        set{barrierState = value;}
+    }
+    bool barrierAniTrigger = true;
 
 	// Use this for initialization
 	void Start () {
@@ -40,9 +45,21 @@ public class Player : LifeInteraction
         Move(playerRb, new Vector2(x, y), speed);
         
         if(Mathf.Abs(playerRb.velocity.y) > 1f) JumpAnimation();
-
+        if(barrierState && barrierAniTrigger)
+        {
+            print("켜진다. 배리어");
+            barrier.SetActive(barrierAniTrigger);
+            barrierAniTrigger = false;
+            StartCoroutine(BarrierExit(BarrierdelayTime));
+        }
     }
-
+    IEnumerator BarrierExit(float delayTime)
+    {
+        yield return new WaitForSeconds(delayTime);
+        barrier.SetActive(barrierAniTrigger);
+        barrierState = false;
+        barrierAniTrigger = true;
+    }
     // 사용된 클래스 변수 : x, anistate, jump
     void AnimationControl()
     {
@@ -95,12 +112,14 @@ public class Player : LifeInteraction
     {
         limitState = false;
     }
-    /// <summary>
-    /// 보호하는 배리어를 실행시킵니다.
-    /// </summary>
-    public void SetBarrierState()
+
+    public void SetPlayerVelocity(Vector2 setVelocity)
     {
-        barrierState = true;
+        playerRb.velocity = setVelocity;
+    }
+    public void SetPlayerVelocity(int devide)
+    {
+        playerRb.velocity = playerRb.velocity / 5;
     }
     /// <summary>
     /// 일정 시간동안 플레이어의 속도를 제한합니다. limitTime 이 0이면 특정 bool 값이 변하기 전까지 지속합니다.

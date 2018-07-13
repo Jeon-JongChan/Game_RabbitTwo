@@ -453,7 +453,7 @@ public class Shoter : ObjectInteraction
         /* BulletStruct라는 구조체를 사용하여 총알 오브젝트와 그 오브젝트 컴포넌트인 Bullet을 저장 */
         for (int i = 0; i < projectTileCount; i++)
         {
-            tempBs.obj = Instantiate(bullet, transform) as GameObject;
+            tempBs.obj = Instantiate(bullet, transform);
             //tempBs.obj.SetActive(false); //생성시 총알이 보이면 안되므로 비활성화 시켜준다.
             if((tempBs.btScript = tempBs.obj.GetComponent<Bullet>()) != null)
             {
@@ -468,6 +468,7 @@ public class Shoter : ObjectInteraction
                 script.GetBulletComponent();
                 tempBs.btScript = null;
                 tempBs.ShootEvent = script.Shoot;
+                LoadInitBullet += script.LoadState;
             }
             bullets.Add(tempBs);
         }

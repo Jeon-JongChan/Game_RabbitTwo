@@ -68,4 +68,8 @@ public class PlayerJump2D : ObjectMovement2D
     {
         jumpLevel = level;
     }
+    public int GetJumpInitLevel()
+    {
+        return initJumpLevel;
+    }
 }

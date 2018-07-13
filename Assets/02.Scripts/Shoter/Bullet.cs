@@ -9,6 +9,8 @@ public class Bullet : ObjectInteraction
 
     /* if shoot, Immediately input value */
     public Vector2 direction;
+    [Tooltip("물리적 움직임을 부여합니다. collider의 isTrigger를 해제해주세요.")]
+    public bool ablePhysicMoving = false;
     List<string> tags;
     float extinctionTime;
     float speed;
@@ -49,7 +51,7 @@ public class Bullet : ObjectInteraction
         if (!gameObject.activeSelf) gameObject.SetActive(true);
         transform.position = bulletStartingPoint;
         direction = dir;
-        StartCoroutine(BulletShot2D(rd2d, direction, extinctionTime, speed));
+        StartCoroutine(BulletShot2D(rd2d, direction, extinctionTime, speed, ablePhysicMoving));
     }
     /// <summary>
     /// 리터닝 발사에 사용됩니다. 위치를 복원 시키지 않습니다.
