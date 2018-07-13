@@ -17,7 +17,7 @@ public class PlayerInteraction : MonoBehaviour {
 
     [Header("Selected 0")]
     public int addJumpLevel = 0;
-    [Header("Selected 1")]
+    [Header("Selected 1 & 3")]
     public int limitPlayer = 3;
     [Header("Selected 3 - water")]
     public float delayDamageTime = 3f;
@@ -90,7 +90,7 @@ public class PlayerInteraction : MonoBehaviour {
                         isWater = true;
                         StartCoroutine(DelayDamageToPlayer(delayDamageTime));
                         playerJumpInstance.SetJumpLevel(1);
-                        playerInstance.LimitVelocity(0, limitPlayer);
+                        StartCoroutine( playerInstance.LimitVelocity(0, limitPlayer));
                         break;
                 }
             }

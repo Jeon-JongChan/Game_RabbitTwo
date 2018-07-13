@@ -81,7 +81,7 @@ MonoBehaviour:
   player: {fileID: 0}
   selectedType: 2
   delayTime: 1
-  disableTrigger: 0
+  disableTrigger: 1
   addJumpLevel: 0
   limitPlayer: 3
   delayDamageTime: 3

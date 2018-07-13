@@ -119,7 +119,7 @@ public class Player : LifeInteraction
     }
     public void SetPlayerVelocity(int devide)
     {
-        playerRb.velocity = playerRb.velocity / 5;
+        playerRb.velocity = playerRb.velocity / devide;
     }
     /// <summary>
     /// 일정 시간동안 플레이어의 속도를 제한합니다. limitTime 이 0이면 특정 bool 값이 변하기 전까지 지속합니다.
