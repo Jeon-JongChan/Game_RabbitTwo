@@ -80,7 +80,7 @@ MonoBehaviour:
   target: {fileID: 0}
   collisionTagName: []
   shootAngle: 0
-  bulletSpeed: 1
+  bulletSpeed: 10
   bulletRemoveTime: 0
   delayTime: 0
   bullet: {fileID: 1977230429587072, guid: 230ba11c02387954ab51ae1c6b064c8d, type: 2}

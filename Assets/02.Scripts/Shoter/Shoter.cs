@@ -466,6 +466,7 @@ public class Shoter : ObjectInteraction
                 var script = tempBs.obj.GetComponent<BounceObject>();
                 script.InitBaseProperty(bulletStartingPoint, bulletSpeed, collisionTagName, bulletRemoveTime);
                 script.GetBulletComponent();
+                LoadInitBullet += script.LoadState; // 총알을 한번에 없애기 위해서 이벤트 변수에 종료 함수를 넣어줍니다.
                 tempBs.btScript = null;
                 tempBs.ShootEvent = script.Shoot;
             }
