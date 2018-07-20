@@ -111,7 +111,7 @@ public class PlayerInteraction : MonoBehaviour {
         {
             if(col.gameObject.CompareTag(player.tag))
             {
-                print("실행 " + col.name);
+                //print("실행 " + col.name);
                 playerInstance.ClearLimitState();
                 playerJumpInstance.SetJumpLevel(playerJumpInstance.GetJumpInitLevel());
                 isWater = false;

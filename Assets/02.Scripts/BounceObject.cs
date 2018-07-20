@@ -99,7 +99,7 @@ public class BounceObject : ObjectInteraction {
     {
         ExitBullet();
     }
-    public override bool LoadState()
+    public override bool LoadState(bool init = false)
     {
         if (sr != null) sr.enabled = true;
         if (circle != null) circle.enabled = true;

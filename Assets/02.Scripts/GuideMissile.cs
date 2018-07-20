@@ -21,11 +21,15 @@ public class GuideMissile : ObjectInteraction{
     public float limitSpeed = 10f;
 
     /* needs variable */
+    WaitForFixedUpdate wFixUp;
+    WaitForSeconds wsFindTime;
     Rigidbody2D rg2d;
     bool stopState = true;
 
     // Use this for initialization
     void Start () {
+        wFixUp = new WaitForFixedUpdate();
+        wsFindTime = new WaitForSeconds(delayTimeToFindTarget);
         rg2d = GetComponent<Rigidbody2D>();
         SaveState(true, gameObject.activeSelf, transform.position);
     }
@@ -55,7 +59,7 @@ public class GuideMissile : ObjectInteraction{
                     Debug.Log("target이 존재하지 않습니다.");
                     break;
                 }
-                yield return new WaitForSeconds(delayTimeToFindTarget);
+                yield return wsFindTime;
                 stopState = false;
                 if (finalSpeed < limitSpeed) finalSpeed += accelation;
             }
@@ -71,7 +75,7 @@ public class GuideMissile : ObjectInteraction{
         while (stopState)
         {
             MovePos(rg2d, dir, speed, false);
-            yield return new WaitForFixedUpdate();
+            yield return wFixUp;
         }
     }
     /* 충돌시 반응입니다. */
@@ -95,13 +99,13 @@ public class GuideMissile : ObjectInteraction{
         }
     }
 
-    public override void SaveState(bool selfState, bool selfActive, Vector2 pos)
+    public override void SaveState(bool selfState, bool selfActive, Vector2 pos,bool init = false)
     {
-        base.SaveState(selfState, selfActive, pos);
+        base.SaveState(selfState, selfActive, pos, init);
     }
-    public override bool LoadState()
+    public override bool LoadState(bool init = false)
     {
         state = initState;
-        return base.LoadState();
+        return base.LoadState(init);
     }
 }

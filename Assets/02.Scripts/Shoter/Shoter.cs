@@ -84,7 +84,7 @@ public class Shoter : ObjectInteraction
     List<BulletStruct> bullets;
     Vector2 bulletStartingPoint;
     Vector2 CollisionTargetDirection = Vector2.zero;
-    public delegate bool BulletDelegate();
+    public delegate bool BulletDelegate(bool init = false);
     public event BulletDelegate LoadInitBullet; //현재 사용되는 총알을 모두 비활성화 해야할 경우만 사용
     bool shotState = false; //화면에 shoter가 안보일경우 반복문 중지를 위해 사용
     int projectTileMutiple = 0; //회전 총알에서 생성할때 여유를 주기위해 정해진 생성 개수에 곱해줄 인수.
@@ -513,13 +513,13 @@ public class Shoter : ObjectInteraction
     }
 
     /* 세이브 함수들 */
-    public override void SaveState(bool selfState, bool selfActive, Vector2 pos)
+    public override void SaveState(bool selfState, bool selfActive, Vector2 pos,bool init = false)
     {
         base.SaveState(selfState, selfActive, pos);
         saveStartingPoint = bulletStartingPoint;
         saveMoveTrigger = shoterMoveTrigger;
     }
-    public override bool LoadState()
+    public override bool LoadState(bool init = false)
     {
         shoterMoveTrigger = saveMoveTrigger;
         bulletStartingPoint = saveStartingPoint;

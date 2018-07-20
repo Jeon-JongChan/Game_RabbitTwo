@@ -20,6 +20,7 @@ public class Player : LifeInteraction
     float x = 0, y = 0;
     float initSpeed;
     int aniState = 0;
+    float limitZangle = 0.2f;
     bool jump = false;
     bool limitState = false;  
     bool barrierState = false;
@@ -47,11 +48,12 @@ public class Player : LifeInteraction
         if(Mathf.Abs(playerRb.velocity.y) > 1f) JumpAnimation();
         if(barrierState && barrierAniTrigger)
         {
-            print("켜진다. 배리어");
+            //print("켜진다. 배리어");
             barrier.SetActive(barrierAniTrigger);
             barrierAniTrigger = false;
             StartCoroutine(BarrierExit(BarrierdelayTime));
         }
+        
     }
     IEnumerator BarrierExit(float delayTime)
     {
@@ -152,6 +154,6 @@ public class Player : LifeInteraction
 
         speed = initSpeed;
         yield return new WaitForFixedUpdate();
-        Debug.Log("Player.cs - " + limitTime + " 디버프 종료" + start + " " + end);
+        //Debug.Log("Player.cs - " + limitTime + " 디버프 종료" + start + " " + end);
     }
 }

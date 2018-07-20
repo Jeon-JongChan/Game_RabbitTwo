@@ -6,14 +6,16 @@ using PsybleScript;
 public class ObjectInteraction : ObjectMovement2D, ISaveObject{
 
 
-    protected bool detectState = false;
+    protected bool detectState = false; //탐지를 정지시킬 수 있는 변수.
     protected Transform CollisionTargetTransform = null; //Trigger 객체에서 전달하는 충돌체의 위치 포인트를 가리키는 방향벡터
 
     /* 초기화에 영향을 주는 변수들 */
     protected bool initState = true;
     protected bool state = true;
-    protected bool active = true;
+    protected bool initActive = true;
     protected Vector2 initPos = Vector2.zero;
+    protected bool currActive = true;
+    protected Vector2 currPos = Vector2.zero;
 
 
     /// <summary>
@@ -100,17 +102,39 @@ public class ObjectInteraction : ObjectMovement2D, ISaveObject{
     }
 
     /***************************  세이브 구현에 필요한  공통 함수들 *****************************/
-    public virtual void SaveState(bool selfState, bool selfActive, Vector2 pos)
+    public virtual void SaveState(bool selfState, bool selfActive, Vector2 pos, bool init = false)
     {
-        initState = selfState;
-        active = selfActive;
-        initPos = pos;
+        if(init)
+        {
+            initState = selfState;
+            initActive = selfActive;
+            initPos = pos;
+            //현재 상태에 초기상태를 저장.
+            state = initState;
+            currActive = initActive;
+            currPos = initPos;
+        }
+        else
+        {
+            state = selfState;
+            currActive = selfActive;
+            currPos = pos;
+        }
     }
 
-    public virtual bool LoadState()
+    public virtual bool LoadState(bool init = false)
     {
-        if ((Vector2)(transform.position) != initPos) transform.position = initPos;
-        gameObject.SetActive(active);
-        return initState;
+        if(init)
+        {
+            if ((Vector2)(transform.position) != initPos) transform.position = initPos;
+            gameObject.SetActive(initActive);
+            return initState;
+        }
+        else
+        {
+            if ((Vector2)(transform.position) != currPos) transform.position = currPos;
+            gameObject.SetActive(currActive);
+        }
+        return state;
     }
 }

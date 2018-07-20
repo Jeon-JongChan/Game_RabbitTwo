@@ -34,10 +34,10 @@ namespace PsybleScript
         /// <summary>
         /// Velocity를 이용한 2D 이동함수.not player
         /// </summary>
-        public Vector2 Move(Rigidbody2D rb, Vector2 distanceToMove, float speed = 1)
+        public Vector2 Move(Rigidbody2D rb, Vector2 distanceToMove, float speed = 1, bool isJump = true)
         {
             distanceToMove = distanceToMove.normalized * speed;
-            distanceToMove.y = rb.velocity.y;
+            if(isJump)distanceToMove.y = rb.velocity.y;
 
             rb.velocity = distanceToMove;
 
@@ -122,6 +122,8 @@ namespace PsybleScript
             rb.AddForce(Vector2.up * jumpPower, forceMode);
         }
 
+        //매우 위험한 변수. 타 클래스에서 코루틴 무빙함수를 사용시 코루틴을 종료시키기 위해 사용.
+        protected bool whileState = true; 
         //방향 설정 열거형 변수들 - 가독성증가를 위해 사용
         enum direction { moveUp = 0, moveRight = 1, moveDown = 2, moveLeft = 3, moveFront = 4, moveBack = 5 };
         public IEnumerator ObjectRepeatMove2D(GameObject selfGameObject, int desiredDirection, float repeatDistance, float moveSpeed = 1f, int repeatCount = 0, float stopTime = 0.5f)
@@ -437,15 +439,21 @@ namespace PsybleScript
             Vector2 distanceToMove;
             if (targets.Length > 0)
             {
-                while (i < targetsLen)
+                while (whileState && i < targetsLen)
                 {
                     destination = targets[i].transform.position;
                     distanceToMove = destination - selfRigidbody.position;
 
-                    while (!(Vector2.Distance(destination, selfRigidbody.position) < limit && Vector2.Distance(destination, selfRigidbody.position) > -limit))
+                    while (whileState && !(Vector2.Distance(destination, selfRigidbody.position) < limit && Vector2.Distance(destination, selfRigidbody.position) > -limit))
                     {
+                        if(destination != (Vector2)targets[i].transform.position)
+                        {
+                            destination = targets[i].transform.position;
+                            distanceToMove = destination - selfRigidbody.position;
+                            //print(distanceToMove);
+                        }
                         speed += acceleration;
-                        Move(selfRigidbody, distanceToMove, speed);
+                        Move(selfRigidbody, distanceToMove, speed,false);
                         yield return null;
                     }
                     selfRigidbody.position = destination; // limit 변수에 따른 위치오차를 없앤다.
@@ -459,18 +467,24 @@ namespace PsybleScript
         {
             float limit = 0.05f * speed; //속도에 따라 타겟에 접근했는지 판단할 거리를 늘려준다.
             int i = 0;
-            Vector2 destination;
-            Vector2 distanceToMove;
+            Vector2 destination = Vector2.zero;
+            Vector2 distanceToMove = Vector2.zero;
             if (targets.Length > 0)
             {
-                while (i < targetsLen)
+                while (whileState && i < targetsLen)
                 {
                     destination = targets[i].transform.position;
                     distanceToMove = destination - selfRigidbody.position;
                     print(distanceToMove);
 
-                    while (!(Vector2.Distance(destination, selfRigidbody.position) < limit && Vector2.Distance(destination, selfRigidbody.position) > -limit))
+                    while (whileState && !(Vector2.Distance(destination, selfRigidbody.position) < limit && Vector2.Distance(destination, selfRigidbody.position) > -limit))
                     {
+                        if(destination != (Vector2)targets[i].transform.position)
+                        {
+                            destination = targets[i].transform.position;
+                            distanceToMove = destination - selfRigidbody.position;
+                            //print(distanceToMove);
+                        }
                         speed += acceleration;
                         MovePos(selfRigidbody, distanceToMove, speed);
                         yield return null;
@@ -486,45 +500,49 @@ namespace PsybleScript
         /// 목표 오브젝트가 있던 곳으로 오브젝트를 이동시키는 함수
         /// </summary>
         /// <param name="targets">도착지점을 가리키는 오브젝트</param>
-        public IEnumerator ObjectTargetTraceMove2D(Rigidbody2D selfRigidbody, GameObject target, int targetsLen, float speed = 1, float acceleration = 0)
+        public IEnumerator ObjectTargetTraceMove2D(Rigidbody2D selfRigidbody, GameObject target, float speed = 1, float acceleration = 0)
         {
             float limit = 0.05f * speed; //속도에 따라 타겟에 접근했는지 판단할 거리를 늘려준다.
-            Vector2 destination;
-            Vector2 distanceToMove;
+            Vector2 destination = Vector2.zero;
+            Vector2 distanceToMove = Vector2.zero;
             if (target != null)
             {
-                destination = target.transform.position;
-                distanceToMove = destination - selfRigidbody.position;
-                print(distanceToMove);
-
-                while (!(Vector2.Distance(destination, selfRigidbody.position) < limit && Vector2.Distance(destination, selfRigidbody.position) > -limit))
+                do
                 {
+                    if(destination != (Vector2)target.transform.position)
+                    {
+                        destination = target.transform.position;
+                        distanceToMove = destination - selfRigidbody.position;
+                        //print(distanceToMove);
+                    }
                     speed += acceleration;
-                    Move(selfRigidbody, distanceToMove, speed);
+                    Move(selfRigidbody, distanceToMove, speed,false);
                     yield return null;
-                }
+                }while(whileState && !(Vector2.Distance(destination, selfRigidbody.position) < limit && Vector2.Distance(destination, selfRigidbody.position) > -limit));
                 selfRigidbody.position = destination; // limit 변수에 따른 위치오차를 없앤다.
                 selfRigidbody.velocity = Vector2.zero;
             }
             yield return null;
         }
-        public IEnumerator ObjectTargetTraceMovePos2D(Rigidbody2D selfRigidbody, GameObject target, int targetsLen, float speed = 1, float acceleration = 0)
+        public IEnumerator ObjectTargetTraceMovePos2D(Rigidbody2D selfRigidbody, GameObject target, float speed = 1, bool phsicsState = false,float acceleration = 0)
         {
             float limit = 0.05f * speed; //속도에 따라 타겟에 접근했는지 판단할 거리를 늘려준다.
-            Vector2 destination;
-            Vector2 distanceToMove;
+            Vector2 destination = Vector2.zero;
+            Vector2 distanceToMove = Vector2.zero;
             if (target != null)
             {
-                destination = target.transform.position;
-                distanceToMove = destination - selfRigidbody.position;
-                print(distanceToMove);
-
-                while (!(Vector2.Distance(destination, selfRigidbody.position) < limit && Vector2.Distance(destination, selfRigidbody.position) > -limit))
+                do
                 {
+                    if(destination != (Vector2)target.transform.position)
+                    {
+                        destination = target.transform.position;
+                        distanceToMove = destination - selfRigidbody.position;
+                        //print(distanceToMove);
+                    }
                     speed += acceleration;
-                    MovePos(selfRigidbody, distanceToMove, speed);
+                    MovePos(selfRigidbody, distanceToMove, speed,phsicsState);
                     yield return null;
-                }
+                }while(whileState && !(Vector2.Distance(destination, selfRigidbody.position) < limit && Vector2.Distance(destination, selfRigidbody.position) > -limit));
                 selfRigidbody.position = destination; // limit 변수에 따른 위치오차를 없앤다.
                 selfRigidbody.velocity = Vector2.zero;
             }

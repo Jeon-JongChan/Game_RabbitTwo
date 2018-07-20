@@ -24,6 +24,7 @@ public class Trab : ObjectInteraction {
     BoxCollider2D box;
 
     /* need variable */
+    WaitForSeconds wsActiveTime;
     Vector2 dir = new Vector2(0,0);
     Vector3 scale;
     Quaternion rotation;
@@ -33,6 +34,7 @@ public class Trab : ObjectInteraction {
 
     private void Start()
     {
+        wsActiveTime = new WaitForSeconds(limitActiveTime);
         SaveState(true, gameObject.activeSelf, transform.position);
         rg2d = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
@@ -57,7 +59,7 @@ public class Trab : ObjectInteraction {
 
         StartCoroutine(MoveToDestination(rg2d, destination, speed , 0, true));
 
-        yield return new WaitForSeconds(limitActiveTime);
+        yield return wsActiveTime;
     }
     private void OnTriggerEnter2D(Collider2D col)
     {

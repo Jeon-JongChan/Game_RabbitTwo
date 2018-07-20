@@ -8,7 +8,7 @@ public class PlayerJump2D : ObjectMovement2D
 {
     [Range(0, 10)]
     public int jumpLevel = 1;
-    [Range(0, 20)]
+    [Range(0, 50)]
     public float jumpHeight = 1f;
     
     //Components

@@ -14,21 +14,26 @@ public class FallingObject : MonoBehaviour {
     Rigidbody2D rg2d;
 
     /* need variable */
+    WaitForSeconds wsDelay;
     Vector2 saveVelocity = Vector2.zero;
     float delay = 0.5f;
     bool state = true;
 
     // Use this for initialization
     void Start () {
+        wsDelay = new WaitForSeconds(delay);
         rg2d = GetComponent<Rigidbody2D>();
         StartCoroutine(SaveVelocity());
     }
+    ///<summary>
+    ///속도를 지속적으로 저장하는 코루틴. 이 속도를 통해 플레이어에 영향을 준다.
+    ///</summary>
     IEnumerator SaveVelocity()
     {
         while(state)
         {
             saveVelocity = rg2d.velocity;
-            yield return new WaitForSeconds(delay);
+            yield return wsDelay;
         }
     }
     bool CheckMovement()

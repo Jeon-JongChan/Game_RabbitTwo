@@ -57,13 +57,13 @@ public class BlankObject : ObjectInteraction {
             startStatus = true;
         }
     }
-    public override void SaveState(bool selfState, bool selfActive, Vector2 pos)
+    public override void SaveState(bool selfState, bool selfActive, Vector2 pos,bool init = false)
     {
         if (!col.enabled && col != null) colActive = col.enabled;
         if (!srComponets.enabled) srActive = srComponets.enabled;
         base.SaveState(selfState, selfActive, pos);
     }
-    public override bool LoadState()
+    public override bool LoadState(bool init = false)
     {
         startStatus = initState;
         if (!srComponets.enabled) srComponets.enabled = srActive;

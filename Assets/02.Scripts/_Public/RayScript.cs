@@ -28,7 +28,6 @@ namespace PsybleScript
         /// </summary>
         public static GameObject DetectedOverlapCircle2D(Vector2 selfPosition, float radius , int layerMask)
         {
-                        print("레이어 마스크 " + layerMask);
             Collider2D hit2D;
             //레이 캐스트를 입력받은 방향으로 길이만큼 쏜다.
             hit2D = Physics2D.OverlapCircle(selfPosition, radius, layerMask);

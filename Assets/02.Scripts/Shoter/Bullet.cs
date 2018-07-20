@@ -72,7 +72,7 @@ public class Bullet : ObjectInteraction
         if (sr != null) sr.enabled = false;
         if (circle != null) circle.enabled = false;
     }
-    public override bool LoadState()
+    public override bool LoadState(bool init = false)
     {
         if (sr != null) sr.enabled = true;
         if (circle != null) circle.enabled = true;
