@@ -98,7 +98,7 @@ public class MovingObject : ObjectInteraction
     }
     private void OnBecameInvisible() {
         CollisionTargetTransform = null;
-        StopCoroutine(returnCoroutine);
+        if(returnCoroutine != null)StopCoroutine(returnCoroutine);
     }
 
     IEnumerator StartMovingObject()
