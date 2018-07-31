@@ -63,6 +63,7 @@ public class ObjectInteraction : ObjectMovement2D, ISaveObject{
     /// </summary>
     protected IEnumerator DetectObject(Rigidbody2D self, Vector2 direction, int selectedKey, float rayScale = 0.5f, int layerMask = 0, float detectTime = 0.01f, string targetTag = null)
     {
+        int xxx = 0;
         GameObject ret = null;
         detectState = true;
         while (detectState)

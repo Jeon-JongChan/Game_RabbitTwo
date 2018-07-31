@@ -9,6 +9,7 @@ TagManager:
   - StandingObject
   - Water
   - BOUNCEBALL
+  - Breakable
   layers:
   - Default
   - TransparentFX
