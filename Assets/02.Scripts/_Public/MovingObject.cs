@@ -4,6 +4,7 @@ using UnityEngine;
 
 public enum MoveType
 {
+    NONE,
     SHOOTING,
     GOTODESTINATION,
     REPEATING,
@@ -33,25 +34,24 @@ public class TypeTraceObject
     public GameObject[] point;
 }
 [RequireComponent(typeof(Rigidbody2D))]
-[ExecuteInEditMode]
 public class MovingObject : ObjectInteraction
 {
     [Header("오브젝트 무빙 타입")]
     public MoveType selectType = MoveType.SHOOTING;
-    public bool useTrigger = false;
+    [SerializeField] bool useTrigger = false;
     [Header("이동시 필요한 변수")]
-    [Range(0,20)]
-    public int speed = 0;
+    [Range(0,100)]
+    [SerializeField] int speed = 0;
     [Tooltip("0 도부터 반시계방향. 0도는 오른쪽이다.")]
-    [Range(0, 3)]
-    public int direction = 0;
+    [SerializeField] int direction = 0;
     [Tooltip("selected 1 or 2")]
-    public float distance = 0;
+    [SerializeField] float distance = 0;
+    [SerializeField] float disappearTime = 5f;
     [Tooltip("selected 0 or 1")]
     [Range(0f,0.1f)]
-    public float accelation = 0;
-    public TypeRepeating repeating;
-    public TypeTraceObject tracing;
+    [SerializeField] float accelation = 0;
+    [SerializeField] TypeRepeating repeating;
+    [SerializeField] TypeTraceObject tracing;
 
     /* 필요 컴포넌트 */
     Rigidbody2D rb2d;
@@ -74,16 +74,16 @@ public class MovingObject : ObjectInteraction
             switch(repeating.repeatDir)
             {
                 case DirType.UP:
-                    direction = 0;
+                    direction = 90;
                     break;
                 case DirType.RIGHT:
-                    direction = 1;
+                    direction = 0;
                     break;
                 case DirType.DOWN:
-                    direction = 2;
+                    direction = 270;
                     break;
                 case DirType.LEFT:
-                    direction = 3;
+                    direction = 180;
                     break;
                 default:
                     print("방향설정 오류");
@@ -94,7 +94,7 @@ public class MovingObject : ObjectInteraction
     }
     private void OnBecameVisible()
     {
-        StartCoroutine(StartMovingObject());
+        returnCoroutine = StartCoroutine(StartMovingObject());
     }
     private void OnBecameInvisible() {
         CollisionTargetTransform = null;
@@ -108,25 +108,32 @@ public class MovingObject : ObjectInteraction
         {
             case MoveType.SHOOTING:
                 returnCoroutine = StartCoroutine(StartObjectShoot(rb2d, dir, speed, accelation));
-                print("movingObject.cs : 슈팅");
+                //print("movingObject.cs : 슈팅");
                 break;
             case MoveType.GOTODESTINATION:
                 Vector2 destination = originPos + (dir * distance);
-                print("movingObject.cs : transform : " + originPos + " destination : " + destination);
+                //print("movingObject.cs : transform : " + originPos + " destination : " + destination);
                 returnCoroutine = StartCoroutine(MoveToDestination(rb2d, destination, speed, accelation));
-                print("movingObject.cs : 목적지");
+                //print("movingObject.cs : 목적지 : " + dir);
                 break;
             case MoveType.REPEATING:
-                print("movingObject.cs : 반복");
+                //print("movingObject.cs : 반복");
                 returnCoroutine = StartCoroutine(ObjectRepeatMove2D(rb2d, direction, distance, speed, repeating.repeatCount, repeating.stopTime));
                 break;
             case MoveType.TRACEOBJECTS:
-                print("movingObject.cs : 추적");
+                //print("movingObject.cs : 추적");
                 if(tracing.point.Length > 0)
                 {
                     returnCoroutine = StartCoroutine( ObjectTargetsTraceMovePos2D(rb2d, tracing.point,tracing.point.Length, speed) );
                 }
                 break;
+            case MoveType.NONE:
+            break;
+        }
+        if(disappearTime != 0)
+        {
+            yield return new WaitForSeconds(disappearTime);
+            gameObject.SetActive(false);
         }
     }
     protected IEnumerator StartObjectShoot(Rigidbody2D rb2d,Vector2 dir, float speed, float accelation = 0)
@@ -142,19 +149,19 @@ public class MovingObject : ObjectInteraction
     {
         Vector2 destination = originPos + (dir * distance);
         print("movingObject.cs : transform : " + originPos + " destination : " + destination);
-        StartCoroutine(MoveToDestination(rb2d, destination, speed, accelation));
+        returnCoroutine = StartCoroutine(MoveToDestination(rb2d, destination, speed, accelation));
         print("movingObject.cs : 목적지");
     }
     /* 파괴하거나 비활성화시 동작을 멈추게 한다. */
     private void OnDisable()
     {
-        print("movingObject.cs : 정지");
+        //print("movingObject.cs : 정지");
         StopAllCoroutines();
     }
 
     private void OnDestroy()
     {
-        print("movingObject.cs : 정지");
+        //print("movingObject.cs : 정지");
         StopAllCoroutines();
     }
 
@@ -162,7 +169,7 @@ public class MovingObject : ObjectInteraction
     {
         if(col.gameObject.tag != "Player")
         {
-            print("movingObject.cs : 충돌정지");
+            //print("movingObject.cs : 충돌정지");
             StopAllCoroutines();
         }
     }
