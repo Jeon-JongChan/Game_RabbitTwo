@@ -9,6 +9,7 @@ public class WarpCtrl : MonoBehaviour {
 	[SerializeField] bool isMapWarp = false;
 	[SerializeField] Transform mapCameraPos;
 	[SerializeField] bool isBiDirect = false;
+	[Tooltip("양방향 워프가 아닌 단 방향 워프일때 워프포인트가 여러개일경우 랜덤 워프가능")]
 	[SerializeField] bool isRandom = false;
 	[SerializeField] float warpDelayTime = 1f;
 	[SerializeField] string[] warpTargetTag; 
@@ -19,18 +20,16 @@ public class WarpCtrl : MonoBehaviour {
 
 	WaitForSeconds wsWarpDelay;
 	// Use this for initialization
-	void Awake () {
+	void Start () {
 		if(!isBiDirect)
 		{
 			GetComponentsInChildren<Transform>(warpPos);
 			warpPos.RemoveAt(0);
 		}
 		wsWarpDelay = new WaitForSeconds(warpDelayTime);
+		if(isMapWarp) MapWarpEvent += GameObject.Find("GameManager").GetComponent<GameManager>().MapWarpEvent;
 		// warpPos = GetComponentsInChildren<Transform>();
 		// print(warpPos.Length);
-	}
-	private void Start() {
-		if(isMapWarp) MapWarpEvent += GameObject.Find("GameManager").GetComponent<GameManager>().MapWarpEvent;
 	}
 	private void OnTriggerEnter2D(Collider2D col) {
 		foreach(var v in warpTargetTag)

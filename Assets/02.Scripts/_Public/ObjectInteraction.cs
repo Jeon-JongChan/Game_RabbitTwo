@@ -93,7 +93,16 @@ public class ObjectInteraction : ObjectMovement2D, ISaveObject{
         }
 
     }
-
+    public virtual void DisableObject2D(SpriteRenderer sr,Collider2D col2d)
+    {
+        if(sr != null) sr.enabled = false;
+        if(col2d != null) col2d.enabled = false;
+    }
+    public virtual void EnableObject2D(SpriteRenderer sr,Collider2D col2d)
+    {
+        if(sr != null) sr.enabled = true;
+        if(col2d != null) col2d.enabled = true;
+    }
     /// <summary>
     /// Trigger를 통해 목표의 위치를 갖고 오는 함수
     /// </summary>

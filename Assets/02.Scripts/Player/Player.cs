@@ -1,13 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.SceneManagement;
 public class Player : LifeInteraction
 {
     //public variable - inspector
     public float speed = 2;
     public float BarrierdelayTime = 5f;
     public GameObject barrier;
+    [SerializeField] GameObject particle;
+    [SerializeField] float particleLifeTime = 0.3f;
     
     //Components
     Rigidbody2D playerRb;
@@ -16,6 +18,8 @@ public class Player : LifeInteraction
      *  오른쪽 점프 4    왼쪽 점프5
      */
     Animator playerMoveAnimator;
+    BoxCollider2D box2d;
+    SpriteRenderer playerSr;
     //need virable
     float x = 0, y = 0;
     float initSpeed;
@@ -28,32 +32,48 @@ public class Player : LifeInteraction
         get{return barrierState;}
         set{barrierState = value;}
     }
+    public bool Dead{
+        get{return dead;}
+    }
     bool barrierAniTrigger = true;
 
 	// Use this for initialization
 	void Start () {
         playerRb = GetComponent<Rigidbody2D>();
         playerMoveAnimator = GetComponent<Animator>();
+        playerSr = GetComponent<SpriteRenderer>();
+        box2d = GetComponent<BoxCollider2D>();
         initSpeed = speed;
 	}
 	
 	// Update is called once per frame
 	void Update () {
-
-        x = Input.GetAxisRaw("Horizontal");
-
-        AnimationControl();
-        Move(playerRb, new Vector2(x, y), speed);
-        
-        if(Mathf.Abs(playerRb.velocity.y) > 1f) JumpAnimation();
-        if(barrierState && barrierAniTrigger)
+        if(!dead)
         {
-            //print("켜진다. 배리어");
-            barrier.SetActive(barrierAniTrigger);
-            barrierAniTrigger = false;
-            StartCoroutine(BarrierExit(BarrierdelayTime));
+            x = Input.GetAxisRaw("Horizontal");
+
+            AnimationControl();
+            Move(playerRb, new Vector2(x, y), speed);
+            
+            if(Mathf.Abs(playerRb.velocity.y) > 1f) JumpAnimation();
+            if(barrierState && barrierAniTrigger)
+            {
+                //print("켜진다. 배리어");
+                barrier.SetActive(barrierAniTrigger);
+                barrierAniTrigger = false;
+                StartCoroutine(BarrierExit(BarrierdelayTime));
+            }
         }
+        else StartCoroutine("PlayerDie");
         
+    }
+    public IEnumerator PlayerDie()
+    {
+        DisableObject2D(playerSr,box2d);
+        if(particle != null) particle.SetActive(true);
+        yield return new WaitForSeconds(particleLifeTime);
+        if(particle != null) particle.SetActive(false);
+        SceneManager.LoadScene("Game01");
     }
     IEnumerator BarrierExit(float delayTime)
     {
@@ -115,14 +135,6 @@ public class Player : LifeInteraction
         limitState = false;
     }
 
-    public void SetPlayerVelocity(Vector2 setVelocity)
-    {
-        playerRb.velocity = setVelocity;
-    }
-    public void SetPlayerVelocity(int devide)
-    {
-        playerRb.velocity = playerRb.velocity / devide;
-    }
     /// <summary>
     /// 일정 시간동안 플레이어의 속도를 제한합니다. limitTime 이 0이면 특정 bool 값이 변하기 전까지 지속합니다.
     /// </summary>

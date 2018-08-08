@@ -7,7 +7,7 @@ public class BounceObject : ObjectInteraction {
 
     public Vector2 direction = Vector2.zero;
     [Tooltip("다른 총알과 충돌할지 안할지 결정합니다.")]
-    public bool otherBallCollisionTrigger = true;
+    public bool ballCollisionTrigger = true;
     [Tooltip("플레이어와 충돌시 사라지게 합니다.")]
     public bool disapperCollisionPlayer = true;
     List<string> tags;
@@ -37,10 +37,10 @@ public class BounceObject : ObjectInteraction {
         this.speed = speed;
         this.tags = tags;
     }
-	// Use this for initialization
-	private void Awake() {
-		
-	} 
+
+    private void Start() {
+        if(!ballCollisionTrigger) gameObject.layer = 13; //13번 레이어는 IGNOREOBJ
+    }
 
     public void Shoot(Vector2 bulletStartingPoint, Vector2 dir)
     {
@@ -107,7 +107,7 @@ public class BounceObject : ObjectInteraction {
     }
 
     private void OnCollisionEnter2D(Collision2D col) {
-        if(!otherBallCollisionTrigger)
+        if(!ballCollisionTrigger)
         {
             if(!col.gameObject.CompareTag("BOUNCEBALL")) direction = GetReflectAngleVector2D(col, direction);
         }

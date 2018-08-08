@@ -1,7 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
+[System.Serializable]
+class StageSceneName
+{
+	public string[] level1 = new string[3];
+	public string[] level2 = new string[3];
+}
 public class GameManager : MonoBehaviour {
 
 	struct WarpPotalSt
@@ -13,6 +20,15 @@ public class GameManager : MonoBehaviour {
 	[SerializeField] GameObject player;
 	[SerializeField] GameObject mainCamera;
 	[SerializeField] bool isSequential = false;
+	//스테이지마다 활성화할 맵의 개수
+	[SerializeField] int stage1EnableMapCount = 5;
+	[SerializeField] int stage2EnableMapCount = 11;
+	[SerializeField] int stage3EnableMapCount = 18;
+	[SerializeField] StageSceneName _sceneName = new StageSceneName();
+
+	/* NEEDS COMPONENT */
+	Player playerInstance;
+
 	List<GameObject> stage1MapList;
 	List<GameObject> stage2MapList;
 	List<GameObject> stage3MapList;
@@ -21,10 +37,6 @@ public class GameManager : MonoBehaviour {
 	int[] stage2EnableMapIdxs;
 	int[] stage3EnableMapIdxs;
 
-	//스테이지마다 활성화할 맵의 개수
-	[SerializeField] int stage1EnableMapCount = 5;
-	[SerializeField] int stage2EnableMapCount = 11;
-	[SerializeField] int stage3EnableMapCount = 18;
 
 	int stage1TotalMapCount = 9;
 	int stage2TotalMapCount = 16;
@@ -43,8 +55,11 @@ public class GameManager : MonoBehaviour {
     {
         //pausePage.SetActive(false);
 		mainCamera = GameObject.Find("Main Camera");
+		playerInstance = player.GetComponent<Player>();
     }
 	private void Awake() {
+		//DontDestroyOnLoad(gameObject);
+
 		stage1MapList = new List<GameObject>();
 		stage2MapList = new List<GameObject>();
 		stage3MapList = new List<GameObject>();
@@ -53,7 +68,12 @@ public class GameManager : MonoBehaviour {
 		stage2EnableMapIdxs = new int[stage2EnableMapCount];
 		stage3EnableMapIdxs = new int[stage3EnableMapCount];
 
-		if(!isSequential)StartMapRandomIdx(1,stage1EnableMapCount,stage1TotalMapCount);
+		if(!isSequential)
+		{
+			StartMapRandomIdx(1,stage1EnableMapCount,stage1TotalMapCount);
+			StartMapRandomIdx(2,stage2EnableMapCount,stage2TotalMapCount);
+			StartMapRandomIdx(3,stage3EnableMapCount,stage3TotalMapCount);
+		}
 		else
 		{
 			for(int i = 0; i < stage1EnableMapCount; i++)
@@ -61,8 +81,6 @@ public class GameManager : MonoBehaviour {
 				stage1EnableMapIdxs[i] = i+1;
 			}
 		}
-		StartMapRandomIdx(2,stage2EnableMapCount,stage2TotalMapCount);
-		StartMapRandomIdx(3,stage3EnableMapCount,stage3TotalMapCount);
 
 		AddMap(_stageNum);
 		ConnectMapWarp(_stageNum, stage1EnableMapCount);
@@ -87,6 +105,12 @@ public class GameManager : MonoBehaviour {
 			player.transform.position =  startingPoint;
 			isStartStage = false;
 		}
+
+		// if(playerInstance.Dead)
+		// {
+		// 	StartCoroutine(playerInstance.PlayerDie());
+		// 	SceneManager.LoadScene(_sceneName.level1[_stageNum - 1]);
+		// }
 	}
 	void AddMap(int stageNum)
 	{

@@ -8,9 +8,12 @@ public class Bullet : ObjectInteraction
     /* make bullet, Immediately input value */
 
     /* if shoot, Immediately input value */
-    public Vector2 direction;
+    [SerializeField] Vector2 direction;
     [Tooltip("물리적 움직임을 부여합니다. collider의 isTrigger를 해제해주세요.")]
-    public bool ablePhysicMoving = false;
+    [SerializeField] bool ablePhysicMoving = false;
+    [Tooltip("충돌시 무조건 off")]
+    [SerializeField] bool isCollisionDisable = false;
+    [SerializeField] float disappearTime = 0;
     List<string> tags;
     float extinctionTime;
     float speed;
@@ -21,6 +24,7 @@ public class Bullet : ObjectInteraction
     CircleCollider2D circle;
 
     /* needs variable */
+    WaitForSeconds wsDisappearTime;
     bool returnTrigger = false;
 
     public void GetBulletComponent()
@@ -39,6 +43,7 @@ public class Bullet : ObjectInteraction
         this.speed = speed;
         this.tags = tags;
         this.returnTrigger = returnTrigger;
+        wsDisappearTime = new WaitForSeconds(disappearTime);
     }
 
     /// <summary>
@@ -67,8 +72,10 @@ public class Bullet : ObjectInteraction
     /// <summary>
     /// Shoter.cs에서 종료 명령이 오면 발사 위치로 복귀한 후 화면에 보일경우 꺼 줍니다.
     /// </summary>
-    public void ExitBullet()
+    public IEnumerator ExitBullet()
     {
+        if(disappearTime != 0) yield return wsDisappearTime;
+
         if (sr != null) sr.enabled = false;
         if (circle != null) circle.enabled = false;
     }
@@ -89,15 +96,22 @@ public class Bullet : ObjectInteraction
 
     private void OnTriggerEnter2D(Collider2D col)
     {
-        foreach (var v in tags)
+        if(!isCollisionDisable && tags.Count > 0)
         {
-            if (col.CompareTag(v))
+            foreach (var v in tags)
             {
-                IDamageable interaction = col.gameObject.GetComponent<IDamageable>();
-                if (interaction != null) interaction.TakeHit(1);
-                ExitBullet();
-                break;
+                if (col.CompareTag(v))
+                {
+                    IDamageable interaction = col.gameObject.GetComponent<IDamageable>();
+                    if (interaction != null) interaction.TakeHit(1);
+                    ExitBullet();
+                    break;
+                }
             }
+        }
+        else
+        {
+            ExitBullet();
         }
     }
 }

@@ -18,13 +18,13 @@ public class EffectorTrigger : ObjectInteraction
 	
 	private void OnBecameVisible()
 	{
-		StartCoroutine(StartEffector());
+		if(currActive) StartCoroutine(StartEffector());
 	}
 	IEnumerator StartEffector()
 	{
 		while(state)
 		{
-			while(state && CollisionTargetTransform == null) yield return new WaitForFixedUpdate();
+			while(useTrigger && CollisionTargetTransform == null) yield return new WaitForFixedUpdate();
 			if(useTrigger)
 			{
 				col.enabled = !currActive;

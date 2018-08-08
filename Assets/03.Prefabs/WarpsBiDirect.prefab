@@ -126,7 +126,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.1, y: 4}
+  m_Size: {x: 0.1, y: 2}
   m_EdgeRadius: 0
 --- !u!61 &61902280310895210
 BoxCollider2D:
@@ -151,7 +151,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.1, y: 4}
+  m_Size: {x: 0.1, y: 2}
   m_EdgeRadius: 0
 --- !u!114 &114096549842699964
 MonoBehaviour:
@@ -164,9 +164,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1bef579729a30a64d871dde59e189c86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isRandom: 0
+  isMapWarp: 0
+  mapCameraPos: {fileID: 0}
   isBiDirect: 1
-  warpPosIdx: 0
+  isRandom: 0
+  warpDelayTime: 1
   warpTargetTag:
   - Player
   warpPos:
@@ -182,9 +184,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1bef579729a30a64d871dde59e189c86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isRandom: 0
+  isMapWarp: 0
+  mapCameraPos: {fileID: 0}
   isBiDirect: 1
-  warpPosIdx: 0
+  isRandom: 0
+  warpDelayTime: 1
   warpTargetTag:
   - Player
   warpPos:

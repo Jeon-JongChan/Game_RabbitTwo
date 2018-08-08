@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using PsybleScript;
 
-public class LifeInteraction : ObjectMovement2D,IDamageable
+public class LifeInteraction : ObjectInteraction,IDamageable
 {
     [Tooltip("이것은 해당 오브젝트의 체력입니다. \n-1일경우 무적입니다.")]
     public int health = -1;
@@ -11,13 +11,13 @@ public class LifeInteraction : ObjectMovement2D,IDamageable
     //상속 받은 자식만 변수 사용이 가능하다. static 선언이 없으면 상속받은 객체마다 다른 메모리 공간을 가지게 된다.
     protected bool dead = false;
 
-    public void TakeHit(int Damage)
+    public void TakeHit(int damage)
     {
-        if (health > 0)
+        if (health - damage > 0)
         {
-            health -= Damage;
+            health -= damage;
         }
-        else if (health == 0)
+        else if (health - damage == 0)
         {
             Die();
         }

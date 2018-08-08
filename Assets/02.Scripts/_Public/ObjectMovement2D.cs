@@ -6,7 +6,18 @@ namespace PsybleScript
 {
     public class ObjectMovement2D : MonoBehaviour
     {
+    
+        /// <summary>
+        /// 2D 이동함수, not player.
+        /// </summary>
+        public Vector2 MovePos(Rigidbody2D rb, Vector2 direction, float speed , bool phsicsState = false)
+        {
+            //distanceToMove.Normalize(); //가야할 방향이 정해진다.
+            if (!phsicsState) rb.MovePosition(rb.position + (direction * speed * Time.deltaTime));
+            else rb.AddForce(direction * speed * 10);
 
+            return direction;
+        }
         /// <summary>
         /// transform을 이용하여 위치를 이동시키는 함수.
         /// </summary>
@@ -19,17 +30,6 @@ namespace PsybleScript
             tempPos.z += z * speed * Time.deltaTime;
 
             tf.position = tempPos;
-        }
-        /// <summary>
-        /// 2D 이동함수, not player.
-        /// </summary>
-        public Vector2 MovePos(Rigidbody2D rb, Vector2 direction, float speed , bool phsicsState = false)
-        {
-            //distanceToMove.Normalize(); //가야할 방향이 정해진다.
-            if (!phsicsState) rb.MovePosition(rb.position + (direction * speed * Time.deltaTime));
-            else rb.AddForce(direction * speed * 10);
-
-            return direction;
         }
         /// <summary>
         /// Velocity를 이용한 2D 이동함수.not player
@@ -124,308 +124,71 @@ namespace PsybleScript
 
         //매우 위험한 변수. 타 클래스에서 코루틴 무빙함수를 사용시 코루틴을 종료시키기 위해 사용.
         protected bool whileState = true; 
-        //방향 설정 열거형 변수들 - 가독성증가를 위해 사용
-        enum direction { moveUp = 0, moveRight = 1, moveDown = 2, moveLeft = 3, moveFront = 4, moveBack = 5 };
-        public IEnumerator ObjectRepeatMove2D(GameObject selfGameObject, int desiredDirection, float repeatDistance, float moveSpeed = 1f, int repeatCount = 0, float stopTime = 0.5f)
+        public IEnumerator ObjectRepeatMove2D(GameObject selfGameObject, Vector2 direction, float repeatDistance, float moveSpeed = 1f, int repeatCount = 0, float stopTime = 0.5f)
         {
-            int i = 0;
-            Vector3 destination;
-            bool whileState = false;
+            WaitForSeconds wsStopTime = new WaitForSeconds(stopTime);
+            WaitForFixedUpdate wsfixMoveDelay = new WaitForFixedUpdate();
+            Vector2 origin = selfGameObject.transform.position;
+            Vector2 distance = origin + (direction * repeatDistance);
+        
+            whileState = false;
+            float gap = 0.1f;
+            gap = gap * moveSpeed > repeatDistance ? 0.5f : gap * moveSpeed;
+            if(repeatCount == 0) whileState = true;
 
-            destination = selfGameObject.transform.position;
-
-            // repeatCount가 0일경우 무한반복으로 정의하기 위해 whileState를 true로 설정해준다.
-            if (repeatCount == 0) whileState = true;
-
-            // 목적지까지 도달하면 dir변수에 -1을 곱해서 되돌아가는 패턴
-            float dir;
-
-            // 아래와 왼쪽은 시작시 dir -1 로 시작해야한다.
-            if (desiredDirection < 2) dir = 1;
-            else dir = -1;
-
-            switch (desiredDirection)
+            while(repeatCount-- > 0 || whileState)
             {
-                case (int)direction.moveUp:
-                    destination.y += repeatDistance * dir;
-                    // i 와 repeatCount를 비교한후 i를 +1 증가 시킨다. i 가 repeatCount보다 크거나 whileState가 true면 반복된다.
-                    while (whileState || i++ > repeatCount)
-                    {
-                        MovePos(selfGameObject.transform, 0, dir, 0, moveSpeed);
-
-                        if (dir > 0)
-                        {
-                            if (selfGameObject.transform.position.y > destination.y)
-                            {
-                                dir = -dir;
-                                destination.y += repeatDistance * dir;
-                                yield return new WaitForSeconds(stopTime);
-                            }
-                        }
-                        else if (dir < 0)
-                        {
-                            if (selfGameObject.transform.position.y < destination.y)
-                            {
-                                dir = -dir;
-                                destination.y += repeatDistance * dir;
-                                yield return new WaitForSeconds(stopTime);
-                            }
-                        }
-                        yield return new WaitForEndOfFrame();
-                    }
-                    break;
-                case (int)direction.moveRight:
-                    destination.x += repeatDistance * dir;
-                    while (whileState || i++ > repeatCount)
-                    {
-                        MovePos(selfGameObject.transform, dir, 0, 0, moveSpeed);
-                        if (dir > 0)
-                        {
-                            if (selfGameObject.transform.position.x > destination.x)
-                            {
-                                dir = -dir;
-                                destination.x += repeatDistance * dir;
-                                yield return new WaitForSeconds(stopTime);
-                            }
-                        }
-                        else if (dir < 0)
-                        {
-                            if (selfGameObject.transform.position.x < destination.x)
-                            {
-                                dir = -dir;
-                                destination.x += repeatDistance * dir;
-                                yield return new WaitForSeconds(stopTime);
-                            }
-                        }
-                        yield return new WaitForEndOfFrame();
-                    }
-                    break;
-                case (int)direction.moveDown:
-                    destination.y += repeatDistance * dir;
-                    while (whileState || i++ > repeatCount)
-                    {
-                        MovePos(selfGameObject.transform, 0, dir, 0, moveSpeed);
-
-                        if (dir > 0)
-                        {
-                            if (selfGameObject.transform.position.y > destination.y)
-                            {
-                                dir = -dir;
-                                destination.y += repeatDistance * dir;
-                                yield return new WaitForSeconds(stopTime);
-                            }
-                        }
-                        else if (dir < 0)
-                        {
-                            if (selfGameObject.transform.position.y < destination.y)
-                            {
-                                dir = -dir;
-                                destination.y += repeatDistance * dir;
-                                yield return new WaitForSeconds(stopTime);
-                            }
-                        }
-                        yield return new WaitForEndOfFrame();
-                    }
-                    break;
-                case (int)direction.moveLeft:
-                    destination.x += repeatDistance * dir;
-                    while (whileState || i++ > repeatCount)
-                    {
-                        MovePos(selfGameObject.transform, dir, 0, 0, moveSpeed);
-
-                        if (dir > 0)
-                        {
-                            if (selfGameObject.transform.position.x > destination.x)
-                            {
-                                dir = -dir;
-                                destination.x += repeatDistance * dir;
-                                yield return new WaitForSeconds(stopTime);
-                            }
-                        }
-                        else if (dir < 0)
-                        {
-                            if (selfGameObject.transform.position.x < destination.x)
-                            {
-                                dir = -dir;
-                                destination.x += repeatDistance * dir;
-                                yield return new WaitForSeconds(stopTime);
-                            }
-                        }
-                        yield return new WaitForEndOfFrame();
-                    }
-                    break;
-                default:
-                    whileState = false;
-                    i = 0;
-                    break;
+                while(Vector3.Distance(selfGameObject.transform.position,distance) > gap)
+                {
+                    //print(selfGameObject.transform.position + " " + distance + " " + origin + "\n" + (direction));
+                    MovePos(selfGameObject.transform,direction.x,direction.y,0,moveSpeed);
+                    yield return wsfixMoveDelay;
+                }
+                selfGameObject.transform.position = distance;
+                yield return wsStopTime;
+                while(Vector3.Distance(selfGameObject.transform.position,origin) > gap)
+                {
+                    MovePos(selfGameObject.transform,-direction.x,-direction.y,0,moveSpeed);
+                    yield return wsfixMoveDelay;
+                }
+                selfGameObject.transform.position = origin;
+                yield return wsStopTime;
             }
-
-            yield return null;
         }
         /// <summary>
         /// 매개변수로 받은 오브젝트를 repeatDistance만큼 반복이동 시킨다. repeatCount = 0일 경우 무한반복한다.
         /// </summary>
-        public IEnumerator ObjectRepeatMove2D(Rigidbody2D selfRigidbody, int desiredDirection, float repeatDistance, float moveSpeed = 1f, int repeatCount = 0, float stopTime = 0.5f)
-        {
-            int i = 0;
-            Vector3 destination;
-            bool whileState = false;
-
-            destination = selfRigidbody.transform.position;
-
-            // repeatCount가 0일경우 무한반복으로 정의하기 위해 whileState를 true로 설정해준다.
-            if (repeatCount == 0) whileState = true;
-
-            // 목적지까지 도달하면 dir변수에 -1을 곱해서 되돌아가는 패턴
-            float dir;
-
-            // 아래와 왼쪽은 시작시 dir -1 로 시작해야한다.
-            if (desiredDirection < 2) dir = 1;
-            else dir = -1;
-
-            switch (desiredDirection)
-            {
-                case (int)direction.moveUp:
-                    destination.y += repeatDistance * dir;
-                    while (whileState || i++ > repeatCount)
-                    {
-                        Move(selfRigidbody, new Vector2(0, dir), moveSpeed);
-
-                        if (dir > 0)
-                        {
-                            if (selfRigidbody.position.y > destination.y)
-                            {
-                                dir = -dir;
-                                destination.y += repeatDistance * dir;
-                                yield return new WaitForSeconds(stopTime);
-                            }
-                        }
-                        else if (dir < 0)
-                        {
-                            if (selfRigidbody.position.y < destination.y)
-                            {
-                                dir = -dir;
-                                destination.y += repeatDistance * dir;
-                                yield return new WaitForSeconds(stopTime);
-                            }
-                        }
-                        yield return new WaitForEndOfFrame();
-                    }
-                    break;
-                case (int)direction.moveRight:
-                    destination.x += repeatDistance * dir;
-                    while (whileState || i++ > repeatCount)
-                    {
-                        Move(selfRigidbody, new Vector2(dir, 0), moveSpeed);
-                        if (dir > 0)
-                        {
-                            if (selfRigidbody.position.x > destination.x)
-                            {
-                                dir = -dir;
-                                destination.x += repeatDistance * dir;
-                                yield return new WaitForSeconds(stopTime);
-                            }
-                        }
-                        else if (dir < 0)
-                        {
-                            if (selfRigidbody.position.x < destination.x)
-                            {
-                                dir = -dir;
-                                destination.x += repeatDistance * dir;
-                                yield return new WaitForSeconds(stopTime);
-                            }
-                        }
-                        yield return new WaitForEndOfFrame();
-                    }
-                    break;
-                case (int)direction.moveDown:
-                    destination.y += repeatDistance * dir;
-                    while (whileState || i++ > repeatCount)
-                    {
-                        Move(selfRigidbody, new Vector2(0, dir), moveSpeed);
-
-                        if (dir > 0)
-                        {
-                            if (selfRigidbody.position.y > destination.y)
-                            {
-                                dir = -dir;
-                                destination.y += repeatDistance * dir;
-                                yield return new WaitForSeconds(stopTime);
-                            }
-                        }
-                        else if (dir < 0)
-                        {
-                            if (selfRigidbody.position.y < destination.y)
-                            {
-                                dir = -dir;
-                                destination.y += repeatDistance * dir;
-                                yield return new WaitForSeconds(stopTime);
-                            }
-                        }
-                        yield return new WaitForEndOfFrame();
-                    }
-                    break;
-                case (int)direction.moveLeft:
-                    destination.x += repeatDistance * dir;
-                    while (whileState || i++ > repeatCount)
-                    {
-                        Move(selfRigidbody, new Vector2(dir, 0), moveSpeed);
-
-                        if (dir > 0)
-                        {
-                            if (selfRigidbody.position.x > destination.x)
-                            {
-                                dir = -dir;
-                                destination.x += repeatDistance * dir;
-                                yield return new WaitForSeconds(stopTime);
-                            }
-                        }
-                        else if (dir < 0)
-                        {
-                            if (selfRigidbody.position.x < destination.x)
-                            {
-                                dir = -dir;
-                                destination.x += repeatDistance * dir;
-                                yield return new WaitForSeconds(stopTime);
-                            }
-                        }
-                        yield return new WaitForEndOfFrame();
-                    }
-                    break;
-                default:
-                    whileState = false;
-                    i = 0;
-                    break;
-            }
-
-            yield return null;
-        }
         public IEnumerator ObjectRepeatMove2D(Rigidbody2D selfRigidbody, Vector2 direction, float repeatDistance, float moveSpeed = 1f, int repeatCount = 0, float stopTime = 0.5f)
         {
-            int repeat = 0; // 반복 횟수
-            bool whileState = false;
-            float toleranceGap = 0.1f;
-            Vector2 source = selfRigidbody.position;
-            Vector2 destination = source + (direction * repeatDistance);
+            WaitForSeconds wsStopTime = new WaitForSeconds(stopTime);
+            WaitForFixedUpdate wsfixMoveDelay = new WaitForFixedUpdate();
+            Vector2 origin = selfRigidbody.position;
+            Vector2 distance = origin + (direction * repeatDistance);
+        
+            whileState = false;
+            float gap = 0.1f;
+            gap = gap * moveSpeed > repeatDistance ? 0.5f : gap * moveSpeed;
+            if(repeatCount == 0) whileState = true;
 
-            if (repeatCount == 0) whileState = true;
-
-            while(whileState || repeat < repeatCount)
+            while(repeatCount-- > 0 || whileState)
             {
-                while(Vector2.Distance(selfRigidbody.position, destination) < toleranceGap)
+                while(Vector3.Distance(selfRigidbody.position,distance) > gap)
                 {
-                    MovePos(selfRigidbody, direction, moveSpeed);
-                    yield return new WaitForFixedUpdate();
+                    MovePos(selfRigidbody,direction,moveSpeed);
+                    yield return wsfixMoveDelay;
                 }
-                while (Vector2.Distance(selfRigidbody.position, source) < toleranceGap)
+                selfRigidbody.position = distance;
+                yield return wsStopTime;
+                while(Vector3.Distance(selfRigidbody.position,origin) > gap)
                 {
-                    MovePos(selfRigidbody, -direction, moveSpeed);
-                    yield return new WaitForFixedUpdate();
+                    MovePos(selfRigidbody,-direction,moveSpeed);
+                    yield return wsfixMoveDelay;
                 }
-                repeat++;
-                yield return new WaitForFixedUpdate();
+                selfRigidbody.position = origin;
+                yield return wsStopTime;
             }
         }
+        
 
         /// <summary>
         /// 오브젝트 배열 순서대로 추적해서 오브젝트를 이동시키는 함수
@@ -473,17 +236,18 @@ namespace PsybleScript
             {
                 while (whileState && i < targetsLen)
                 {
+                    print("len : " + targetsLen + " target : " + targets[i].name);
                     destination = targets[i].transform.position;
                     distanceToMove = destination - selfRigidbody.position;
                     print(distanceToMove);
 
-                    while (whileState && !(Vector2.Distance(destination, selfRigidbody.position) < limit && Vector2.Distance(destination, selfRigidbody.position) > -limit))
+                    while (whileState && Vector2.Distance(destination, selfRigidbody.position) > limit)
                     {
                         if(destination != (Vector2)targets[i].transform.position)
                         {
                             destination = targets[i].transform.position;
                             distanceToMove = destination - selfRigidbody.position;
-                            //print(distanceToMove);
+                            print(distanceToMove);
                         }
                         speed += acceleration;
                         MovePos(selfRigidbody, distanceToMove, speed);

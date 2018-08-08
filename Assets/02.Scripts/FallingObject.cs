@@ -27,11 +27,9 @@ public class FallingObject : MonoBehaviour {
     }
     private void OnBecameVisible() {
         StartCoroutine("SaveVelocity");
-        rg2d.gravityScale = 1;
     }
     private void OnBecameInvisible() {
         StopCoroutine("SaveVelocity");
-        rg2d.gravityScale = 0;
     }
     ///<summary>
     ///속도를 지속적으로 저장하는 코루틴. 이 속도를 통해 플레이어에 영향을 준다.

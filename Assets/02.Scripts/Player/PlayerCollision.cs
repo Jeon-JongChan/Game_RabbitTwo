@@ -3,13 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerCollision : MonoBehaviour {
-    private PlayerCollision() {
-
-    }
-    static private PlayerCollision instance = new PlayerCollision();
-    static public PlayerCollision GetInstance() {
-        return instance;
-    }
     // Inspector 변수들
     public GameObject player;
     public string[] collisionTag;

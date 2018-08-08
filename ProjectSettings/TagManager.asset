@@ -9,7 +9,7 @@ TagManager:
   - StandingObject
   - Water
   - BOUNCEBALL
-  - Breakable
+  - MAP
   layers:
   - Default
   - TransparentFX
@@ -22,9 +22,9 @@ TagManager:
   - PLAYER
   - MOVINGOBJ
   - WATER
-  - 
-  - 
-  - 
+  - MOVINGWALL
+  - GROUND
+  - IGNOREOBJ
   - 
   - 
   - 

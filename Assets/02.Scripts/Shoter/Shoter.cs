@@ -10,13 +10,13 @@ public class Shoter : ObjectInteraction
 
     [Tooltip("0 - 자기자신 날리기\n1 - 맵에 보이면 방향지정 날리기 \n2 - 충돌 이벤트 발생 \n3 - 회전")]
     [Range(0,3)]
-    public int selectedType = 0;
+    [SerializeField] int selectedType = 0;
     [Tooltip("0, 2 번 선택시 0 - 방향날리기 1 - 타겟 충돌 위치에 날리기 \n3번 선택시 0 - 화면에 보이자 마자 1 - 트리거에 걸렸을때")]
     [Range(0, 1)]
-    public int shotKey = 0;
+    [SerializeField] int shotKey = 0;
     [Tooltip("3 번 선택시 0 - 순차 회전 발사 1 - 동시 회전 발사")]
     [Range(0, 1)]
-    public int shotRotationKey = 0;
+    [SerializeField] int shotRotationKey = 0;
 
     [Header("공통 변수")]
     [Tooltip("발사 포인트가 없을 경우 shoter 중심지가 지정됨")]
@@ -30,7 +30,7 @@ public class Shoter : ObjectInteraction
     public int shootAngle = 0;
     [Range(0,10)]
     public float bulletSpeed = 1;
-    [Range(0, 5)]
+    [Range(0, 30)]
     [Tooltip("0 is that not remove -> collision destroy")]
     public float bulletRemoveTime = 0;
     [Range(0, 20)]
@@ -45,16 +45,16 @@ public class Shoter : ObjectInteraction
     public float shotTimeGap = 1f;
     [Range(0, 100)]
     [Tooltip("default 10, 오브젝트마다 생성할 총알 개수")]
-    public int bulletReadyCount = 10;
+    [SerializeField] int bulletReadyCount = 10;
 
     [Header("selectType - 3")]
     [Range(0, 36)]
     [Tooltip("회전총알 발사시 발사할 개수 - shotAngle / 개수 = 각도")]
     public int bulletRotationCount = 18;
-    [Tooltip("총알이 날라갈 최대 각도입니다. 반시계 방향을 원하면 음수로 주세요")]
-    public int shotMaxAngle = 360;
     [Tooltip("발사를 시작할 각도 입니다.\n0 - right\n90 - up\n180 - left\n270 - down")]
     public int shotStartAngle = 0;
+    [Tooltip("시작 각도부터 출발하여 끝을 향해 회전하는 최대 각도입니다. \n반시계 방향을 원하면 음수로 주세요")]
+    public int shotMaxAngle = 360;
     [Range(0, 1)]
     [Tooltip("3_0 선택 : 총알이 날라가는 시간 gap. default = 0.05f")]
     public float shotWaitRotation = 0.05f;

@@ -8,15 +8,10 @@ public enum MoveType
     SHOOTING,
     GOTODESTINATION,
     REPEATING,
-    TRACEOBJECTS
+    TRACEOBJECTS,
+    TARGETING
 }
-public enum DirType
-{
-    UP,
-    RIGHT,
-    DOWN,
-    LEFT
-}
+
 [System.Serializable]
 public class TypeRepeating
 {
@@ -24,7 +19,6 @@ public class TypeRepeating
     public float stopTime;
     [Tooltip("반복 횟수입니다. 0을 줄 경우 무한히 반복합니다.")]
     public int repeatCount;
-    public DirType repeatDir;
 
 }
 [System.Serializable]
@@ -39,6 +33,8 @@ public class MovingObject : ObjectInteraction
     [Header("오브젝트 무빙 타입")]
     public MoveType selectType = MoveType.SHOOTING;
     [SerializeField] bool useTrigger = false;
+    [Tooltip("트리거 사용시 재작동을 위한 코드입니다.")]
+    [SerializeField] bool reuseTrigger = false;
     [Header("이동시 필요한 변수")]
     [Range(0,100)]
     [SerializeField] int speed = 0;
@@ -46,7 +42,6 @@ public class MovingObject : ObjectInteraction
     [SerializeField] int direction = 0;
     [Tooltip("selected 1 or 2")]
     [SerializeField] float distance = 0;
-    [SerializeField] float disappearTime = 5f;
     [Tooltip("selected 0 or 1")]
     [Range(0f,0.1f)]
     [SerializeField] float accelation = 0;
@@ -60,41 +55,33 @@ public class MovingObject : ObjectInteraction
     Vector2 originPos;
     Vector2 dir;
     Coroutine returnCoroutine;
+    WaitForSeconds wsReuseDelay;
+    float reuseDelayTime = 1f; //무빙오브젝트 작동이 반복될 때 하고있는 작업이 끝날때 까지의 시간.
+    int nonReuseCnt = 1;
 
     private void Awake()
     {
         originPos = transform.position;
-        rb2d = GetComponent<Rigidbody2D>();
         SaveState(!useTrigger, gameObject.activeSelf,transform.position);
     }
     private void Start()
     {
-        if(selectType == MoveType.REPEATING)
+        rb2d = GetComponent<Rigidbody2D>();
+
+        if(MoveType.REPEATING == selectType)
         {
-            switch(repeating.repeatDir)
-            {
-                case DirType.UP:
-                    direction = 90;
-                    break;
-                case DirType.RIGHT:
-                    direction = 0;
-                    break;
-                case DirType.DOWN:
-                    direction = 270;
-                    break;
-                case DirType.LEFT:
-                    direction = 180;
-                    break;
-                default:
-                    print("방향설정 오류");
-                    break;
-            }
+            if(repeating.repeatCount != 0)wsReuseDelay = new WaitForSeconds((repeating.stopTime * 2)  * repeating.repeatCount);
         }
-        else dir = AngleToVector2(direction);
+        else
+        {
+            wsReuseDelay = new WaitForSeconds(reuseDelayTime);
+        }
+        dir = AngleToVector2(direction);
+        //returnCoroutine = StartCoroutine(StartMovingObject());
     }
     private void OnBecameVisible()
     {
-        returnCoroutine = StartCoroutine(StartMovingObject());
+        if(gameObject.activeSelf) returnCoroutine = StartCoroutine(StartMovingObject());
     }
     private void OnBecameInvisible() {
         CollisionTargetTransform = null;
@@ -103,37 +90,44 @@ public class MovingObject : ObjectInteraction
 
     IEnumerator StartMovingObject()
     {
-        if(useTrigger) while(CollisionTargetTransform == null) yield return new WaitForFixedUpdate();
-        switch(selectType)
+        //한번은 무조건 실행되게 한다.
+        while(reuseTrigger || nonReuseCnt-- > 0)
         {
-            case MoveType.SHOOTING:
-                returnCoroutine = StartCoroutine(StartObjectShoot(rb2d, dir, speed, accelation));
-                //print("movingObject.cs : 슈팅");
-                break;
-            case MoveType.GOTODESTINATION:
-                Vector2 destination = originPos + (dir * distance);
-                //print("movingObject.cs : transform : " + originPos + " destination : " + destination);
-                returnCoroutine = StartCoroutine(MoveToDestination(rb2d, destination, speed, accelation));
-                //print("movingObject.cs : 목적지 : " + dir);
-                break;
-            case MoveType.REPEATING:
-                //print("movingObject.cs : 반복");
-                returnCoroutine = StartCoroutine(ObjectRepeatMove2D(rb2d, direction, distance, speed, repeating.repeatCount, repeating.stopTime));
-                break;
-            case MoveType.TRACEOBJECTS:
-                //print("movingObject.cs : 추적");
-                if(tracing.point.Length > 0)
-                {
-                    returnCoroutine = StartCoroutine( ObjectTargetsTraceMovePos2D(rb2d, tracing.point,tracing.point.Length, speed) );
-                }
-                break;
-            case MoveType.NONE:
-            break;
-        }
-        if(disappearTime != 0)
-        {
-            yield return new WaitForSeconds(disappearTime);
-            gameObject.SetActive(false);
+            if(useTrigger) while(CollisionTargetTransform == null) yield return new WaitForFixedUpdate();
+            switch(selectType)
+            {
+                case MoveType.SHOOTING:
+                    returnCoroutine = StartCoroutine(StartObjectShoot(rb2d, dir, speed, accelation));
+                    //print("movingObject.cs : 슈팅");
+                    break;
+                case MoveType.GOTODESTINATION:
+                    Vector2 destination = originPos + (dir * distance);
+                    //print("movingObject.cs : transform : " + originPos + " destination : " + destination);
+                    returnCoroutine = StartCoroutine(MoveToDestination(rb2d, destination, speed, accelation));
+                    //print("movingObject.cs : 목적지 : " + dir);
+                    break;
+                case MoveType.REPEATING:
+                    //print("movingObject.cs : 반복");
+                    returnCoroutine = StartCoroutine(ObjectRepeatMove2D(rb2d, dir, distance, speed, repeating.repeatCount, repeating.stopTime));
+                    break;
+                case MoveType.TRACEOBJECTS:
+                    //print("movingObject.cs : 추적");
+                    if(tracing.point.Length > 0)
+                    {
+                        returnCoroutine = StartCoroutine( ObjectTargetsTraceMovePos2D(rb2d, tracing.point,tracing.point.Length, speed) );
+                    }
+                    break;
+                case MoveType.TARGETING:
+                    if(CollisionTargetTransform != null)
+                    {
+                        returnCoroutine = StartCoroutine(ObjectTargetTraceMove2D(rb2d,CollisionTargetTransform.gameObject,speed,accelation));
+                    }
+                    break;
+                case MoveType.NONE:
+                    break;
+            }
+            CollisionTargetTransform = null;
+            yield return wsReuseDelay;
         }
     }
     protected IEnumerator StartObjectShoot(Rigidbody2D rb2d,Vector2 dir, float speed, float accelation = 0)
@@ -163,15 +157,6 @@ public class MovingObject : ObjectInteraction
     {
         //print("movingObject.cs : 정지");
         StopAllCoroutines();
-    }
-
-    private void OnCollisionEnter2D(Collision2D col)
-    {
-        if(col.gameObject.tag != "Player")
-        {
-            //print("movingObject.cs : 충돌정지");
-            StopAllCoroutines();
-        }
     }
 
 }

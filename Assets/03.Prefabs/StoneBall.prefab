@@ -23,6 +23,7 @@ GameObject:
   - component: {fileID: 50394569941659900}
   - component: {fileID: 58566985219651726}
   - component: {fileID: 114564194114037158}
+  - component: {fileID: 114573648536398466}
   m_Layer: 9
   m_Name: StoneBall
   m_TagString: StandingObject
@@ -90,6 +91,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   limitVelocity: 3
+--- !u!114 &114573648536398466
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1840854617521398}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f42d36d5a8a60434582c36692ff6ef2c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  selfCol: {fileID: 58566985219651726}
+  isInitDisable: 0
+  useTrigger: 0
 --- !u!212 &212775128849350570
 SpriteRenderer:
   m_ObjectHideFlags: 1

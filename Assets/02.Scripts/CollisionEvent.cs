@@ -6,8 +6,9 @@ using UnityEngine;
 enum CollisionType
 {
 	DAMAGE,
+	DAMAGE_AND_DISABLE,
 	DISABLE,
-	DISAPPEAR
+	DESTROY
 }
 public class CollisionEvent : MonoBehaviour {
 	[SerializeField] CollisionType type = CollisionType.DAMAGE;
@@ -22,43 +23,54 @@ public class CollisionEvent : MonoBehaviour {
 	{
 		wsDisapperTimeDelay = new WaitForSeconds(disappearTime);
 	}
-	IEnumerator StartCollisionEvent(GameObject col)
+	void StartCollisionEvent(GameObject col)
 	{
 		collisionState = true;
-		if(disappearTime != 0) yield return wsDisapperTimeDelay;
 
 		switch(type)
 		{
 			case CollisionType.DAMAGE:
-			I_DamageScript = col.GetComponent<IDamageable>();
-			I_DamageScript.TakeHit(damage);
-			break;
+				I_DamageScript = col.GetComponent<IDamageable>();
+				I_DamageScript.TakeHit(damage);
+				break;
+			case CollisionType.DAMAGE_AND_DISABLE:
+				I_DamageScript = col.GetComponent<IDamageable>();
+				I_DamageScript.TakeHit(damage);
+				//StopAllCoroutines();
+				if(disappearTime == 0) gameObject.SetActive(false);
+				else StartCoroutine("DelayDisable");
+				break;
 			case CollisionType.DISABLE:
-			StopAllCoroutines();
-			gameObject.SetActive(false);
-			break;
-			case CollisionType.DISAPPEAR:
-			StopAllCoroutines();
-			Destroy(gameObject);
+				//StopAllCoroutines();
+				if(disappearTime == 0) gameObject.SetActive(false);
+				else StartCoroutine("DelayDisable");
+				break;
+			case CollisionType.DESTROY:
+				//StopAllCoroutines();
+				Destroy(gameObject,disappearTime);
 			break;
 		}
 	}
-
+	IEnumerator DelayDisable()
+	{
+		yield return wsDisapperTimeDelay;
+		gameObject.SetActive(false);
+	}
 	private void OnCollisionEnter2D(Collision2D other) {
-		if(targetTag.Length < 1) StartCoroutine(StartCollisionEvent(other.gameObject));
+		if(targetTag.Length < 1) StartCollisionEvent(other.gameObject);
 		else{
 			foreach(var v in targetTag)
 			{
-				if(other.gameObject.CompareTag(v)) StartCoroutine(StartCollisionEvent(other.gameObject));
+				if(other.gameObject.CompareTag(v)) StartCollisionEvent(other.gameObject);
 			}
 		}
 	}
 	private void OnTriggerEnter2D(Collider2D other) {
-		if(targetTag.Length < 1) StartCoroutine(StartCollisionEvent(other.gameObject));
+		if(targetTag.Length < 1) StartCollisionEvent(other.gameObject);
 		else{
 			foreach(var v in targetTag)
 			{
-				if(other.CompareTag(v)) StartCoroutine(StartCollisionEvent(other.gameObject));
+				if(other.CompareTag(v)) StartCollisionEvent(other.gameObject);
 			}
 		}
 	}
