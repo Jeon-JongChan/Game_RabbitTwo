@@ -6,7 +6,7 @@ using PsybleScript;
 [RequireComponent(typeof(Rigidbody2D))]
 public class PlayerJump2D : ObjectMovement2D
 {
-    [Range(0, 10)]
+    [Range(0, 30)]
     public int jumpLevel = 1;
     [Range(0, 50)]
     public float jumpHeight = 1f;
@@ -15,16 +15,28 @@ public class PlayerJump2D : ObjectMovement2D
     Rigidbody2D playerRb;
 
     //필요한 변수
-    int initJumpLevel = 3;
+    int initJumpLevel = 0;
+    public int InitJumpLevel
+    {
+        get{return initJumpLevel;}
+    }
     int jumpState = 0;
     //float gravity = 9.8f;
     bool jump = false;
 
     // Use this for initialization
     void Start () {
+        initJumpLevel = jumpLevel;
         playerRb = GetComponent<Rigidbody2D>();
 	}
-
+    private void OnEnable() {
+        jumpLevel = initJumpLevel;
+        jumpState = 0;
+    }
+    private void OnApplicationFocus(bool focusStatus) {
+        jumpLevel = initJumpLevel;
+        jumpState = 0;
+    }
     // Update is called once per frame
     void Update()
     {
@@ -67,9 +79,5 @@ public class PlayerJump2D : ObjectMovement2D
     public void SetJumpLevel(int level)
     {
         jumpLevel = level;
-    }
-    public int GetJumpInitLevel()
-    {
-        return initJumpLevel;
     }
 }

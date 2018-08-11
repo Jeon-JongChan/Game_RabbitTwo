@@ -2,24 +2,30 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerInteraction : MonoBehaviour {
+public enum EffectType
+{
+    JUMP,
+    LIMITVELOCITY,
+    BARRIER,
+    WATER
+}
+public class PlayerInteraction : ObjectInteraction {
 
     /* inspector variable */
     [Header("TYPE")]
     public GameObject player = null;
-    [Tooltip("0 - 점프횟수를 조작합니다 \n 1 - 점프나 움직임에 속력을 조작합니다.\n 2 - 베리어를 동작 시키는 오브젝트 입니다. \n 3 - water 전용값")]
-    [Range(0,3)]
-    public int selectedType = 0;
+    [Tooltip(" 점프횟수를 조작합니다 \n  점프나 움직임에 속력을 조작합니다.\n 베리어를 동작 시키는 오브젝트 입니다. \nwater 전용값")]
+    public EffectType selectedType = EffectType.JUMP;
     [Tooltip("버프 or 디버프가 작동하는 시간입니다.")]
     public float delayTime = 1f;
     [Tooltip("작동후 끕니다.")]
     public bool disableTrigger = false;
 
-    [Header("Selected 0")]
+    [Header("Selected JUMP")]
     public int addJumpLevel = 0;
-    [Header("Selected 1 & 3")]
+    [Header("Selected LIMIT OR WARTER")]
     public int limitPlayer = 3;
-    [Header("Selected 3 - water")]
+    [Header("Selected WARTER")]
     public float delayDamageTime = 3f;
     public int damage = 1;
 
@@ -32,7 +38,7 @@ public class PlayerInteraction : MonoBehaviour {
     /* needs variable */
     bool bugState = false; //플레이어 오브젝트가 없으면 true
     bool isWater = false;
-
+    Coroutine returnCoroutine =null;
     string playerTag = null;
 
     private void Start()
@@ -45,23 +51,21 @@ public class PlayerInteraction : MonoBehaviour {
             playerJumpInstance = player.GetComponent<PlayerJump2D>();
         }
         else { bugState = true; }
+
         colComponent = GetComponent<BoxCollider2D>();
         srComponent = GetComponent<SpriteRenderer>();
-    }
-    void DisableObject()
-    {
-        if (disableTrigger)
-        {
-            colComponent.enabled = false;
-            srComponent.enabled = false;
-        }
+ 
     }
     public IEnumerator ControlJump()
     {
-        DisableObject();
+        if(returnCoroutine != null)StopCoroutine(returnCoroutine);
+        if(disableTrigger) DisableObject2D(srComponent,colComponent);
+        print(playerJumpInstance.jumpLevel.ToString() + " ");
         playerJumpInstance.JumpLevelPlus(addJumpLevel);
+        print(playerJumpInstance.jumpLevel.ToString() + " ");
         yield return new WaitForSeconds(delayTime);
-        playerJumpInstance.JumpLevelMinus(addJumpLevel);
+        playerJumpInstance.SetJumpLevel(playerJumpInstance.InitJumpLevel);
+        //print(" 2번째 기회 "+playerJumpInstance.jumpLevel);
     }
     public IEnumerator DelayDamageToPlayer(float delayDamageTime)
     {
@@ -79,22 +83,22 @@ public class PlayerInteraction : MonoBehaviour {
             {
                 switch(selectedType)
                 {
-                    case 0:
-                        StartCoroutine(ControlJump());
+                    case EffectType.JUMP:
+                        returnCoroutine = StartCoroutine(ControlJump());
                         break;
-                    case 1:
-                        StartCoroutine(playerInstance.LimitVelocity(delayTime,limitPlayer));
-                        DisableObject();
+                    case EffectType.LIMITVELOCITY:
+                        returnCoroutine = StartCoroutine(playerInstance.LimitVelocity(delayTime,limitPlayer));
+                        if(disableTrigger) DisableObject2D(srComponent,colComponent);
                         break;
-                    case 2:
+                    case EffectType.BARRIER:
                         playerInstance.BarrierState = true;
-                        DisableObject();
+                        if(disableTrigger) DisableObject2D(srComponent,colComponent);
                         break;
-                    case 3:
+                    case EffectType.WATER:
                         isWater = true;
                         StartCoroutine(DelayDamageToPlayer(delayDamageTime));
                         playerJumpInstance.SetJumpLevel(1);
-                        StartCoroutine( playerInstance.LimitVelocity(0, limitPlayer));
+                        returnCoroutine = StartCoroutine( playerInstance.LimitVelocity(0, limitPlayer));
                         break;
                 }
             }
@@ -117,7 +121,7 @@ public class PlayerInteraction : MonoBehaviour {
             {
                 //print("실행 " + col.name);
                 playerInstance.ClearLimitState();
-                playerJumpInstance.SetJumpLevel(playerJumpInstance.GetJumpInitLevel());
+                playerJumpInstance.SetJumpLevel(playerJumpInstance.InitJumpLevel);
                 isWater = false;
             }
         }
