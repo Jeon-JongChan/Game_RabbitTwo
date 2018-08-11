@@ -7,7 +7,7 @@ public class Shoter : ObjectInteraction
 {
 
     [Header("발사 타입 설정")]
-
+    [SerializeField] bool isVisibleOperator = true;
     [Tooltip("0 - 자기자신 날리기\n1 - 맵에 보이면 방향지정 날리기 \n2 - 충돌 이벤트 발생 \n3 - 회전")]
     [Range(0,3)]
     [SerializeField] int selectedType = 0;
@@ -88,6 +88,7 @@ public class Shoter : ObjectInteraction
     public event BulletDelegate LoadInitBullet; //현재 사용되는 총알을 모두 비활성화 해야할 경우만 사용
     bool shotState = false; //화면에 shoter가 안보일경우 반복문 중지를 위해 사용
     int projectTileMutiple = 0; //회전 총알에서 생성할때 여유를 주기위해 정해진 생성 개수에 곱해줄 인수.
+    Coroutine returnCoroutine = null;
 
     /* save 변수 */
     Vector2 saveStartingPoint;
@@ -119,30 +120,40 @@ public class Shoter : ObjectInteraction
                 break;
         }
         SaveState(shotState, gameObject.activeSelf, transform.position);
+        if(!isVisibleOperator)
+        {
+            LoadState();
+            shotState = true;
+            returnCoroutine = StartCoroutine(ShotStartFunc());
+        }
     }
 
     //화면에 보일때 실행되는 구문들
     private void OnBecameVisible()
     {
-        LoadState();
-        shotState = true;
-        StartCoroutine(ShotStartFunc());
+        if(isVisibleOperator)
+        {
+            LoadState();
+            shotState = true;
+            if(returnCoroutine == null) returnCoroutine = StartCoroutine(ShotStartFunc());
+        }
     }
     //화면에 안보일때 실행되는 구문들
     private void OnBecameInvisible()
     {
         shotState = false;
-
-        if (selectedType == 0 || selectedType == 1 || (selectedType * shotKey == 0))
+        if(isVisibleOperator)
         {
-            StopAllCoroutines();
+            if (selectedType == 0 || selectedType == 1 || (selectedType * shotKey == 0))
+            {
+                StopCoroutine(returnCoroutine);
+            }
+            else if((CollisionTargetTransform != null))
+            {
+                print("shoter.cs - 화면에 안보임" + bullets.Count);
+                StopCoroutine(returnCoroutine);
+            }
         }
-        else if((CollisionTargetTransform != null))
-        {
-            print("shoter.cs - 화면에 안보임" + bullets.Count);
-            StopAllCoroutines();
-        }
-
     }
     /// <summary>
     /// shot 타입을 통해 shoter가 총을 쏘게 도와주는 코루틴

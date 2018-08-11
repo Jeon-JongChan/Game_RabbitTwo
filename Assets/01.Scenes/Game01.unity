@@ -594,6 +594,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 024e001f5bef8494a8155dc2b656363b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isVisibleOperator: 0
   selectedType: 1
   shotKey: 0
   shotRotationKey: 0
@@ -602,13 +603,13 @@ MonoBehaviour:
   collisionTagName:
   - Player
   shootAngle: 270
-  bulletSpeed: 2
-  bulletRemoveTime: 20
+  bulletSpeed: 0.8
+  bulletRemoveTime: 30
   delayTime: 0.5
   bullet: {fileID: 1748708359141970, guid: 103da1680feae2b43a90d8cb0b8d0d44, type: 2}
   shotInfinityTrigger: 1
-  shotTimeGap: 5
-  bulletReadyCount: 10
+  shotTimeGap: 9
+  bulletReadyCount: 30
   bulletRotationCount: 18
   shotStartAngle: 0
   shotMaxAngle: 360
@@ -1371,6 +1372,16 @@ Prefab:
     - target: {fileID: 1005080347048852, guid: 9679dd9a113e2d648a825e43ed8a192d, type: 2}
       propertyPath: m_Name
       value: PlusJump (7)
+      objectReference: {fileID: 0}
+    - target: {fileID: 114136328597262846, guid: 9679dd9a113e2d648a825e43ed8a192d,
+        type: 2}
+      propertyPath: addJumpLevel
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114136328597262846, guid: 9679dd9a113e2d648a825e43ed8a192d,
+        type: 2}
+      propertyPath: delayTime
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 9679dd9a113e2d648a825e43ed8a192d, type: 2}
@@ -2781,6 +2792,16 @@ Prefab:
       propertyPath: m_Name
       value: PlusJump (9)
       objectReference: {fileID: 0}
+    - target: {fileID: 114136328597262846, guid: 9679dd9a113e2d648a825e43ed8a192d,
+        type: 2}
+      propertyPath: addJumpLevel
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114136328597262846, guid: 9679dd9a113e2d648a825e43ed8a192d,
+        type: 2}
+      propertyPath: delayTime
+      value: 3
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 9679dd9a113e2d648a825e43ed8a192d, type: 2}
   m_IsPrefabParent: 0
@@ -3508,6 +3529,16 @@ Prefab:
     - target: {fileID: 1005080347048852, guid: 9679dd9a113e2d648a825e43ed8a192d, type: 2}
       propertyPath: m_Name
       value: PlusJump (4)
+      objectReference: {fileID: 0}
+    - target: {fileID: 114136328597262846, guid: 9679dd9a113e2d648a825e43ed8a192d,
+        type: 2}
+      propertyPath: addJumpLevel
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114136328597262846, guid: 9679dd9a113e2d648a825e43ed8a192d,
+        type: 2}
+      propertyPath: delayTime
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 9679dd9a113e2d648a825e43ed8a192d, type: 2}
@@ -4419,6 +4450,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 024e001f5bef8494a8155dc2b656363b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isVisibleOperator: 0
   selectedType: 1
   shotKey: 0
   shotRotationKey: 0
@@ -4427,13 +4459,13 @@ MonoBehaviour:
   collisionTagName:
   - Player
   shootAngle: 270
-  bulletSpeed: 2
-  bulletRemoveTime: 20
+  bulletSpeed: 0.8
+  bulletRemoveTime: 30
   delayTime: 0
   bullet: {fileID: 1748708359141970, guid: 103da1680feae2b43a90d8cb0b8d0d44, type: 2}
   shotInfinityTrigger: 1
-  shotTimeGap: 5
-  bulletReadyCount: 10
+  shotTimeGap: 7
+  bulletReadyCount: 30
   bulletRotationCount: 18
   shotStartAngle: 0
   shotMaxAngle: 360
@@ -6017,6 +6049,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 024e001f5bef8494a8155dc2b656363b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isVisibleOperator: 0
   selectedType: 1
   shotKey: 0
   shotRotationKey: 0
@@ -6025,13 +6058,13 @@ MonoBehaviour:
   collisionTagName:
   - Player
   shootAngle: 270
-  bulletSpeed: 2
-  bulletRemoveTime: 20
+  bulletSpeed: 0.8
+  bulletRemoveTime: 30
   delayTime: 1
   bullet: {fileID: 1748708359141970, guid: 103da1680feae2b43a90d8cb0b8d0d44, type: 2}
   shotInfinityTrigger: 1
-  shotTimeGap: 5
-  bulletReadyCount: 10
+  shotTimeGap: 10
+  bulletReadyCount: 30
   bulletRotationCount: 18
   shotStartAngle: 0
   shotMaxAngle: 360
@@ -6336,7 +6369,7 @@ Prefab:
     - target: {fileID: 114136328597262846, guid: 9679dd9a113e2d648a825e43ed8a192d,
         type: 2}
       propertyPath: delayTime
-      value: 5
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 9679dd9a113e2d648a825e43ed8a192d, type: 2}
@@ -6403,6 +6436,11 @@ Prefab:
     - target: {fileID: 1005080347048852, guid: 9679dd9a113e2d648a825e43ed8a192d, type: 2}
       propertyPath: m_Name
       value: PlusJump (5)
+      objectReference: {fileID: 0}
+    - target: {fileID: 114136328597262846, guid: 9679dd9a113e2d648a825e43ed8a192d,
+        type: 2}
+      propertyPath: delayTime
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 9679dd9a113e2d648a825e43ed8a192d, type: 2}
@@ -21978,6 +22016,11 @@ Prefab:
       propertyPath: m_Name
       value: PlusJump (6)
       objectReference: {fileID: 0}
+    - target: {fileID: 114136328597262846, guid: 9679dd9a113e2d648a825e43ed8a192d,
+        type: 2}
+      propertyPath: delayTime
+      value: 3
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 9679dd9a113e2d648a825e43ed8a192d, type: 2}
   m_IsPrefabParent: 0
@@ -22410,6 +22453,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 024e001f5bef8494a8155dc2b656363b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isVisibleOperator: 1
   selectedType: 2
   shotKey: 0
   shotRotationKey: 0
@@ -22995,6 +23039,20 @@ Prefab:
       propertyPath: m_Name
       value: WarpsBiDirect (13)
       objectReference: {fileID: 0}
+    - target: {fileID: 1962226460619042, guid: 09b3d0ce468e4d24e96ef18b23bfba03, type: 2}
+      propertyPath: m_Icon
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 1681401436041592, guid: 09b3d0ce468e4d24e96ef18b23bfba03, type: 2}
+      propertyPath: m_Icon
+      value: 
+      objectReference: {fileID: 2974397684917235467, guid: 0000000000000000d000000000000000,
+        type: 0}
+    - target: {fileID: 1042580286880348, guid: 09b3d0ce468e4d24e96ef18b23bfba03, type: 2}
+      propertyPath: m_Icon
+      value: 
+      objectReference: {fileID: 2974397684917235467, guid: 0000000000000000d000000000000000,
+        type: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 09b3d0ce468e4d24e96ef18b23bfba03, type: 2}
   m_IsPrefabParent: 0
@@ -23362,7 +23420,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4676671889217330, guid: cd4ee57b1de4a534fa34bb3b5c127c2a, type: 2}
       propertyPath: m_LocalPosition.x
-      value: -0.040002346
+      value: 0.63
       objectReference: {fileID: 0}
     - target: {fileID: 4676671889217330, guid: cd4ee57b1de4a534fa34bb3b5c127c2a, type: 2}
       propertyPath: m_LocalPosition.y
@@ -23464,7 +23522,7 @@ Prefab:
     - target: {fileID: 114584928233817938, guid: cd4ee57b1de4a534fa34bb3b5c127c2a,
         type: 2}
       propertyPath: speed
-      value: 20
+      value: 10
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: cd4ee57b1de4a534fa34bb3b5c127c2a, type: 2}
@@ -24088,6 +24146,11 @@ Prefab:
       propertyPath: m_Name
       value: PlusJump (8)
       objectReference: {fileID: 0}
+    - target: {fileID: 114136328597262846, guid: 9679dd9a113e2d648a825e43ed8a192d,
+        type: 2}
+      propertyPath: delayTime
+      value: 3
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 9679dd9a113e2d648a825e43ed8a192d, type: 2}
   m_IsPrefabParent: 0
@@ -24164,6 +24227,11 @@ Prefab:
       propertyPath: m_Name
       value: PlusJump (11)
       objectReference: {fileID: 0}
+    - target: {fileID: 114136328597262846, guid: 9679dd9a113e2d648a825e43ed8a192d,
+        type: 2}
+      propertyPath: delayTime
+      value: 3
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 9679dd9a113e2d648a825e43ed8a192d, type: 2}
   m_IsPrefabParent: 0
@@ -24209,6 +24277,16 @@ Prefab:
     - target: {fileID: 1005080347048852, guid: 9679dd9a113e2d648a825e43ed8a192d, type: 2}
       propertyPath: m_Name
       value: PlusJump (10)
+      objectReference: {fileID: 0}
+    - target: {fileID: 114136328597262846, guid: 9679dd9a113e2d648a825e43ed8a192d,
+        type: 2}
+      propertyPath: addJumpLevel
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114136328597262846, guid: 9679dd9a113e2d648a825e43ed8a192d,
+        type: 2}
+      propertyPath: delayTime
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 9679dd9a113e2d648a825e43ed8a192d, type: 2}
@@ -24481,6 +24559,16 @@ Prefab:
       propertyPath: m_Name
       value: PlusJump (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 114136328597262846, guid: 9679dd9a113e2d648a825e43ed8a192d,
+        type: 2}
+      propertyPath: addJumpLevel
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114136328597262846, guid: 9679dd9a113e2d648a825e43ed8a192d,
+        type: 2}
+      propertyPath: delayTime
+      value: 3
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 9679dd9a113e2d648a825e43ed8a192d, type: 2}
   m_IsPrefabParent: 0
@@ -24640,6 +24728,11 @@ Prefab:
       propertyPath: m_Name
       value: PlusJump (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 114136328597262846, guid: 9679dd9a113e2d648a825e43ed8a192d,
+        type: 2}
+      propertyPath: delayTime
+      value: 3
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 9679dd9a113e2d648a825e43ed8a192d, type: 2}
   m_IsPrefabParent: 0
@@ -24769,7 +24862,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4830979536354242, guid: 6c9568def0e10c842a1960649279542e, type: 2}
       propertyPath: m_LocalPosition.y
-      value: 4.88
+      value: 4.21
       objectReference: {fileID: 0}
     - target: {fileID: 4830979536354242, guid: 6c9568def0e10c842a1960649279542e, type: 2}
       propertyPath: m_LocalPosition.z
@@ -24803,6 +24896,10 @@ Prefab:
         type: 2}
       propertyPath: m_Radius
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1473505332271598, guid: 6c9568def0e10c842a1960649279542e, type: 2}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 6c9568def0e10c842a1960649279542e, type: 2}
@@ -25129,7 +25226,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4830979536354242, guid: 6c9568def0e10c842a1960649279542e, type: 2}
       propertyPath: m_LocalPosition.x
-      value: -2.5199976
+      value: -3.15
       objectReference: {fileID: 0}
     - target: {fileID: 4830979536354242, guid: 6c9568def0e10c842a1960649279542e, type: 2}
       propertyPath: m_LocalPosition.y
@@ -25325,6 +25422,16 @@ Prefab:
     - target: {fileID: 1005080347048852, guid: 9679dd9a113e2d648a825e43ed8a192d, type: 2}
       propertyPath: m_Name
       value: PlusJump (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 114136328597262846, guid: 9679dd9a113e2d648a825e43ed8a192d,
+        type: 2}
+      propertyPath: addJumpLevel
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114136328597262846, guid: 9679dd9a113e2d648a825e43ed8a192d,
+        type: 2}
+      propertyPath: delayTime
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 9679dd9a113e2d648a825e43ed8a192d, type: 2}

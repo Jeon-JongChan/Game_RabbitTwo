@@ -33,10 +33,14 @@ public class PlayerInteraction : MonoBehaviour {
     bool bugState = false; //플레이어 오브젝트가 없으면 true
     bool isWater = false;
 
+    string playerTag = null;
+
     private void Start()
     {
+        player = player == null ? GameObject.FindGameObjectWithTag("Player"):player;
         if (player != null)
         {
+            playerTag = player.tag;
             playerInstance = player.GetComponent<Player>();
             playerJumpInstance = player.GetComponent<PlayerJump2D>();
         }
@@ -71,7 +75,7 @@ public class PlayerInteraction : MonoBehaviour {
     {
         if(!bugState)
         {
-            if (col.CompareTag(player.tag))
+            if (playerTag != null && col.CompareTag(playerTag))
             {
                 switch(selectedType)
                 {
@@ -100,7 +104,7 @@ public class PlayerInteraction : MonoBehaviour {
     {
         if(gameObject.CompareTag("Water"))
         {
-            if(col.gameObject.CompareTag(player.tag))
+            if (playerTag != null && col.CompareTag(playerTag))
             {
                 playerJumpInstance.JumpStateReset(false);
             }
@@ -109,7 +113,7 @@ public class PlayerInteraction : MonoBehaviour {
     private void OnTriggerExit2D(Collider2D col) {
         if(gameObject.CompareTag("Water"))
         {
-            if(col.gameObject.CompareTag(player.tag))
+            if (playerTag != null && col.CompareTag(playerTag))
             {
                 //print("실행 " + col.name);
                 playerInstance.ClearLimitState();

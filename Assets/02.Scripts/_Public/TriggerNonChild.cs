@@ -20,7 +20,8 @@ public class TriggerNonChild : MonoBehaviour {
         {
             foreach (var v in usingTriggerObjects)
             {
-                SetEventFunc += v.GetComponent<ObjectInteraction>().SetCollisionTarget;
+                ObjectInteraction interaction = v.GetComponent<ObjectInteraction>();
+                if(interaction != null) SetEventFunc += interaction.SetCollisionTarget;
             }
         }
         else

@@ -15,8 +15,14 @@ public class RandomSprite : MonoBehaviour {
 	private void Start() {
 		sr = GetComponent<SpriteRenderer>();
 		if(useParticleRandom) ps = GetComponent<ParticleSystemRenderer>();
+		RandomSpriteFunc();
 	}
 	void OnEnable() {
+		RandomSpriteFunc();
+	}
+
+	void RandomSpriteFunc()
+	{
 		if(sprites.Length > 0 && sr != null)
 		{
 			randomIdx = Random.Range(0,sprites.Length);
