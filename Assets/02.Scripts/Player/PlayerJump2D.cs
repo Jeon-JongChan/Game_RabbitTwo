@@ -29,10 +29,6 @@ public class PlayerJump2D : ObjectMovement2D
         initJumpLevel = jumpLevel;
         playerRb = GetComponent<Rigidbody2D>();
 	}
-    private void OnEnable() {
-        jumpLevel = initJumpLevel;
-        jumpState = 0;
-    }
     private void OnApplicationFocus(bool focusStatus) {
         jumpLevel = initJumpLevel;
         jumpState = 0;
