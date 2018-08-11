@@ -10,6 +10,7 @@ TagManager:
   - Water
   - BOUNCEBALL
   - MAP
+  - MISSILE
   layers:
   - Default
   - TransparentFX
