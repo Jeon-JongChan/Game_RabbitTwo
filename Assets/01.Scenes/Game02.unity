@@ -1440,8 +1440,7 @@ Prefab:
       propertyPath: m_Name
       value: BreakableWall_0_1 (7)
       objectReference: {fileID: 0}
-    - target: {fileID: 61631476477455974, guid: c1f8706de5040b44c97285cf5688904b,
-        type: 2}
+    - target: {fileID: 0}
       propertyPath: m_SpriteTilingProperty.adaptiveTiling
       value: 1
       objectReference: {fileID: 0}
@@ -1919,8 +1918,7 @@ Prefab:
       propertyPath: m_Name
       value: BreakableWall_0_1 (9)
       objectReference: {fileID: 0}
-    - target: {fileID: 61631476477455974, guid: c1f8706de5040b44c97285cf5688904b,
-        type: 2}
+    - target: {fileID: 0}
       propertyPath: m_SpriteTilingProperty.adaptiveTiling
       value: 1
       objectReference: {fileID: 0}
@@ -2185,8 +2183,7 @@ Prefab:
       propertyPath: m_Name
       value: BreakableWall_0_1 (6)
       objectReference: {fileID: 0}
-    - target: {fileID: 61631476477455974, guid: c1f8706de5040b44c97285cf5688904b,
-        type: 2}
+    - target: {fileID: 0}
       propertyPath: m_SpriteTilingProperty.adaptiveTiling
       value: 1
       objectReference: {fileID: 0}
@@ -3683,8 +3680,7 @@ Prefab:
       propertyPath: m_Name
       value: BreakableWall_0_1 (10)
       objectReference: {fileID: 0}
-    - target: {fileID: 61631476477455974, guid: c1f8706de5040b44c97285cf5688904b,
-        type: 2}
+    - target: {fileID: 0}
       propertyPath: m_SpriteTilingProperty.adaptiveTiling
       value: 1
       objectReference: {fileID: 0}
@@ -4893,8 +4889,7 @@ Prefab:
       propertyPath: m_Name
       value: BreakableWall_0_1 (13)
       objectReference: {fileID: 0}
-    - target: {fileID: 61631476477455974, guid: c1f8706de5040b44c97285cf5688904b,
-        type: 2}
+    - target: {fileID: 0}
       propertyPath: m_SpriteTilingProperty.adaptiveTiling
       value: 1
       objectReference: {fileID: 0}
@@ -5013,8 +5008,7 @@ Prefab:
       propertyPath: m_Name
       value: BreakableWall_0_1 (17)
       objectReference: {fileID: 0}
-    - target: {fileID: 61631476477455974, guid: c1f8706de5040b44c97285cf5688904b,
-        type: 2}
+    - target: {fileID: 0}
       propertyPath: m_SpriteTilingProperty.adaptiveTiling
       value: 1
       objectReference: {fileID: 0}
@@ -6064,8 +6058,7 @@ Prefab:
       propertyPath: m_Name
       value: BreakableWall_0_1 (8)
       objectReference: {fileID: 0}
-    - target: {fileID: 61631476477455974, guid: c1f8706de5040b44c97285cf5688904b,
-        type: 2}
+    - target: {fileID: 0}
       propertyPath: m_SpriteTilingProperty.adaptiveTiling
       value: 1
       objectReference: {fileID: 0}
@@ -6320,8 +6313,7 @@ Prefab:
       propertyPath: m_Name
       value: BreakableWall_0_1 (16)
       objectReference: {fileID: 0}
-    - target: {fileID: 61631476477455974, guid: c1f8706de5040b44c97285cf5688904b,
-        type: 2}
+    - target: {fileID: 0}
       propertyPath: m_SpriteTilingProperty.adaptiveTiling
       value: 1
       objectReference: {fileID: 0}
@@ -7525,8 +7517,7 @@ Prefab:
       propertyPath: m_Name
       value: BreakableWall_0_1 (2)
       objectReference: {fileID: 0}
-    - target: {fileID: 61631476477455974, guid: c1f8706de5040b44c97285cf5688904b,
-        type: 2}
+    - target: {fileID: 0}
       propertyPath: m_SpriteTilingProperty.adaptiveTiling
       value: 1
       objectReference: {fileID: 0}
@@ -8801,8 +8792,7 @@ Prefab:
       propertyPath: m_Name
       value: BreakableWall_0_1 (12)
       objectReference: {fileID: 0}
-    - target: {fileID: 61631476477455974, guid: c1f8706de5040b44c97285cf5688904b,
-        type: 2}
+    - target: {fileID: 0}
       propertyPath: m_SpriteTilingProperty.adaptiveTiling
       value: 1
       objectReference: {fileID: 0}
@@ -9115,8 +9105,7 @@ Prefab:
       propertyPath: m_Name
       value: BreakableWall_0_1 (15)
       objectReference: {fileID: 0}
-    - target: {fileID: 61631476477455974, guid: c1f8706de5040b44c97285cf5688904b,
-        type: 2}
+    - target: {fileID: 0}
       propertyPath: m_SpriteTilingProperty.adaptiveTiling
       value: 1
       objectReference: {fileID: 0}
@@ -10161,6 +10150,15 @@ Prefab:
       propertyPath: isReActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 50458812675957924, guid: c1f8706de5040b44c97285cf5688904b,
+        type: 2}
+      propertyPath: m_UseFullKinematicContacts
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c1f8706de5040b44c97285cf5688904b, type: 2}
   m_IsPrefabAsset: 0
@@ -10865,8 +10863,7 @@ Prefab:
       propertyPath: m_Name
       value: BreakableWall_0_1 (5)
       objectReference: {fileID: 0}
-    - target: {fileID: 61631476477455974, guid: c1f8706de5040b44c97285cf5688904b,
-        type: 2}
+    - target: {fileID: 0}
       propertyPath: m_SpriteTilingProperty.adaptiveTiling
       value: 1
       objectReference: {fileID: 0}
@@ -44781,8 +44778,7 @@ Prefab:
       propertyPath: m_Name
       value: BreakableWall_0_1 (14)
       objectReference: {fileID: 0}
-    - target: {fileID: 61631476477455974, guid: c1f8706de5040b44c97285cf5688904b,
-        type: 2}
+    - target: {fileID: 0}
       propertyPath: m_SpriteTilingProperty.adaptiveTiling
       value: 1
       objectReference: {fileID: 0}
@@ -59635,8 +59631,7 @@ Prefab:
       propertyPath: m_Name
       value: BreakableWall_0_1 (3)
       objectReference: {fileID: 0}
-    - target: {fileID: 61631476477455974, guid: c1f8706de5040b44c97285cf5688904b,
-        type: 2}
+    - target: {fileID: 0}
       propertyPath: m_SpriteTilingProperty.adaptiveTiling
       value: 1
       objectReference: {fileID: 0}
@@ -60437,8 +60432,7 @@ Prefab:
       propertyPath: m_Name
       value: BreakableWall_0_1 (4)
       objectReference: {fileID: 0}
-    - target: {fileID: 61631476477455974, guid: c1f8706de5040b44c97285cf5688904b,
-        type: 2}
+    - target: {fileID: 0}
       propertyPath: m_SpriteTilingProperty.adaptiveTiling
       value: 1
       objectReference: {fileID: 0}
@@ -60626,8 +60620,7 @@ Prefab:
       propertyPath: m_Name
       value: BreakableWall_0_1 (1)
       objectReference: {fileID: 0}
-    - target: {fileID: 61631476477455974, guid: c1f8706de5040b44c97285cf5688904b,
-        type: 2}
+    - target: {fileID: 0}
       propertyPath: m_SpriteTilingProperty.adaptiveTiling
       value: 1
       objectReference: {fileID: 0}
@@ -62304,8 +62297,7 @@ Prefab:
       propertyPath: m_LocalScale.x
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 61631476477455974, guid: c1f8706de5040b44c97285cf5688904b,
-        type: 2}
+    - target: {fileID: 0}
       propertyPath: m_SpriteTilingProperty.adaptiveTiling
       value: 1
       objectReference: {fileID: 0}
@@ -62404,8 +62396,7 @@ Prefab:
       propertyPath: m_Name
       value: BreakableWall_0_1 (11)
       objectReference: {fileID: 0}
-    - target: {fileID: 61631476477455974, guid: c1f8706de5040b44c97285cf5688904b,
-        type: 2}
+    - target: {fileID: 0}
       propertyPath: m_SpriteTilingProperty.adaptiveTiling
       value: 1
       objectReference: {fileID: 0}

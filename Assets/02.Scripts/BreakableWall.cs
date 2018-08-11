@@ -26,7 +26,8 @@ public class BreakableWall : MonoBehaviour {
             particleSetActive = true;
         }
     }
-    private void OnTriggerEnter2D(Collider2D collision)
+
+    private void OnCollisionEnter2D(Collision2D collision)
     {
         if (!particleSetActive)
         {
@@ -34,33 +35,24 @@ public class BreakableWall : MonoBehaviour {
         }
         if (targetTag.Length > 0)
         {
-            
+
             foreach (var v in targetTag)
             {
-                if(collision.gameObject.CompareTag(v))
+                if (collision.gameObject.CompareTag(v))
                 {
-                    
-                     particle.Play();
-                     sprite.enabled = false;
-                     boxCollider.enabled = false;
-                     particleSetActive = false;
-                    if (isReActive) {
-                        Invoke("Enable",reActiveTime);
-                    }  
+
+                    particle.Play();
+                    sprite.enabled = false;
+                    boxCollider.enabled = false;
+                    particleSetActive = false;
+                    if (isReActive)
+                    {
+                        Invoke("Enable", reActiveTime);
+                    }
                 }
             }
         }
-        //else{
-
-        //     particle.Play();
-        //     sprite.enabled = false;
-        //     boxCollider.enabled = false;
-        //     particleSetActive = false;
-            
-
-        //}
-        
     }
 
-    
+
 }
