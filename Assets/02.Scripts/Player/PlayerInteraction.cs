@@ -49,6 +49,7 @@ public class PlayerInteraction : ObjectInteraction {
             playerTag = player.tag;
             playerInstance = player.GetComponent<Player>();
             playerJumpInstance = player.GetComponent<PlayerJump2D>();
+            print(playerJumpInstance.JumpLevel);
         }
         else { bugState = true; }
 
@@ -60,9 +61,11 @@ public class PlayerInteraction : ObjectInteraction {
     {
         if(returnCoroutine != null)StopCoroutine(returnCoroutine);
         if(disableTrigger) DisableObject2D(srComponent,colComponent);
-        print(playerJumpInstance.jumpLevel.ToString() + " ");
-        playerJumpInstance.JumpLevelPlus(addJumpLevel);
-        print(playerJumpInstance.jumpLevel.ToString() + " ");
+
+        print(playerJumpInstance.JumpLevel);
+        playerJumpInstance.JumpLevel = addJumpLevel;
+        print(playerJumpInstance.JumpLevel);
+
         yield return new WaitForSeconds(delayTime);
         playerJumpInstance.SetJumpLevel(playerJumpInstance.InitJumpLevel);
         //print(" 2번째 기회 "+playerJumpInstance.jumpLevel);

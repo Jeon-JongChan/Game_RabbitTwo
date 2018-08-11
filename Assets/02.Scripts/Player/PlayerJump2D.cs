@@ -7,7 +7,7 @@ using PsybleScript;
 public class PlayerJump2D : ObjectMovement2D
 {
     [Range(0, 30)]
-    public int jumpLevel = 1;
+    [SerializeField] int jumpLevel = 1;
     [Range(0, 50)]
     public float jumpHeight = 1f;
     
@@ -20,6 +20,13 @@ public class PlayerJump2D : ObjectMovement2D
     {
         get{return initJumpLevel;}
     }
+    public int JumpLevel
+    {
+        get {return jumpLevel;}
+        set {
+            jumpLevel += value;
+        }
+    }
     int jumpState = 0;
     //float gravity = 9.8f;
     bool jump = false;
@@ -29,10 +36,6 @@ public class PlayerJump2D : ObjectMovement2D
         initJumpLevel = jumpLevel;
         playerRb = GetComponent<Rigidbody2D>();
 	}
-    private void OnApplicationFocus(bool focusStatus) {
-        jumpLevel = initJumpLevel;
-        jumpState = 0;
-    }
     // Update is called once per frame
     void Update()
     {
@@ -62,15 +65,6 @@ public class PlayerJump2D : ObjectMovement2D
         }
         jumpState = 0;
         jump = false;
-    }
-
-    public void JumpLevelPlus(int plusValue)
-    {
-        jumpLevel += plusValue;
-    }
-    public void JumpLevelMinus(int plusValue)
-    {
-        jumpLevel -= plusValue;
     }
     public void SetJumpLevel(int level)
     {

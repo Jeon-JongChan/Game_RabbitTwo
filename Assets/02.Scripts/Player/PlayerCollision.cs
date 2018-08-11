@@ -20,11 +20,10 @@ public class PlayerCollision : MonoBehaviour {
     //이벤트 변수
     public delegate void voidDelgate();
     public delegate void JumpDelgate(bool resetJumpPower);
-    public delegate IEnumerator LimitDelgate(float time, float speed);
-    public event JumpDelgate InitJumpEvent;
-    public event LimitDelgate LimitPlayerEvent;
-    public event voidDelgate JumpLandingEvent;
-    public event voidDelgate ClearLimitStateEvent; 
+
+    event JumpDelgate InitJumpEvent;
+    event voidDelgate JumpLandingEvent;
+    event voidDelgate ClearLimitStateEvent; 
 
     private void Awake()
     {
@@ -37,13 +36,12 @@ public class PlayerCollision : MonoBehaviour {
         else
         {
             pj = GameObject.Find(playerName).GetComponent<PlayerJump2D>();
-            var playerScript = GameObject.Find(playerName).GetComponent<Player>();
+            var playerInstance = GameObject.Find(playerName).GetComponent<Player>();
             InitJumpEvent += pj.JumpStateReset;
-            if (playerScript != null)
+            if (playerInstance != null)
             {
-                JumpLandingEvent += playerScript.LandingAnimation;
-                LimitPlayerEvent += playerScript.LimitVelocity;
-                ClearLimitStateEvent += playerScript.ClearLimitState;
+                JumpLandingEvent += playerInstance.LandingAnimation;
+                ClearLimitStateEvent += playerInstance.ClearLimitState;
             }
         }
        
