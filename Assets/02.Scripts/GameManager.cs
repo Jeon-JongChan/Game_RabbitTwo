@@ -153,11 +153,11 @@ public class GameManager : MonoBehaviour {
 				/* start와 end potal 을 모두 가져온다. 카메라 이동위치도 갖고 온다.*/
 				for(int i = 0; i < mapEnableArrCount; i++)
 				{
-					startWp[i].tf = stage1MapList[i].transform.Find("_NeedNextMapMoving").Find("StartPotal");
-					startWp[i].wcScript = startWp[i].tf.GetComponent<WarpCtrl>();
+					startWp[i].tf = stage1MapList[i].transform.Find("_NeedNextMapMoving").Find("StartPotalManager").Find("StartPotal");
+					startWp[i].wcScript = startWp[i].tf.GetComponentInParent<WarpCtrl>();
 
-					endWp[i].tf = stage1MapList[i].transform.Find("_NeedNextMapMoving").Find("EndPotal");
-					endWp[i].wcScript = endWp[i].tf.gameObject.GetComponent<WarpCtrl>();
+					endWp[i].tf = stage1MapList[i].transform.Find("_NeedNextMapMoving").Find("EndPotalManager").Find("EndPotal");
+					endWp[i].wcScript = endWp[i].tf.parent.GetComponentInParent<WarpCtrl>();
 
 					mapCameraPos[i] = stage1MapList[i].transform.Find("_NeedNextMapMoving").Find("MapCameraPos");
 				}
@@ -166,13 +166,13 @@ public class GameManager : MonoBehaviour {
 				/* start와 end potal 을 모두 가져온다. 카메라 이동위치도 갖고 온다.*/
 				for(int i = 0; i < mapEnableArrCount; i++)
 				{
-					startWp[i].tf = stage1MapList[i].transform.Find("_NeedNextMapMoving").Find("StartPotal");
-					startWp[i].wcScript = startWp[i].tf.GetComponent<WarpCtrl>();
+					startWp[i].tf = stage2MapList[i].transform.Find("_NeedNextMapMoving").Find("StartPotalManager").Find("StartPotal");
+					startWp[i].wcScript = startWp[i].tf.parent.GetComponentInParent<WarpCtrl>();
 
-					endWp[i].tf = stage1MapList[i].transform.Find("_NeedNextMapMoving").Find("EndPotal");
-					endWp[i].wcScript = endWp[i].tf.GetComponent<WarpCtrl>();
+					endWp[i].tf = stage2MapList[i].transform.Find("_NeedNextMapMoving").Find("EndPotalManager").Find("EndPotal");;
+					endWp[i].wcScript = endWp[i].tf.parent.GetComponentInParent<WarpCtrl>();
 
-					mapCameraPos[i] = stage1MapList[i].transform.Find("_NeedNextMapMoving").Find("MapCameraPos");
+					mapCameraPos[i] = stage2MapList[i].transform.Find("_NeedNextMapMoving").Find("MapCameraPos");
 				}
 
 			break;
@@ -180,13 +180,13 @@ public class GameManager : MonoBehaviour {
 				/* start와 end potal 을 모두 가져온다. 카메라 이동위치도 갖고 온다.*/
 				for(int i = 0; i < mapEnableArrCount; i++)
 				{
-					startWp[i].tf = stage1MapList[i].transform.Find("_NeedNextMapMoving").Find("StartPotal");
-					startWp[i].wcScript = startWp[i].tf.GetComponent<WarpCtrl>();
+					startWp[i].tf = stage3MapList[i].transform.Find("_NeedNextMapMoving").Find("StartPotalManager").Find("StartPotal");
+					startWp[i].wcScript = startWp[i].tf.parent.GetComponentInParent<WarpCtrl>();
 
-					endWp[i].tf = stage1MapList[i].transform.Find("_NeedNextMapMoving").Find("EndPotal");
-					endWp[i].wcScript = endWp[i].tf.GetComponent<WarpCtrl>();
+					endWp[i].tf = stage3MapList[i].transform.Find("_NeedNextMapMoving").Find("EndPotalManager").Find("EndPotal");
+					endWp[i].wcScript = endWp[i].tf.parent.GetComponentInParent<WarpCtrl>();
 
-					mapCameraPos[i] = stage1MapList[i].transform.Find("_NeedNextMapMoving").Find("MapCameraPos");
+					mapCameraPos[i] = stage3MapList[i].transform.Find("_NeedNextMapMoving").Find("MapCameraPos");
 				}
 			break;
 		}

@@ -31,11 +31,11 @@ public class CollisionEvent : MonoBehaviour {
 		{
 			case CollisionType.DAMAGE:
 				I_DamageScript = col.GetComponent<IDamageable>();
-				I_DamageScript.TakeHit(damage);
+				if(I_DamageScript != null) I_DamageScript.TakeHit(damage);
 				break;
 			case CollisionType.DAMAGE_AND_DISABLE:
 				I_DamageScript = col.GetComponent<IDamageable>();
-				I_DamageScript.TakeHit(damage);
+				if(I_DamageScript != null) I_DamageScript.TakeHit(damage);
 				//StopAllCoroutines();
 				if(disappearTime == 0) gameObject.SetActive(false);
 				else StartCoroutine("DelayDisable");

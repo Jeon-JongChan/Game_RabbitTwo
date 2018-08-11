@@ -1541,36 +1541,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4358915075541148, guid: 59674114ca133d24e8eeb10cda4a9bcc,
     type: 2}
   m_PrefabInternal: {fileID: 1471691224}
---- !u!1 &343789059 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1837280555652432, guid: 32f36da9b1045ee469abd3b0983f8fc6,
-    type: 2}
-  m_PrefabInternal: {fileID: 587765431}
 --- !u!4 &343789060 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4188192370937604, guid: 32f36da9b1045ee469abd3b0983f8fc6,
     type: 2}
   m_PrefabInternal: {fileID: 587765431}
---- !u!114 &343789061
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 343789059}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1bef579729a30a64d871dde59e189c86, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isMapWarp: 0
-  mapCameraPos: {fileID: 0}
-  isBiDirect: 1
-  isRandom: 0
-  warpDelayTime: 1
-  warpTargetTag:
-  - Player
-  warpPos:
-  - {fileID: 1261687739}
 --- !u!4 &346831626 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4762875620325056, guid: 09b3d0ce468e4d24e96ef18b23bfba03,
@@ -6236,7 +6211,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isMapWarp: 0
   mapCameraPos: {fileID: 0}
-  isBiDirect: 1
+  isBiDirect: 0
   isRandom: 0
   warpDelayTime: 1
   warpTargetTag:
@@ -22125,7 +22100,7 @@ Prefab:
     - target: {fileID: 114517085440729576, guid: 44af0117abc819b4a9d1a301cdf25026,
         type: 2}
       propertyPath: jumpLevel
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 58295425551605454, guid: 44af0117abc819b4a9d1a301cdf25026, type: 2}
