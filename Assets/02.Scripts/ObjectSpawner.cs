@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ObjectSpooler : MonoBehaviour {
+public class ObjectSpawner : MonoBehaviour {
 	[SerializeField] GameObject createObj;
 	[SerializeField] float createDelay;
 	[SerializeField] int limitCount;

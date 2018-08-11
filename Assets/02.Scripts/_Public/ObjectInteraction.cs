@@ -7,8 +7,18 @@ public class ObjectInteraction : ObjectMovement2D, ISaveObject{
 
 
     protected bool detectState = false; //탐지를 정지시킬 수 있는 변수.
-    protected Transform CollisionTargetTransform = null; //Trigger 객체에서 전달하는 충돌체의 위치 포인트를 가리키는 방향벡터
-
+    protected Transform collisionTargetTransform = null; //Trigger 객체에서 전달하는 충돌체의 위치 포인트를 가리키는 방향벡터
+    public Transform CollisionTargetTransform
+    {
+        get{ return collisionTargetTransform;}
+        set
+        {
+            if(value is Transform)
+            {
+                collisionTargetTransform = value;
+            }
+        }
+    }
     /* 초기화에 영향을 주는 변수들 */
     protected bool initState = true;
     protected bool state = true;
