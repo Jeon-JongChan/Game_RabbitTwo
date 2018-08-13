@@ -13,6 +13,7 @@ public class PlayerJump2D : ObjectMovement2D
     
     //Components
     Rigidbody2D playerRb;
+    Player playerInstance;
 
     //필요한 변수
     int initJumpLevel = 0;
@@ -35,11 +36,12 @@ public class PlayerJump2D : ObjectMovement2D
     void Start () {
         initJumpLevel = jumpLevel;
         playerRb = GetComponent<Rigidbody2D>();
-	}
+        playerInstance = GetComponent<Player>();
+    }
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetButtonDown("Jump"))
+        if (Input.GetButtonDown("Jump") && playerInstance.Dead)
         {
             if (jumpState < jumpLevel)
             {

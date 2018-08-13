@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+
+[RequireComponent(typeof(PlayerJump2D))]
 public class Player : LifeInteraction
 {
     //public variable - inspector
@@ -48,15 +50,15 @@ public class Player : LifeInteraction
 	
 	// Update is called once per frame
 	void Update () {
-        if(!dead)
+        if (!dead)
         {
             x = Input.GetAxisRaw("Horizontal");
 
             AnimationControl();
             Move(playerRb, new Vector2(x, y), speed);
-            
-            if(Mathf.Abs(playerRb.velocity.y) > 1f) JumpAnimation();
-            if(barrierState && barrierAniTrigger)
+
+            if (Mathf.Abs(playerRb.velocity.y) > 1f) JumpAnimation();
+            if (barrierState && barrierAniTrigger)
             {
                 //print("켜진다. 배리어");
                 barrier.SetActive(barrierAniTrigger);
@@ -64,16 +66,11 @@ public class Player : LifeInteraction
                 StartCoroutine(BarrierExit(BarrierdelayTime));
             }
         }
-        else StartCoroutine("PlayerDie");
-        
     }
-    public IEnumerator PlayerDie()
+    public void PlayerDie()
     {
         DisableObject2D(playerSr,box2d);
         if(particle != null) particle.SetActive(true);
-        yield return new WaitForSeconds(particleLifeTime);
-        if(particle != null) particle.SetActive(false);
-        SceneManager.LoadScene("Game01");
     }
     IEnumerator BarrierExit(float delayTime)
     {

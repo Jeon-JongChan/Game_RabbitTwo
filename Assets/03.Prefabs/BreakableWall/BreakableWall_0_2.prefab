@@ -20,11 +20,11 @@ GameObject:
   m_Component:
   - component: {fileID: 4139623303760014}
   - component: {fileID: 212206144031183896}
+  - component: {fileID: 61436469768505600}
+  - component: {fileID: 50046975196359296}
+  - component: {fileID: 114430900579825542}
   - component: {fileID: 198844144855622204}
   - component: {fileID: 199412180546703650}
-  - component: {fileID: 50046975196359296}
-  - component: {fileID: 61436469768505600}
-  - component: {fileID: 114430900579825542}
   m_Layer: 0
   m_Name: BreakableWall_0_2
   m_TagString: Ground
@@ -39,7 +39,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1270954543861794}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -6.86, y: -3.61, z: 0}
+  m_LocalPosition: {x: -8.19, y: -2.27, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -4652,7 +4652,7 @@ ParticleSystemRenderer:
   m_ReflectionProbeUsage: 0
   m_RenderingLayerMask: 4294967295
   m_Materials:
-  - {fileID: 2100000, guid: 09dfa25208b849a49b4ea04fc49881f2, type: 2}
+  - {fileID: 2100000, guid: 0652c984abc4ef54992367333e298172, type: 2}
   - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
@@ -4728,7 +4728,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: ef0b7cb5b7759f94a866a7791667c8f3, type: 3}
+  m_Sprite: {fileID: 21300000, guid: b53cd4e8d2306d947ba0c382f8f806da, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
