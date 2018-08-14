@@ -3,12 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-[System.Serializable]
-class StageSceneName
-{
-	public string[] level1 = new string[3];
-	public string[] level2 = new string[3];
-}
 public class GameManager : MonoBehaviour {
 
 	struct WarpPotalSt
@@ -17,32 +11,20 @@ public class GameManager : MonoBehaviour {
 		public WarpCtrl wcScript;
 	}
 	/* INSPECTOR VARIABLE */
+	[SerializeField] int _startStageNum = 1;
 	[SerializeField] GameObject _player;
 	[SerializeField] GameObject _mainCamera;
 	[SerializeField] bool _isSequential = false;
 	//스테이지마다 활성화할 맵의 개수
-	[SerializeField] int _stage1EnableMapCount = 5;
-	[SerializeField] int _stage2EnableMapCount = 11;
-	[SerializeField] int _stage3EnableMapCount = 18;
 	[SerializeField] StageSceneName _sceneName = new StageSceneName();
     [SerializeField] float _dieDelayTime = 1.5f;
+	[SerializeField] StageInfo[] _stageInfo;
     public GameObject _pausePage;
 
     /* NEEDS COMPONENT */
     Player _playerInstance;
 
-	List<GameObject> _stage1MapList;
-	List<GameObject> _stage2MapList;
-	List<GameObject> _stage3MapList;
-
-	int[] _stage1EnableMapIdxs;
-	int[] _stage2EnableMapIdxs;
-	int[] _stage3EnableMapIdxs;
-
-
-	int _stage1TotalMapCount = 9;
-	int _stage2TotalMapCount = 16;
-	int _stage3TotalMapCount = 25;
+	int[] _stageMapCount = {9 ,16 ,25};
 
 	bool _isMapWarp = false;
 	bool _isStartStage = true;
@@ -50,7 +32,6 @@ public class GameManager : MonoBehaviour {
 	Vector2 _startingPoint = Vector2.zero;
 
 	static int _stageNum = 1;
-    static int _mapNum = 1;
 
     bool isPauseing = false;
     event System.Action PlayerDie;
@@ -66,31 +47,45 @@ public class GameManager : MonoBehaviour {
     }
 	private void Awake() {
 		//DontDestroyOnLoad(gameObject);
-
-		_stage1MapList = new List<GameObject>();
-		_stage2MapList = new List<GameObject>();
-		_stage3MapList = new List<GameObject>();
-
-		_stage1EnableMapIdxs = new int[_stage1EnableMapCount];
-		_stage2EnableMapIdxs = new int[_stage2EnableMapCount];
-		_stage3EnableMapIdxs = new int[_stage3EnableMapCount];
+		_stageNum = _startStageNum;
+		foreach(var v in _stageInfo)
+		{
+			try
+			{
+				v.stageMapList = new List<GameObject>();
+				v.stageEnableMapIdxs = new int[v.stageEnableMapCount];
+			}
+			catch (System.Exception e)
+			{
+				Debug.Log(e.Message);
+			}
+			
+		}
 
 		if(!_isSequential)
 		{
-			StartMapRandomIdx(1,_stage1EnableMapCount,_stage1TotalMapCount);
-			StartMapRandomIdx(2,_stage2EnableMapCount,_stage2TotalMapCount);
-			StartMapRandomIdx(3,_stage3EnableMapCount,_stage3TotalMapCount);
+			StartMapRandomIdx(1,_stageMapCount[0]);
+			StartMapRandomIdx(2,_stageMapCount[1]);
+			StartMapRandomIdx(3,_stageMapCount[2]);
 		}
 		else
 		{
-			for(int i = 0; i < _stage1EnableMapCount; i++)
+			for(int i = 0; i < _stageInfo[0].stageEnableMapCount; i++)
 			{
-				_stage1EnableMapIdxs[i] = i+1;
+				_stageInfo[0].stageEnableMapIdxs[i] = i+1;
+			}
+			for(int i = 0; i < _stageInfo[1].stageEnableMapCount; i++)
+			{
+				_stageInfo[1].stageEnableMapIdxs[i] = i+1;
+			}
+			for(int i = 0; i < _stageInfo[2].stageEnableMapCount; i++)
+			{
+				_stageInfo[2].stageEnableMapIdxs[i] = i+1;
 			}
 		}
 
 		AddMap(_stageNum);
-		ConnectMapWarp(_stageNum, _stage1EnableMapCount);
+		ConnectMapWarp(_stageNum);
 	}
 
 	private void Update() {
@@ -148,81 +143,33 @@ public class GameManager : MonoBehaviour {
 	{
 		string mapStr = "Map";
 		string tempStr = "";
-		switch(stageNum)
+
+		for(int i = 0; i < _stageInfo[stageNum-1].stageEnableMapCount; i++)
 		{
-			case 1:
-			for(int i = 0; i < _stage1EnableMapCount; i++)
-			{
-				tempStr = mapStr + _stage1EnableMapIdxs[i].ToString();
-				_stage1MapList.Add(GameObject.Find(tempStr));
-			}
-			break;
-			case 2:
-			for(int i = 0; i < _stage2EnableMapCount; i++)
-			{
-				tempStr = mapStr + _stage2EnableMapIdxs[i].ToString();
-				_stage2MapList.Add(GameObject.Find(tempStr));
-			}
-			break;
-			case 3:
-			for(int i = 0; i < _stage3EnableMapCount; i++)
-			{
-				tempStr = mapStr + _stage3EnableMapIdxs[i].ToString();
-				_stage3MapList.Add(GameObject.Find(tempStr));
-			}
-			break;
+			tempStr = mapStr + _stageInfo[stageNum-1].stageEnableMapIdxs[i].ToString();
+			_stageInfo[stageNum-1].stageMapList.Add(GameObject.Find(tempStr));
 		}
 	}
-	void ConnectMapWarp(int stageNum, int mapEnableArrCount)
+	void ConnectMapWarp(int stageNum)
 	{
+		int mapEnableArrCount = _stageInfo[stageNum-1].stageEnableMapCount;
+
 		WarpPotalSt[] startWp = new WarpPotalSt[mapEnableArrCount];
 		WarpPotalSt[] endWp = new WarpPotalSt[mapEnableArrCount];
 		Transform[] mapCameraPos = new Transform[mapEnableArrCount];
 
-		switch(stageNum)
+		/* start와 end potal 을 모두 가져온다. 카메라 이동위치도 갖고 온다.*/
+		for(int i = 0; i < mapEnableArrCount; i++)
 		{
-			case 1:
-				/* start와 end potal 을 모두 가져온다. 카메라 이동위치도 갖고 온다.*/
-				for(int i = 0; i < mapEnableArrCount; i++)
-				{
-					startWp[i].tf = _stage1MapList[i].transform.Find("_NeedNextMapMoving").Find("StartPotalManager").Find("StartPotal");
-					startWp[i].wcScript = startWp[i].tf.GetComponentInParent<WarpCtrl>();
+			startWp[i].tf = _stageInfo[stageNum-1].stageMapList[i].transform.Find("_NeedNextMapMoving").Find("StartPotalManager").Find("StartPotal");
+			startWp[i].wcScript = startWp[i].tf.GetComponentInParent<WarpCtrl>();
 
-					endWp[i].tf = _stage1MapList[i].transform.Find("_NeedNextMapMoving").Find("EndPotalManager").Find("EndPotal");
-					endWp[i].wcScript = endWp[i].tf.parent.GetComponentInParent<WarpCtrl>();
+			endWp[i].tf = _stageInfo[stageNum-1].stageMapList[i].transform.Find("_NeedNextMapMoving").Find("EndPotalManager").Find("EndPotal");
+			endWp[i].wcScript = endWp[i].tf.parent.GetComponentInParent<WarpCtrl>();
 
-					mapCameraPos[i] = _stage1MapList[i].transform.Find("_NeedNextMapMoving").Find("MapCameraPos");
-				}
-			break;
-			case 2:
-				/* start와 end potal 을 모두 가져온다. 카메라 이동위치도 갖고 온다.*/
-				for(int i = 0; i < mapEnableArrCount; i++)
-				{
-					startWp[i].tf = _stage2MapList[i].transform.Find("_NeedNextMapMoving").Find("StartPotalManager").Find("StartPotal");
-					startWp[i].wcScript = startWp[i].tf.parent.GetComponentInParent<WarpCtrl>();
-
-					endWp[i].tf = _stage2MapList[i].transform.Find("_NeedNextMapMoving").Find("EndPotalManager").Find("EndPotal");;
-					endWp[i].wcScript = endWp[i].tf.parent.GetComponentInParent<WarpCtrl>();
-
-					mapCameraPos[i] = _stage2MapList[i].transform.Find("_NeedNextMapMoving").Find("MapCameraPos");
-				}
-
-			break;
-			case 3:
-				/* start와 end potal 을 모두 가져온다. 카메라 이동위치도 갖고 온다.*/
-				for(int i = 0; i < mapEnableArrCount; i++)
-				{
-					startWp[i].tf = _stage3MapList[i].transform.Find("_NeedNextMapMoving").Find("StartPotalManager").Find("StartPotal");
-					startWp[i].wcScript = startWp[i].tf.parent.GetComponentInParent<WarpCtrl>();
-
-					endWp[i].tf = _stage3MapList[i].transform.Find("_NeedNextMapMoving").Find("EndPotalManager").Find("EndPotal");
-					endWp[i].wcScript = endWp[i].tf.parent.GetComponentInParent<WarpCtrl>();
-
-					mapCameraPos[i] = _stage3MapList[i].transform.Find("_NeedNextMapMoving").Find("MapCameraPos");
-				}
-			break;
+			mapCameraPos[i] = _stageInfo[stageNum-1].stageMapList[i].transform.Find("_NeedNextMapMoving").Find("MapCameraPos");
 		}
-
+		
 		for(int i = 0; i < mapEnableArrCount; i++)
 		{
 			if(i == 0)
@@ -243,79 +190,33 @@ public class GameManager : MonoBehaviour {
 		_startingPoint = startWp[0].tf.position;
 	}
 
-	void StartMapRandomIdx(int stageNum, int mapEnableArrCount, int mapTotalCount)
+	void StartMapRandomIdx(int stageNum, int mapTotalCount)
 	{
 		int rand = 0;
-		switch(stageNum)
+		int mapEnableArrCount = _stageInfo[stageNum - 1].stageEnableMapCount;
+
+		for(int i = 0; i < mapEnableArrCount; i++)
 		{
-			case 1:
-			for(int i = 0; i < mapEnableArrCount; i++)
+			/* 맵 처음과 끝은 0 과 마지막 맵으로 고정. */
+			if(i == 0)
 			{
-				/* 맵 처음과 끝은 0 과 마지막 맵으로 고정. */
-				if(i == 0)
+				rand = 1;
+			}
+			else if(i == mapEnableArrCount -1) rand = mapTotalCount;
+			else
+			{
+				for(int j = 0; j < i;j++)
 				{
-					rand = 1;
-				}
-				else if(i == mapEnableArrCount -1) rand = mapTotalCount;
-				else
-				{
-					for(int j = 0; j < i;j++)
+					if(rand ==  _stageInfo[stageNum - 1].stageEnableMapIdxs[j])
 					{
-						if(rand == _stage1EnableMapIdxs[j])
-						{
-							rand = Random.Range(2,mapTotalCount);
-							j = 0;
-							continue;
-						}
+						rand = Random.Range(2,mapTotalCount);
+						j = 0;
+						continue;
 					}
 				}
-				_stage1EnableMapIdxs[i] = rand;
 			}
-			break;
-			case 2:
-			for(int i = 0; i < mapEnableArrCount; i++)
-			{
-				if(i == 0)
-				{
-					rand = 1;
-				}
-				else
-				{
-					for(int j = 0; j < i;j++)
-					{
-						if(rand == _stage2EnableMapIdxs[j])
-						{
-							rand = Random.Range(2,mapTotalCount);
-							j = 0;
-							continue;
-						}
-					}
-				}
-				_stage2EnableMapIdxs[i] = rand;
-			}
-			break;
-			case 3:
-			for(int i = 0; i < mapEnableArrCount; i++)
-			{
-				if(i == 0)
-				{
-					rand = 1;
-				}
-				else
-				{
-					for(int j = 0; j < i;j++)
-					{
-						if(rand == _stage3EnableMapIdxs[j])
-						{
-							rand = Random.Range(2,mapTotalCount);
-							j = 0;
-							continue;
-						}
-					}
-				}
-				_stage3EnableMapIdxs[i] = rand;
-			}
-			break;
+			_stageInfo[stageNum - 1].stageEnableMapIdxs[i] = rand;
+
 		}
 	}
 
@@ -341,4 +242,17 @@ public class GameManager : MonoBehaviour {
     //     UnityEditor.EditorApplication.isPlaying = false;
     //     //Application.Quit();
     // }
+}
+[System.Serializable]
+class StageSceneName
+{
+	public string[] level1 = new string[3];
+	public string[] level2 = new string[3];
+}
+[System.Serializable]
+class StageInfo
+{
+	public int stageEnableMapCount = 0;
+	public List<GameObject> stageMapList;
+	public int[] stageEnableMapIdxs;
 }

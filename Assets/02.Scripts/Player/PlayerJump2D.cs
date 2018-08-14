@@ -41,7 +41,7 @@ public class PlayerJump2D : ObjectMovement2D
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetButtonDown("Jump") && playerInstance.Dead)
+        if (Input.GetButtonDown("Jump") && !playerInstance.Dead)
         {
             if (jumpState < jumpLevel)
             {

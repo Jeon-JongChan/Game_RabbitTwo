@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.37311953, g: 0.38074014, b: 0.3587274, a: 1}
+  m_IndirectSpecularColor: {r: 0.37311918, g: 0.3807398, b: 0.35872716, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -2948,7 +2948,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4875138196603828, guid: 71a93f6309f314a418278ee30a674716, type: 2}
       propertyPath: m_LocalPosition.y
-      value: -5.02
+      value: -24.2
       objectReference: {fileID: 0}
     - target: {fileID: 4875138196603828, guid: 71a93f6309f314a418278ee30a674716, type: 2}
       propertyPath: m_LocalPosition.z
@@ -2973,6 +2973,34 @@ Prefab:
     - target: {fileID: 4875138196603828, guid: 71a93f6309f314a418278ee30a674716, type: 2}
       propertyPath: m_RootOrder
       value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 4486882869729376, guid: 71a93f6309f314a418278ee30a674716, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: -37.06
+      objectReference: {fileID: 0}
+    - target: {fileID: 4486882869729376, guid: 71a93f6309f314a418278ee30a674716, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: -0.82
+      objectReference: {fileID: 0}
+    - target: {fileID: 4556435074440748, guid: 71a93f6309f314a418278ee30a674716, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 1.81
+      objectReference: {fileID: 0}
+    - target: {fileID: 4513145290307222, guid: 71a93f6309f314a418278ee30a674716, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 7.58
+      objectReference: {fileID: 0}
+    - target: {fileID: 4513145290307222, guid: 71a93f6309f314a418278ee30a674716, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: -11.16
+      objectReference: {fileID: 0}
+    - target: {fileID: 4770506696575146, guid: 71a93f6309f314a418278ee30a674716, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: -0.75
+      objectReference: {fileID: 0}
+    - target: {fileID: 4770506696575146, guid: 71a93f6309f314a418278ee30a674716, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 0.06
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 71a93f6309f314a418278ee30a674716, type: 2}
@@ -4157,9 +4185,6 @@ MonoBehaviour:
   _player: {fileID: 0}
   _mainCamera: {fileID: 0}
   _isSequential: 0
-  _stage1EnableMapCount: 5
-  _stage2EnableMapCount: 11
-  _stage3EnableMapCount: 18
   _sceneName:
     level1:
     - Game01
@@ -4169,6 +4194,17 @@ MonoBehaviour:
     - 
     - 
     - 
+  _dieDelayTime: 1.5
+  _stageInfo:
+  - stageEnableMapCount: 5
+    stageMapList: []
+    stageEnableMapIdxs: 
+  - stageEnableMapCount: 11
+    stageMapList: []
+    stageEnableMapIdxs: 
+  - stageEnableMapCount: 16
+    stageMapList: []
+    stageEnableMapIdxs: 
   _pausePage: {fileID: 0}
 --- !u!4 &863656512
 Transform:
