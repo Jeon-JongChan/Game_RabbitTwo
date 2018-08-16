@@ -4182,6 +4182,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e28133c097528b2498c7b4c28ff64b6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _startStageNum: 1
   _player: {fileID: 0}
   _mainCamera: {fileID: 0}
   _isSequential: 0

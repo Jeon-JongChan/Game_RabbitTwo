@@ -277,7 +277,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0
-  m_GravityScale: 1
+  m_GravityScale: 15
   m_Material: {fileID: 6200000, guid: cf2d228e0ad09d641ac67665f2d3db8f, type: 2}
   m_Interpolate: 0
   m_SleepingMode: 1
@@ -458,7 +458,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 1
-  speed: 5
+  speed: 13
   BarrierdelayTime: 5
   barrier: {fileID: 1180474072840344}
   particle: {fileID: 1350665251614164}
@@ -475,7 +475,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   jumpLevel: 2
-  jumpHeight: 5
+  jumpHeight: 35
 --- !u!198 &198097010132409240
 ParticleSystem:
   m_ObjectHideFlags: 1
