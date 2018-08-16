@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using PsybleScript;
 
-public class EventObstacle : ObjectMovement{
+public class EventObstacle : ObjectMovement2D{
     MovingObject movOb;
     Collider2D col;
     Rigidbody2D rg2d;
