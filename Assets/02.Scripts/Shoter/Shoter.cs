@@ -141,9 +141,9 @@ public class Shoter : ObjectInteraction
     //화면에 안보일때 실행되는 구문들
     private void OnBecameInvisible()
     {
-        shotState = false;
         if(isVisibleOperator)
         {
+            shotState = false;
             if (selectedType == 0 || selectedType == 1 || (selectedType * shotKey == 0))
             {
                 StopCoroutine(returnCoroutine);
