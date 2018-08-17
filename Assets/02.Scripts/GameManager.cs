@@ -32,6 +32,7 @@ public class GameManager : MonoBehaviour {
 	Vector2 _startingPoint = Vector2.zero;
 
 	static int _stageNum = 1;
+    static int _levelNum = 1;
 
     bool isPauseing = false;
     event System.Action PlayerDie;
@@ -40,34 +41,37 @@ public class GameManager : MonoBehaviour {
 	private void Start()
     {
         //pausePage.SetActive(false);
+ 
 		_mainCamera = GameObject.Find("Main Camera");
         if (_player == null) _player = GameObject.FindGameObjectWithTag("Player");
 		_playerInstance = _player.GetComponent<Player>();
         PlayerDie += _playerInstance.PlayerDie;
-    }
-	private void Awake() {
-		//DontDestroyOnLoad(gameObject);
-		_stageNum = _startStageNum;
-		foreach(var v in _stageInfo)
-		{
-			try
-			{
-				v.stageMapList = new List<GameObject>();
-				v.stageEnableMapIdxs = new int[v.stageEnableMapCount];
-			}
-			catch (System.Exception e)
-			{
-				Debug.Log(e.Message);
-			}
-			
-		}
 
-		if(!_isSequential)
-		{
-			StartMapRandomIdx(1,_stageMapCount[0]);
-			StartMapRandomIdx(2,_stageMapCount[1]);
-			StartMapRandomIdx(3,_stageMapCount[2]);
-		}
+    }
+    private void Awake() {
+        //DontDestroyOnLoad(gameObject);
+        _stageNum = _startStageNum;
+        foreach (var v in _stageInfo)
+        {
+            //print("3");
+            try
+            {
+                v.stageMapList = new List<GameObject>();
+                v.stageEnableMapIdxs = new int[v.stageEnableMapCount];
+            }
+            catch (System.Exception e)
+            {
+                Debug.Log(e.Message);
+            }
+
+        }
+
+        if (!_isSequential)
+        {
+            StartMapRandomIdx(1, _stageMapCount[0]);
+            StartMapRandomIdx(2, _stageMapCount[1]);
+            StartMapRandomIdx(3, _stageMapCount[2]);
+        }
 		else
 		{
 			for(int i = 0; i < _stageInfo[0].stageEnableMapCount; i++)
@@ -83,13 +87,13 @@ public class GameManager : MonoBehaviour {
 				_stageInfo[2].stageEnableMapIdxs[i] = i+1;
 			}
 		}
-
 		AddMap(_stageNum);
 		ConnectMapWarp(_stageNum);
+
 	}
 
 	private void Update() {
-		// if (Input.GetButton("Cancel")&&!isPauseing) {
+        // if (Input.GetButton("Cancel")&&!isPauseing) {
         //     GamePause();
         // }
 		if(_isMapWarp)
@@ -112,6 +116,7 @@ public class GameManager : MonoBehaviour {
         {
             AfterDie();
         }
+      
     }
 
 
@@ -125,7 +130,7 @@ public class GameManager : MonoBehaviour {
     IEnumerator LoadMap()
     {
         yield return new WaitForSeconds(_dieDelayTime);
-        switch (_stageNum)
+        switch (_levelNum)
         {
             case 1:
                 SceneManager.LoadScene(_sceneName.level1[_stageNum - 1]);
@@ -149,6 +154,7 @@ public class GameManager : MonoBehaviour {
 			tempStr = mapStr + _stageInfo[stageNum-1].stageEnableMapIdxs[i].ToString();
 			_stageInfo[stageNum-1].stageMapList.Add(GameObject.Find(tempStr));
 		}
+        print("AddMap");
 	}
 	void ConnectMapWarp(int stageNum)
 	{
@@ -161,8 +167,9 @@ public class GameManager : MonoBehaviour {
 		/* start와 end potal 을 모두 가져온다. 카메라 이동위치도 갖고 온다.*/
 		for(int i = 0; i < mapEnableArrCount; i++)
 		{
-			startWp[i].tf = _stageInfo[stageNum-1].stageMapList[i].transform.Find("_NeedNextMapMoving").Find("StartPotalManager").Find("StartPotal");
-			startWp[i].wcScript = startWp[i].tf.GetComponentInParent<WarpCtrl>();
+            print(_stageInfo[stageNum - 1].stageMapList[i].transform.name + " dpgpgppgpgpgp");
+            startWp[i].tf = _stageInfo[stageNum-1].stageMapList[i].transform.Find("_NeedNextMapMoving").Find("StartPotalManager").Find("StartPotal");
+            startWp[i].wcScript = startWp[i].tf.GetComponentInParent<WarpCtrl>();
 
 			endWp[i].tf = _stageInfo[stageNum-1].stageMapList[i].transform.Find("_NeedNextMapMoving").Find("EndPotalManager").Find("EndPotal");
 			endWp[i].wcScript = endWp[i].tf.parent.GetComponentInParent<WarpCtrl>();
@@ -188,6 +195,7 @@ public class GameManager : MonoBehaviour {
 		}
 
 		_startingPoint = startWp[0].tf.position;
+        
 	}
 
 	void StartMapRandomIdx(int stageNum, int mapTotalCount)

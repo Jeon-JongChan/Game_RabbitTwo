@@ -7,11 +7,12 @@ public class ObjectSpawner : MonoBehaviour {
 	[SerializeField] float createDelay;
 	[SerializeField] int limitCount;
 	[SerializeField] bool isDisappear = false;
-
-	WaitForSeconds wsCreateDelay;
+    [SerializeField] float randomRange = 1;
+    WaitForSeconds wsCreateDelay;
 	List<GameObject> createObjs;
 	float startingDelay = 0;
-	void OnBecameVisible() {
+	void OnEnable()
+    {
 		StartCoroutine("StartSpooler");
 	}
 	private void Awake() {
@@ -21,7 +22,7 @@ public class ObjectSpawner : MonoBehaviour {
 		Vector3 tempVec = transform.position;
 		for(int i = 0; i < limitCount; i++)
 		{
-			float rand = Random.Range(-1.0f,1.0f);
+			float rand = Random.Range(-randomRange,randomRange);
 			tempVec.x += rand;
 			tempObj = Instantiate(createObj,tempVec,Quaternion.identity);
 			tempObj.SetActive(false);

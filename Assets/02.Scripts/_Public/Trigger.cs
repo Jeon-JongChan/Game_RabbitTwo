@@ -38,5 +38,6 @@ public class Trigger : MonoBehaviour {
                 SetEventFunc(col.transform);
             }
         }
+        
     }
 }

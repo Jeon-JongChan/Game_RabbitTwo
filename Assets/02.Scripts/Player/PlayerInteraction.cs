@@ -49,7 +49,7 @@ public class PlayerInteraction : ObjectInteraction {
             playerTag = player.tag;
             playerInstance = player.GetComponent<Player>();
             playerJumpInstance = player.GetComponent<PlayerJump2D>();
-            print(playerJumpInstance.JumpLevel);
+            //print(playerJumpInstance.JumpLevel);
         }
         else { bugState = true; }
 

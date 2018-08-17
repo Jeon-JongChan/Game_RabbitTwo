@@ -39,7 +39,7 @@ public class SwordCtrl : ObjectInteraction {
 		StartCoroutine(StartSword());
 	}
 
-	IEnumerator StartSword()
+	public IEnumerator StartSword()
 	{
 		if(useTrigger) while(CollisionTargetTransform == null) yield return new WaitForFixedUpdate();
 		while(state && paths.Length > 0)
@@ -65,7 +65,7 @@ public class SwordCtrl : ObjectInteraction {
                 {
                     destination = targets[i].position;
                     distanceToMove = destination - rb2d.position;
-                    print(distanceToMove + "  " + i);
+                    //print(distanceToMove + "  " + i);
 
                     while (state && !(Vector2.Distance(destination, rb2d.position) < limit && Vector2.Distance(destination, rb2d.position) > -limit))
                     {

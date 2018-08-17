@@ -27,10 +27,15 @@ public class WarpCtrl : MonoBehaviour {
 			warpPos.RemoveAt(0);
 		}
 		wsWarpDelay = new WaitForSeconds(warpDelayTime);
-		if(isMapWarp) MapWarpEvent += GameObject.Find("GameManager").GetComponent<GameManager>().MapWarpEvent;
+        if (isMapWarp)
+        {
+            GameManager gm = GameObject.Find("GameManager").GetComponent<GameManager>();
+            if(gm != null) MapWarpEvent += gm.MapWarpEvent;
+        }
 		// warpPos = GetComponentsInChildren<Transform>();
 		// print(warpPos.Length);
 	}
+   
 	private void OnTriggerEnter2D(Collider2D col) {
 		foreach(var v in warpTargetTag)
 		{
