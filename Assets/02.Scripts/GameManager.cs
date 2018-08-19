@@ -23,55 +23,55 @@ public class GameManager : MonoBehaviour {
 
     /* NEEDS COMPONENT */
     Player _playerInstance;
+	SaveLoadManager saveManager;
 
-	int[] _stageMapCount = {9 ,16 ,25};
+	/* NEEDS VARIABLE */
 
-	bool _isMapWarp = false;
-	bool _isStartStage = true;
+	static int[] _stageMapCount = {9 ,16 ,25};
+
 	Vector2 _cameraWarpPos = Vector2.zero;
 	Vector2 _startingPoint = Vector2.zero;
 
 	static int _stageNum = 1;
-    static int _levelNum = 1;
+	static int _currMap = 1;
+	static bool _isDie = false;
 
     bool isPauseing = false;
     event System.Action PlayerDie;
 
+	static bool start = false;
 
 	private void Start()
     {
         //pausePage.SetActive(false);
- 
+		saveManager = GetComponent<SaveLoadManager>();
 		_mainCamera = GameObject.Find("Main Camera");
         if (_player == null) _player = GameObject.FindGameObjectWithTag("Player");
 		_playerInstance = _player.GetComponent<Player>();
         PlayerDie += _playerInstance.PlayerDie;
-
     }
-    private void Awake() {
-        //DontDestroyOnLoad(gameObject);
-        _stageNum = _startStageNum;
-        foreach (var v in _stageInfo)
-        {
-            //print("3");
-            try
-            {
-                v.stageMapList = new List<GameObject>();
-                v.stageEnableMapIdxs = new int[v.stageEnableMapCount];
-            }
-            catch (System.Exception e)
-            {
-                Debug.Log(e.Message);
-            }
+	private void Awake() {
+		_stageNum = _startStageNum;
+		foreach(var v in _stageInfo)
+		{
+			try
+			{
+				v.stageMapList = new List<GameObject>();
+				v.stageEnableMapIdxs = new int[v.stageEnableMapCount];
+			}
+			catch (System.Exception e)
+			{
+				Debug.Log(e.Message);
+			}
+			
+		}
 
-        }
-
-        if (!_isSequential)
-        {
-            StartMapRandomIdx(1, _stageMapCount[0]);
-            StartMapRandomIdx(2, _stageMapCount[1]);
-            StartMapRandomIdx(3, _stageMapCount[2]);
-        }
+		if(!_isSequential)
+		{
+			StartMapRandomIdx(1,_stageMapCount[0]);
+			StartMapRandomIdx(2,_stageMapCount[1]);
+			StartMapRandomIdx(3,_stageMapCount[2]);
+		}
 		else
 		{
 			for(int i = 0; i < _stageInfo[0].stageEnableMapCount; i++)
@@ -87,39 +87,69 @@ public class GameManager : MonoBehaviour {
 				_stageInfo[2].stageEnableMapIdxs[i] = i+1;
 			}
 		}
+
 		AddMap(_stageNum);
 		ConnectMapWarp(_stageNum);
-
 	}
 
 	private void Update() {
-        // if (Input.GetButton("Cancel")&&!isPauseing) {
+		// if (Input.GetButton("Cancel")&&!isPauseing) {
         //     GamePause();
         // }
-		if(_isMapWarp)
-		{
-			_isMapWarp = false;
-			Vector3 temp = new Vector3(_cameraWarpPos.x,_cameraWarpPos.y,_mainCamera.transform.position.z);
-			_mainCamera.transform.position = temp;
-			print(_cameraWarpPos);
-			_cameraWarpPos = Vector2.zero;
-		}
-
-		if(_isStartStage)
-		{
-			_player = GameObject.FindGameObjectWithTag("Player");
-			_player.transform.position =  _startingPoint;
-			_isStartStage = false;
-		}
-
         if (_playerInstance.Dead)
         {
             AfterDie();
         }
-      
+		if(_isDie)
+		{
+			_isDie = false;
+			LoadGameState();
+		}
     }
 
+	public void SaveGameState()
+	{
+		if(saveManager != null)
+		{
+			//print("세이브호출");
+			if(saveManager.SaveObjectLen > 0)
+			{
+				saveManager.Save();
+			}
+			else 
+			{
+				saveManager.Save(_player.transform,0);
+				saveManager.Save(_mainCamera.transform,0);
+			}
+			
+		}
+		//print(_player.transform.position);
+		PlayerPrefs.SetInt("STAGE",_stageNum);
+		PlayerPrefs.SetInt("MAP",_currMap);
+	}
 
+	public void LoadGameState()
+	{
+		if(saveManager != null)
+		{
+			if(saveManager.SaveObjectLen > 0)
+			{
+				saveManager.Load();
+			}
+			else 
+			{
+				saveManager.Load(_player.transform,0);
+				saveManager.Load(_mainCamera.transform,0);
+			}
+			
+		}
+		if(PlayerPrefs.HasKey("STAGE"))
+		{
+			_stageNum = PlayerPrefs.GetInt("STAGE");
+			_currMap = PlayerPrefs.GetInt("MAP");
+		}
+		//print("Load : " + _player.transform.position);
+	}
 
     void AfterDie()
     {
@@ -130,20 +160,63 @@ public class GameManager : MonoBehaviour {
     IEnumerator LoadMap()
     {
         yield return new WaitForSeconds(_dieDelayTime);
-        switch (_levelNum)
-        {
-            case 1:
-                SceneManager.LoadScene(_sceneName.level1[_stageNum - 1]);
-                break;
-            case 2:
-                SceneManager.LoadScene(_sceneName.level2[_stageNum - 1]);
-                break;
-            default:
-                Debug.Log("GameManager.cs - Stage Num Error");
-                break;
-        }
-        _isStartStage = true;
+		switch (_stageNum)
+		{
+			case 1:
+				SceneManager.LoadScene(_sceneName.level1[_stageNum - 1]);
+				break;
+			case 2:
+				SceneManager.LoadScene(_sceneName.level2[_stageNum - 1]);
+				break;
+			default:
+				Debug.Log("GameManager.cs - Stage Num Error");
+				break;
+		}
+		_isDie = true;
     }
+	
+
+	public void MapWarpEvent(Vector2 CameraWarpPos,string map)
+	{
+		_cameraWarpPos = CameraWarpPos;
+
+		Vector3 temp = new Vector3(_cameraWarpPos.x,_cameraWarpPos.y,_mainCamera.transform.position.z);
+		_mainCamera.transform.position = temp;
+		ThisMap(map);
+	}
+
+	void ThisMap(string map)
+	{
+		string mapString = "Map";
+		
+		for(int i = 1; i < _stageMapCount[_stageNum - 1] ; i++)
+		{
+			if(map == mapString + i.ToString())
+			{
+				_currMap = i;
+				break;
+			}
+		}
+		print("_currMap : " + _currMap + " " + map);
+	}
+    // public void GamePause()
+    // {
+    //     Time.timeScale = 0;
+    //     pausePage.SetActive(true);
+    //     isPauseing = true;
+    // }
+    // public void GameResume() {
+    //     Time.timeScale = 1.0f;
+    //     pausePage.SetActive(false);
+    //     isPauseing = false;
+    // }
+
+    // public void GameExit() {
+    //     print("게임을 종료합니다.");
+    //     UnityEditor.EditorApplication.isPlaying = false;
+    //     //Application.Quit();
+    // }
+
 	void AddMap(int stageNum)
 	{
 		string mapStr = "Map";
@@ -154,7 +227,6 @@ public class GameManager : MonoBehaviour {
 			tempStr = mapStr + _stageInfo[stageNum-1].stageEnableMapIdxs[i].ToString();
 			_stageInfo[stageNum-1].stageMapList.Add(GameObject.Find(tempStr));
 		}
-        print("AddMap");
 	}
 	void ConnectMapWarp(int stageNum)
 	{
@@ -167,9 +239,8 @@ public class GameManager : MonoBehaviour {
 		/* start와 end potal 을 모두 가져온다. 카메라 이동위치도 갖고 온다.*/
 		for(int i = 0; i < mapEnableArrCount; i++)
 		{
-            print(_stageInfo[stageNum - 1].stageMapList[i].transform.name + " dpgpgppgpgpgp");
-            startWp[i].tf = _stageInfo[stageNum-1].stageMapList[i].transform.Find("_NeedNextMapMoving").Find("StartPotalManager").Find("StartPotal");
-            startWp[i].wcScript = startWp[i].tf.GetComponentInParent<WarpCtrl>();
+			startWp[i].tf = _stageInfo[stageNum-1].stageMapList[i].transform.Find("_NeedNextMapMoving").Find("StartPotalManager").Find("StartPotal");
+			startWp[i].wcScript = startWp[i].tf.GetComponentInParent<WarpCtrl>();
 
 			endWp[i].tf = _stageInfo[stageNum-1].stageMapList[i].transform.Find("_NeedNextMapMoving").Find("EndPotalManager").Find("EndPotal");
 			endWp[i].wcScript = endWp[i].tf.parent.GetComponentInParent<WarpCtrl>();
@@ -185,19 +256,17 @@ public class GameManager : MonoBehaviour {
 			}
 			else if(i == mapEnableArrCount - 1)
 			{
-				startWp[i].wcScript.ConnectedPotal(endWp[i-1].tf,mapCameraPos[i-1]);
+				//startWp[i].wcScript.ConnectedPotal(endWp[i-1].tf,mapCameraPos[i-1]);
 			}
 			else
 			{
-				startWp[i].wcScript.ConnectedPotal(endWp[i-1].tf,mapCameraPos[i-1]);
+				//startWp[i].wcScript.ConnectedPotal(endWp[i-1].tf,mapCameraPos[i-1]);
 				endWp[i].wcScript.ConnectedPotal(startWp[i+1].tf,mapCameraPos[i+1]);
 			}
 		}
 
 		_startingPoint = startWp[0].tf.position;
-        
 	}
-
 	void StartMapRandomIdx(int stageNum, int mapTotalCount)
 	{
 		int rand = 0;
@@ -227,29 +296,6 @@ public class GameManager : MonoBehaviour {
 
 		}
 	}
-
-	public void MapWarpEvent(Vector2 CameraWarpPos)
-	{
-		_isMapWarp = true;
-		_cameraWarpPos = CameraWarpPos;
-	}
-    // public void GamePause()
-    // {
-    //     Time.timeScale = 0;
-    //     pausePage.SetActive(true);
-    //     isPauseing = true;
-    // }
-    // public void GameResume() {
-    //     Time.timeScale = 1.0f;
-    //     pausePage.SetActive(false);
-    //     isPauseing = false;
-    // }
-
-    // public void GameExit() {
-    //     print("게임을 종료합니다.");
-    //     UnityEditor.EditorApplication.isPlaying = false;
-    //     //Application.Quit();
-    // }
 }
 [System.Serializable]
 class StageSceneName

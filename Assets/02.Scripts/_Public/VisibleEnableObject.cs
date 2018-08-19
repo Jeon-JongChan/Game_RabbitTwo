@@ -60,7 +60,7 @@ public class VisibleEnableObject : ObjectInteraction {
 		if(selfCol != null) selfCol.enabled = true;
 		if(sr != null)
 		{
-			srColor.a = 255;
+			srColor.a = 1;
 			sr.color = srColor;
 		}
 	}

@@ -36,6 +36,7 @@ public class Player : LifeInteraction
     }
     public bool Dead{
         get{return dead;}
+        set { dead = value;}
     }
     bool barrierAniTrigger = true;
 
@@ -71,6 +72,10 @@ public class Player : LifeInteraction
     {
         DisableObject2D(playerSr,box2d);
         if(particle != null) particle.SetActive(true);
+    }
+    public void PlayerStart()
+    {
+        EnableObject2D(playerSr,box2d);
     }
     IEnumerator BarrierExit(float delayTime)
     {

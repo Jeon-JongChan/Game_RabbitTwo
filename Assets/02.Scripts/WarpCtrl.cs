@@ -15,7 +15,7 @@ public class WarpCtrl : MonoBehaviour {
 	[SerializeField] string[] warpTargetTag; 
 	[SerializeField] List<Transform> warpPos;
 
-	event System.Action<Vector2> MapWarpEvent;
+	event System.Action<Vector2,string> MapWarpEvent;
 	int warpPosIdx = 0;
 
 	WaitForSeconds wsWarpDelay;
@@ -27,15 +27,10 @@ public class WarpCtrl : MonoBehaviour {
 			warpPos.RemoveAt(0);
 		}
 		wsWarpDelay = new WaitForSeconds(warpDelayTime);
-        if (isMapWarp)
-        {
-            GameManager gm = GameObject.Find("GameManager").GetComponent<GameManager>();
-            if(gm != null) MapWarpEvent += gm.MapWarpEvent;
-        }
+		if(isMapWarp) MapWarpEvent += GameObject.Find("GameManager").GetComponent<GameManager>().MapWarpEvent;
 		// warpPos = GetComponentsInChildren<Transform>();
 		// print(warpPos.Length);
 	}
-   
 	private void OnTriggerEnter2D(Collider2D col) {
 		foreach(var v in warpTargetTag)
 		{
@@ -57,7 +52,7 @@ public class WarpCtrl : MonoBehaviour {
 			if(isRandom) warpPosIdx = Random.Range(0,warpPos.Count);
 
 			/* 맵 이동 워프일 경우 이벤트 발생 */
-			if(isMapWarp) MapWarpEvent(mapCameraPos.position);
+			if(isMapWarp) MapWarpEvent(mapCameraPos.position, warpPos[0].transform.parent.parent.parent.name);
 
 			warpPos[warpPosIdx].gameObject.SetActive(false);
 			col.gameObject.transform.position = warpPos[warpPosIdx].position;

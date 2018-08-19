@@ -23,7 +23,7 @@ GameObject:
   - component: {fileID: 114136328597262846}
   - component: {fileID: 61723185123050554}
   m_Layer: 0
-  m_Name: PlusJump
+  m_Name: PlusJumpTrigger
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -80,8 +80,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 0}
   selectedType: 0
-  delayTime: 1
-  disableTrigger: 1
+  buffTime: 1
+  disableTrigger: 0
+  blankTrigger: 1
+  blankTime: 1
   addJumpLevel: 1
   limitPlayer: 0
   delayDamageTime: 3

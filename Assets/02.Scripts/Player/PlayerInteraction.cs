@@ -12,14 +12,16 @@ public enum EffectType
 public class PlayerInteraction : ObjectInteraction {
 
     /* inspector variable */
-    [Header("TYPE")]
+    [Header("SETTING")]
     public GameObject player = null;
     [Tooltip(" 점프횟수를 조작합니다 \n  점프나 움직임에 속력을 조작합니다.\n 베리어를 동작 시키는 오브젝트 입니다. \nwater 전용값")]
     public EffectType selectedType = EffectType.JUMP;
     [Tooltip("버프 or 디버프가 작동하는 시간입니다.")]
-    public float delayTime = 1f;
+    public float buffTime = 1f;
     [Tooltip("작동후 끕니다.")]
     public bool disableTrigger = false;
+    [SerializeField] bool blankTrigger = false;
+    [SerializeField] float blankTime = 0;
 
     [Header("Selected JUMP")]
     public int addJumpLevel = 0;
@@ -60,15 +62,25 @@ public class PlayerInteraction : ObjectInteraction {
     public IEnumerator ControlJump()
     {
         if(returnCoroutine != null)StopCoroutine(returnCoroutine);
-        if(disableTrigger) DisableObject2D(srComponent,colComponent);
 
         print(playerJumpInstance.JumpLevel);
         playerJumpInstance.JumpLevel = addJumpLevel;
         print(playerJumpInstance.JumpLevel);
 
-        yield return new WaitForSeconds(delayTime);
+        StartCoroutine("TimeControl");
+        yield return new WaitForSeconds(buffTime);
         playerJumpInstance.SetJumpLevel(playerJumpInstance.InitJumpLevel);
         //print(" 2번째 기회 "+playerJumpInstance.jumpLevel);
+    }
+    IEnumerator TimeControl()
+    {
+        if(disableTrigger) DisableObject2D(srComponent,colComponent);
+        else if(blankTrigger)
+        {
+            DisableObject2D(srComponent,colComponent);
+            yield return new WaitForSeconds(blankTime);
+            EnableObject2D(srComponent,colComponent);
+        }
     }
     public IEnumerator DelayDamageToPlayer(float delayDamageTime)
     {
@@ -90,12 +102,12 @@ public class PlayerInteraction : ObjectInteraction {
                         returnCoroutine = StartCoroutine(ControlJump());
                         break;
                     case EffectType.LIMITVELOCITY:
-                        returnCoroutine = StartCoroutine(playerInstance.LimitVelocity(delayTime,limitPlayer));
-                        if(disableTrigger) DisableObject2D(srComponent,colComponent);
+                        returnCoroutine = StartCoroutine(playerInstance.LimitVelocity(buffTime,limitPlayer));
+                        StartCoroutine("TimeControl");
                         break;
                     case EffectType.BARRIER:
                         playerInstance.BarrierState = true;
-                        if(disableTrigger) DisableObject2D(srComponent,colComponent);
+                        StartCoroutine("TimeControl");
                         break;
                     case EffectType.WATER:
                         isWater = true;
