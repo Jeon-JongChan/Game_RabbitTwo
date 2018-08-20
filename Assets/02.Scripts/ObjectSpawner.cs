@@ -11,7 +11,7 @@ public class ObjectSpawner : MonoBehaviour {
     WaitForSeconds wsCreateDelay;
 	List<GameObject> createObjs;
 	float startingDelay = 0;
-	void OnEnable()
+	void OnBecameVisible()
     {
 		StartCoroutine("StartSpooler");
 	}
