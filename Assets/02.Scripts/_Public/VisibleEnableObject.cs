@@ -39,9 +39,9 @@ public class VisibleEnableObject : ObjectInteraction {
 
 	private void OnBecameInvisible() {
 		print("VisibleEnableObject.cs : 화면에 안보임");
-		transform.position = initPos;
+		//transform.position = initPos;
 		if(rb2d != null) rb2d.gravityScale = 0;
-		if(selfCol != null) selfCol.enabled = false;
+		//if(selfCol != null) selfCol.enabled = false; //김태윤이 오브젝트가 자꾸 다른 맵으로 침범하는 문제때문에 막아둠.
 		if(sr != null)
 		{
 			srColor.a = 0;

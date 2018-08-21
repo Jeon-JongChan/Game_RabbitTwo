@@ -13,16 +13,23 @@ public class GamePause : MonoBehaviour {
         if (Input.GetButtonDown("Cancel")) {
             if (!isPause)
             {
-                isPause = true;
-                Time.timeScale = 0f;
-                pausePage.SetActive(true);
+                GameStop();
             }
             else {
-                isPause = false;
-                Time.timeScale = 1;
-                pausePage.SetActive(false);
+                GameResume();
             }
         }
+    }
+    public void GameStop()
+    {
+        isPause = true;
+        Time.timeScale = 0f;
+        pausePage.SetActive(true);
+    }
+    public void GameResume() {
+        isPause = false;
+        Time.timeScale = 1;
+        pausePage.SetActive(false);
     }
    
 }

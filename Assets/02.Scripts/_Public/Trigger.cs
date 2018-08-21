@@ -8,7 +8,8 @@ public class Trigger : MonoBehaviour {
 
     [SerializeField]
     public string[] targetTag;
-
+    [SerializeField]
+    bool isUseOneTimes = false;
     public delegate void voidDelegate(Transform tf);
     private event voidDelegate SetEventFunc;
 
@@ -38,6 +39,9 @@ public class Trigger : MonoBehaviour {
                 SetEventFunc(col.transform);
             }
         }
-        
+        if (isUseOneTimes) {
+            Collider2D collider = gameObject.GetComponent<Collider2D>();
+            collider.enabled = false;
+        }
     }
 }
