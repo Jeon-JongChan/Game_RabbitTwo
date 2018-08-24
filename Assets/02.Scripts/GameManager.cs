@@ -34,14 +34,54 @@ public class GameManager : MonoBehaviour {
 
 	static int _stageNum = 1;
 	static int _currMap = 1;
+    static int _levelNum = 1;
 	static bool _isDie = false;
 
     bool isPauseing = false;
     event System.Action PlayerDie;
 
 	static bool start = false;
+    private void Awake()
+    {
+        _stageNum = _startStageNum;
+        foreach (var v in _stageInfo)
+        {
+            try
+            {
+                v.stageMapList = new List<GameObject>();
+                v.stageEnableMapIdxs = new int[v.stageEnableMapCount];
+            }
+            catch (System.Exception e)
+            {
+                Debug.Log(e.Message);
+            }
 
-	private void Start()
+        }
+
+        if (!_isSequential)
+        {
+            StartMapRandomIdx(1, _stageMapCount[0]);
+            StartMapRandomIdx(2, _stageMapCount[1]);
+            StartMapRandomIdx(3, _stageMapCount[2]);
+        }
+        else
+        {
+            for (int i = 0; i < _stageInfo[0].stageEnableMapCount; i++)
+            {
+                _stageInfo[0].stageEnableMapIdxs[i] = i + 1;
+            }
+            for (int i = 0; i < _stageInfo[1].stageEnableMapCount; i++)
+            {
+                _stageInfo[1].stageEnableMapIdxs[i] = i + 1;
+            }
+            for (int i = 0; i < _stageInfo[2].stageEnableMapCount; i++)
+            {
+                _stageInfo[2].stageEnableMapIdxs[i] = i + 1;
+            }
+        }
+    }
+
+    private void Start()
     {
         //pausePage.SetActive(false);
 		saveManager = GetComponent<SaveLoadManager>();
@@ -49,48 +89,11 @@ public class GameManager : MonoBehaviour {
         if (_player == null) _player = GameObject.FindGameObjectWithTag("Player");
 		_playerInstance = _player.GetComponent<Player>();
         PlayerDie += _playerInstance.PlayerDie;
+
+        AddMap(_stageNum);
+        ConnectMapWarp(_stageNum);
     }
-	private void Awake() {
-		_stageNum = _startStageNum;
-		foreach(var v in _stageInfo)
-		{
-			try
-			{
-				v.stageMapList = new List<GameObject>();
-				v.stageEnableMapIdxs = new int[v.stageEnableMapCount];
-			}
-			catch (System.Exception e)
-			{
-				Debug.Log(e.Message);
-			}
-			
-		}
-
-		if(!_isSequential)
-		{
-			StartMapRandomIdx(1,_stageMapCount[0]);
-			StartMapRandomIdx(2,_stageMapCount[1]);
-			StartMapRandomIdx(3,_stageMapCount[2]);
-		}
-		else
-		{
-			for(int i = 0; i < _stageInfo[0].stageEnableMapCount; i++)
-			{
-				_stageInfo[0].stageEnableMapIdxs[i] = i+1;
-			}
-			for(int i = 0; i < _stageInfo[1].stageEnableMapCount; i++)
-			{
-				_stageInfo[1].stageEnableMapIdxs[i] = i+1;
-			}
-			for(int i = 0; i < _stageInfo[2].stageEnableMapCount; i++)
-			{
-				_stageInfo[2].stageEnableMapIdxs[i] = i+1;
-			}
-		}
-
-		AddMap(_stageNum);
-		ConnectMapWarp(_stageNum);
-	}
+	
 
 	private void Update() {
 		// if (Input.GetButton("Cancel")&&!isPauseing) {
@@ -160,7 +163,7 @@ public class GameManager : MonoBehaviour {
     IEnumerator LoadMap()
     {
         yield return new WaitForSeconds(_dieDelayTime);
-		switch (_stageNum)
+		switch (_levelNum)
 		{
 			case 1:
 				SceneManager.LoadScene(_sceneName.level1[_stageNum - 1]);
@@ -239,6 +242,7 @@ public class GameManager : MonoBehaviour {
 		/* start와 end potal 을 모두 가져온다. 카메라 이동위치도 갖고 온다.*/
 		for(int i = 0; i < mapEnableArrCount; i++)
 		{
+            print(_stageInfo[stageNum - 1].stageMapList[i].transform.name);
 			startWp[i].tf = _stageInfo[stageNum-1].stageMapList[i].transform.Find("_NeedNextMapMoving").Find("StartPotalManager").Find("StartPotal");
 			startWp[i].wcScript = startWp[i].tf.GetComponentInParent<WarpCtrl>();
 
