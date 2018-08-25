@@ -96,9 +96,9 @@ public class GameManager : MonoBehaviour {
 	
 
 	private void Update() {
-		// if (Input.GetButton("Cancel")&&!isPauseing) {
-        //     GamePause();
-        // }
+		if (Input.GetButton("Cancel")&&!isPauseing) {
+             GamePause();
+        }
         if (_playerInstance.Dead)
         {
             AfterDie();
@@ -202,23 +202,23 @@ public class GameManager : MonoBehaviour {
 		}
 		print("_currMap : " + _currMap + " " + map);
 	}
-    // public void GamePause()
-    // {
-    //     Time.timeScale = 0;
-    //     pausePage.SetActive(true);
-    //     isPauseing = true;
-    // }
-    // public void GameResume() {
-    //     Time.timeScale = 1.0f;
-    //     pausePage.SetActive(false);
-    //     isPauseing = false;
-    // }
+    public void GamePause()
+    {
+        Time.timeScale = 0;
+        _pausePage.SetActive(true);
+        isPauseing = true;
+    }
+    public void GameResume() {
+         Time.timeScale = 1.0f;
+         _pausePage.SetActive(false);
+         isPauseing = false;
+    }
 
-    // public void GameExit() {
-    //     print("게임을 종료합니다.");
-    //     UnityEditor.EditorApplication.isPlaying = false;
-    //     //Application.Quit();
-    // }
+    public void GameExit() {
+         print("게임을 종료합니다.");
+         UnityEditor.EditorApplication.isPlaying = false;
+         //Application.Quit();
+    }
 
 	void AddMap(int stageNum)
 	{
