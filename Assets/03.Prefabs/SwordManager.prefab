@@ -263,7 +263,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e629f815e07a2f549acc22839d972998, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  useTrigger: 1
+  useTrigger: 0
   isRandom: 0
   speed: 1
   delayMoveTime: 1
