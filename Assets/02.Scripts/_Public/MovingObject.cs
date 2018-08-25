@@ -42,6 +42,7 @@ public class MovingObject : ObjectInteraction
     [SerializeField] int direction = 0;
     [Tooltip("selected 1 or 2")]
     [SerializeField] float distance = 0;
+    [SerializeField] float _startDelayTime = 0;
     [Tooltip("selected 0 or 1")]
     [Range(0f,0.1f)]
     [SerializeField] float accelation = 0;
@@ -90,6 +91,7 @@ public class MovingObject : ObjectInteraction
 
     IEnumerator StartMovingObject()
     {
+        yield return new WaitForSeconds(_startDelayTime);
         //한번은 무조건 실행되게 한다.
         while(reuseTrigger || nonReuseCnt-- > 0)
         {
