@@ -21,7 +21,7 @@ public class ObjectSpawner : MonoBehaviour {
 		Vector3 tempVec = transform.position;
 		for(int i = 0; i < limitCount; i++)
 		{
-			float rand = Random.Range(-1.0f,1.0f);
+			float rand = Random.Range(-2.0f,2.0f);
 			tempVec.x += rand;
 			tempObj = Instantiate(createObj,tempVec,Quaternion.identity);
 			tempObj.SetActive(false);

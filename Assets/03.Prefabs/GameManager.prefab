@@ -20,8 +20,9 @@ GameObject:
   m_Component:
   - component: {fileID: 4282470708805516}
   - component: {fileID: 114840185556643634}
+  - component: {fileID: 114363130468344250}
   m_Layer: 0
-  m_Name: _GameManager
+  m_Name: GameManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -40,6 +41,35 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &114363130468344250
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1076944609685052}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a36d298684e5084dbccd40a7e8313d2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _saveObj: []
+  _setting:
+    savePosition: 1
+    saveRotation: 0
+    saveScale: 0
+    positionIdentifier: 
+    rotationIdentifier: 
+    scaleIdentifier: 
+  _saveLoadEvent:
+    saveOnAwake: 0
+    saveOnStart: 0
+    saveOnEnable: 0
+    saveOnDisable: 0
+    saveOnApplicationQuit: 0
+    saveOnApplicationPause: 0
+    loadOnAwake: 0
+    loadOnStart: 0
+    loadOnEnable: 0
 --- !u!114 &114840185556643634
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -51,10 +81,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e28133c097528b2498c7b4c28ff64b6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _startStageNum: 1
+  _startStageNum: 3
   _player: {fileID: 0}
   _mainCamera: {fileID: 0}
-  _isSequential: 0
+  _isSequential: 1
   _sceneName:
     level1:
     - Game01
