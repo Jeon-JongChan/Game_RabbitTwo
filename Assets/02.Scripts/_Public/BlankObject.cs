@@ -27,7 +27,8 @@ public class BlankObject : ObjectInteraction {
     public int maxTime = 4;
     [Range(2, 10)]
     public int minTime = 2;
-
+    int a = 1;
+    Color color;
     /* needs components */
     SpriteRenderer srComponets = null;
     Collider2D col = null;
@@ -129,4 +130,6 @@ public class BlankObject : ObjectInteraction {
         srComponets.enabled = SpriteRendererTrigger;
         if(col != null && colliderOffTrigger) col.enabled = ColliderTrigger;
     }
+
+
 }
