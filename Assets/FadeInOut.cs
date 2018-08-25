@@ -16,6 +16,10 @@ public class FadeInOut : ObjectInteraction
     float transparency = 1f;
     float speedOfFade = 0.01f;
     Color color;
+    [Tooltip("collider가 존재하는 시간")]
+    public float liveTime = 1f;
+    [Tooltip("collider가 존재하지 않는 시간")]
+    public float hideTime = 1f;
     /* 세이브 변수 */
     bool colActive;
     bool srActive;
@@ -38,23 +42,27 @@ public class FadeInOut : ObjectInteraction
     /* 주요 기능*/
 
     IEnumerator FadeIn(SpriteRenderer srComponets, Color color,Collider2D col, float speedOfFade) {
-        while(srComponets.color.a == 1) {
+        while(srComponets.color.a < 1) {
             color.a += speedOfFade;
             srComponets.color = color;
             yield return new WaitForSeconds(speedOfFade);
         }
-        
+        col.enabled = true;
+        yield return new WaitForSeconds(liveTime);
+        StartCoroutine(FadeOut(srComponets, color, col, speedOfFade));
         
     }
 
-    IEnumerator FadeOut(SpriteRenderer spriteRenderer, Color color, Collider2D col, float speedOfFade) {
-        while (srComponets.color.a == 1)
+    IEnumerator FadeOut(SpriteRenderer srCompoents, Color color, Collider2D col, float speedOfFade) {
+        while (srComponets.color.a > 0)
         {
-            color.a += speedOfFade;
+            color.a -= speedOfFade;
             srComponets.color = color;
             yield return new WaitForSeconds(speedOfFade);
         }
-
+        col.enabled = false;
+        yield return new WaitForSeconds(hideTime);
+        StartCoroutine(FadeIn(srComponets, color, col, speedOfFade));
     }
 
 
@@ -66,6 +74,13 @@ public class FadeInOut : ObjectInteraction
         SaveState(false, gameObject.activeSelf, transform.position);
         color = new Color(1,1,1,transparency);
     }
-	
-	
+
+    private void OnBecameVisible()
+    {
+        StartCoroutine(FadeOut(srComponets, color, col, speedOfFade));
+    }
+    private void OnBecameInvisible()
+    {
+        StopAllCoroutines();
+    }
 }
