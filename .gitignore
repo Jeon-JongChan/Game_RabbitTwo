@@ -1,4 +1,5 @@
 #Unity ignor
+*.meta
 *.dwlt
 *.csproj
 *.sln
