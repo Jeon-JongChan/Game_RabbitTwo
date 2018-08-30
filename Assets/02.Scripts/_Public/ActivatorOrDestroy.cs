@@ -11,7 +11,8 @@ public enum SelectType
     DESTROY,
     REPLACE,
     ENABLE,
-    BLANK
+    BLANK,
+    ACTIVETRIGGER
 }
 public class ActivatorOrDestroy : MonoBehaviour {
     [SerializeField] bool isEnable = false;
@@ -39,7 +40,7 @@ public class ActivatorOrDestroy : MonoBehaviour {
         {
             targetGameObject = targetBehaviour.gameObject;
         }
-        else
+        else if(targetGameObject == null)
         {
             targetGameObject = gameObject;
         }
@@ -82,6 +83,12 @@ public class ActivatorOrDestroy : MonoBehaviour {
                 targetGameObject.SetActive(false);
                 yield return new WaitForSeconds(blankTime);
                 targetGameObject.SetActive(true);
+                break;
+            case SelectType.ACTIVETRIGGER:
+                if(targetGameObject != null)
+                {
+                    targetGameObject.SetActive(!targetGameObject.activeSelf);
+                }
                 break;
         }
     }
