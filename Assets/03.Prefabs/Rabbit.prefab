@@ -185,7 +185,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1967410475590974}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -59.29, y: 0.74, z: 0}
+  m_LocalPosition: {x: -8.03, y: -5.22, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4323491866529730}
@@ -277,7 +277,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0
-  m_GravityScale: 15
+  m_GravityScale: 8
   m_Material: {fileID: 6200000, guid: cf2d228e0ad09d641ac67665f2d3db8f, type: 2}
   m_Interpolate: 0
   m_SleepingMode: 1
@@ -475,7 +475,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   jumpLevel: 2
-  jumpHeight: 35
+  jumpHeight: 13
 --- !u!198 &198097010132409240
 ParticleSystem:
   m_ObjectHideFlags: 1

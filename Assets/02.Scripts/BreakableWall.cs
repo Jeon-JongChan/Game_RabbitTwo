@@ -29,7 +29,7 @@ public class BreakableWall : MonoBehaviour {
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        print("충돌!");
+        //print("충돌!");
         if (!particleSetActive)
         {
             return;

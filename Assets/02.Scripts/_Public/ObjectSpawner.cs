@@ -23,7 +23,7 @@ public class ObjectSpawner : MonoBehaviour {
 		{
 			float rand = Random.Range(-2.0f,2.0f);
 			tempVec.x += rand;
-			tempObj = Instantiate(createObj,tempVec,Quaternion.identity);
+			tempObj = Instantiate(createObj,tempVec,Quaternion.identity,transform);
 			tempObj.SetActive(false);
 			createObjs.Add(tempObj);
 		}

@@ -94,8 +94,7 @@ public class Shoter : ObjectInteraction
     Vector2 saveStartingPoint;
     bool saveMoveTrigger;
 
-    private void Start()
-    {
+    private void Awake() {
         bullets = new List<BulletStruct>();
         /* 지정된 발사포인트가 없을 경우 shoter의 중심지를 발사포인트로 지정한다. */
         if (shotPoint == null) bulletStartingPoint = transform.position;
@@ -106,6 +105,9 @@ public class Shoter : ObjectInteraction
 
         if (target != null) collisionTagName.Add(target.tag);
 
+    }
+    private void Start()
+    {
         rg2d = GetComponent<Rigidbody2D>();
 
         switch(selectedType)
@@ -534,7 +536,7 @@ public class Shoter : ObjectInteraction
     {
         shoterMoveTrigger = saveMoveTrigger;
         bulletStartingPoint = saveStartingPoint;
-        LoadInitBullet();
+        if(LoadInitBullet != null) LoadInitBullet();
         return base.LoadState();
     }
 }

@@ -38,7 +38,8 @@ public class FallingObject : MonoBehaviour {
     {
         while(state)
         {
-            saveVelocity = rg2d.velocity;
+            if(rg2d != null) saveVelocity = rg2d.velocity;
+            else rg2d = GetComponent<Rigidbody2D>();
             yield return wsDelay;
         }
     }
