@@ -6,14 +6,10 @@ using PsybleScript;
 [RequireComponent(typeof(Rigidbody2D))]
 public class FishAI : ObjectInteraction {
 	/* inspector variable */
-	[Tooltip("if you check this, started each ohter")]
-	public bool isRandomMoveTime = true;
 	[Range(0,10)]
-	public float moveTime = 1f;
-	[Range(0,10)]
-	[Tooltip("it is max value as Random")]
-	public float maxRandomMoveTime = 3f;
-	[Range(0,10)]
+	[Tooltip("물고기의 이동경로를 바꾸는 시간")]
+	public float _changeDirectionTime = 3f;
+	[Range(0,30)]
 	public float force = 1f;
 	[Range(0,10)]
 	[Tooltip("same Trigger's Radius")]
@@ -25,22 +21,29 @@ public class FishAI : ObjectInteraction {
     /* need variable */
 	Transform target = null;
 	Vector2 dirVec = Vector2.zero;
+	float checkWaterTime = 1f;
 	int directionAngle = 0;
 	bool detectedTarget = false;
 	bool isTrace = false;
 	bool inWater = true; //중요함수. 물안에 있음을 뜻한다.
+	bool colisionTrigger = false;
 
 	private void Start() {
 		rb2d = GetComponent<Rigidbody2D>();
 		state = true;
 	}
 	private void OnBecameVisible() {
-		StartCoroutine(StartAI());
-		StartCoroutine(CheckWater());
+		StartCoroutine("StartAI");
+		StartCoroutine("CheckWater");
+	}
+	private void OnBecameInvisible() {
+		StopCoroutine("StartAI");
+		StopCoroutine("CheckWater");
 	}
 	IEnumerator StartAI()
 	{
 		StartCoroutine( StartFishMove(rb2d));
+		StartCoroutine("ChangeDirection");
 		/* 상황에 따라 트리거를 조정하는 부분 */
 		while(state)
 		{
@@ -53,7 +56,6 @@ public class FishAI : ObjectInteraction {
 					if(Vector2.Distance(target.position, transform.position) > distanceToTarget)
 					{
 						print("FishAI.cs - 타겟이 멀어졌습니다.");
-						StopCoroutine("ObjectTargetTraceMove2D");
 						CollisionTargetTransform = null;
 						target = null;
 						detectedTarget = false;
@@ -69,16 +71,15 @@ public class FishAI : ObjectInteraction {
 	///</summary>
 	IEnumerator StartFishMove(Rigidbody2D rb2d)
 	{
-		if(isRandomMoveTime) moveTime = Random.Range(1,maxRandomMoveTime);
 		while(state)
 		{
+			print("FishAI.cs - 움직임이 시작됩니다.");
 			/* 트리거에 아무것도 없을 경우 랜덤한 방향으로 이동합니다. */
 			if(!detectedTarget && target == null && inWater)
 			{
-				yield return new WaitForSeconds(moveTime);
-				directionAngle = Random.Range(0,360);
-				dirVec = AngleToVector2(directionAngle);
-				MovePos(rb2d,dirVec,force * 10,true);
+				print("FishAI.cs - 움직입니다." + dirVec);
+				rb2d.velocity = Vector2.zero;
+				MovePos(rb2d,dirVec,force,true);
 			}
 			else if(!detectedTarget && inWater && target != null) detectedTarget = true;
 			else if(detectedTarget && inWater && target != null )
@@ -99,7 +100,7 @@ public class FishAI : ObjectInteraction {
                     yield return null;
                 }while( detectedTarget && (!(Vector2.Distance(destination, rb2d.position) < limit && Vector2.Distance(destination, rb2d.position) > -limit)));
 			}
-			yield return new WaitForFixedUpdate();
+			yield return new WaitForSeconds(0.5f);
 		}
 	}
 	IEnumerator CheckWater()
@@ -107,12 +108,13 @@ public class FishAI : ObjectInteraction {
 		int layer = 1 << 10;
 		while(state)
 		{
-			yield return new WaitForSeconds(moveTime * 2);
+			yield return new WaitForSeconds(checkWaterTime);
 			if(!RayScript.DetectedOverlapCircle2D(transform.position,0.2f,layer))
 			{
 				Debug.Log("FishAI.cs - not water platform");
 				inWater = false;
-				MovePos(rb2d,Vector2.down,force * 10,true);
+				rb2d.velocity = Vector2.zero;
+				MovePos(rb2d,Vector2.down,force * 2,true);
 			}
 			else
 			{
@@ -120,17 +122,63 @@ public class FishAI : ObjectInteraction {
 			}
 		}
 	}
-	private void OnTriggerExit2D(Collider2D col) {
-		if(col.CompareTag("Water"))
+	IEnumerator ChangeDirection()
+	{
+		WaitForSeconds ws = new WaitForSeconds(_changeDirectionTime);
+		while(state)
 		{
-			if(target == null) MovePos(rb2d,-dirVec,force * 10,true);
+			if(colisionTrigger) colisionTrigger = false;
+			else if(!colisionTrigger)
+			{
+				directionAngle = ((directionAngle + 180) %360) + Random.Range(-60, 60);
+				dirVec = AngleToVector2(directionAngle);
+			}
+			yield return ws;
+		}
+	}
+	private void OnCollisionEnter2D(Collision2D col) {
+		print("FishAI.cs - 충돌객체 : " + col.gameObject.name);
+		colisionTrigger = true;
+		directionAngle = ((directionAngle + 180) %360) + Random.Range(-60, 60);
+		dirVec = AngleToVector2(directionAngle);
+	}
+	private void OnCollisionStay2D(Collision2D col) {
+		if(col.gameObject.CompareTag("Water"))
+		{
+			print("FishAI.cs - 물 속 입니다.");
+			if(!inWater) inWater = true;
+		}
+	}
+	private void OnCollisionExit2D(Collision2D col) {
+		if(col.gameObject.CompareTag("Water"))
+		{
+			if(target == null) MovePos(rb2d,-dirVec,force * 2,true);
 			else
 			{
 				print("FishAI.cs - 추적을 종료합니다_충돌함수.");
 				CollisionTargetTransform = null;
 				target = null;
 				detectedTarget = false;
-				MovePos(rb2d,Vector2.down,force * 10,true);
+				rb2d.velocity = Vector2.zero;
+				MovePos(rb2d,Vector2.down,force * 2,true);
+			}
+			print("FishAI.cs - 물밖입니다." + detectedTarget + isTrace);
+			inWater = false;
+			rb2d.velocity = Vector2.zero;
+		}
+	}
+	private void OnTriggerExit2D(Collider2D col) {
+		if(col.CompareTag("Water"))
+		{
+			if(target == null) MovePos(rb2d,-dirVec,force * 2,true);
+			else
+			{
+				print("FishAI.cs - 추적을 종료합니다_충돌함수.");
+				CollisionTargetTransform = null;
+				target = null;
+				detectedTarget = false;
+				rb2d.velocity = Vector2.zero;
+				MovePos(rb2d,Vector2.down,force * 2,true);
 			}
 			print("FishAI.cs - 물밖입니다." + detectedTarget + isTrace);
 			inWater = false;

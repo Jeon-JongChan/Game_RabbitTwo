@@ -81,7 +81,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e28133c097528b2498c7b4c28ff64b6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _startStageNum: 3
   _player: {fileID: 0}
   _mainCamera: {fileID: 0}
   _isSequential: 1
@@ -96,13 +95,13 @@ MonoBehaviour:
     - 
   _dieDelayTime: 1.5
   _stageInfo:
-  - stageEnableMapCount: 5
-    stageMapList: []
-    stageEnableMapIdxs: 
-  - stageEnableMapCount: 11
+  - stageEnableMapCount: 9
     stageMapList: []
     stageEnableMapIdxs: 
   - stageEnableMapCount: 16
     stageMapList: []
     stageEnableMapIdxs: 
-  _pausePage: {fileID: 0}
+  - stageEnableMapCount: 25
+    stageMapList: []
+    stageEnableMapIdxs: 
+  _stageNum: 0

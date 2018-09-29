@@ -11,7 +11,7 @@ public class GameManager : MonoBehaviour {
 		public WarpCtrl wcScript;
 	}
 	/* INSPECTOR VARIABLE */
-	[SerializeField] int _startStageNum = 1;
+	//[SerializeField] int _startStageNum = 1;
 	[SerializeField] GameObject _player;
 	[SerializeField] GameObject _mainCamera;
 	[SerializeField] bool _isSequential = false;
@@ -26,14 +26,14 @@ public class GameManager : MonoBehaviour {
 
 	/* NEEDS VARIABLE */
 
-	static int[] _stageMapCount = {9 ,16 ,25};
+	readonly int[] _stageMapCount = {9 ,16 ,25};
 
 	Vector2 _cameraWarpPos = Vector2.zero;
 	Vector2 _startingPoint = Vector2.zero;
 
 	public int _stageNum = 1; // 각 스테이지 넘버
-	static int _mapNum = 1; //각 스테이지마다 맵 넘버
-	static bool _isLoadScene = false;
+	int _mapNum = 1; //각 스테이지마다 맵 넘버
+	bool _isLoadScene = false;
 
     event System.Action PlayerDie;
 	static bool single = false; // GAMEMANAGER 오브젝트는 하나만 존재해야하므로 STATIC 선언. 첫 시작전에만 FALSE
@@ -44,15 +44,18 @@ public class GameManager : MonoBehaviour {
 
 		// 처음에만 비파괴로 만들어 주고 single 변수가 true면 삭제한다. -> single 변수는 인스턴스마다 존재하는 변수가 아니라
 		// GAMEMANAGER 클래스를 가진 모든 인스턴스가 공용으로 사용하는 단 하나의 변수이므로 이미 하나가 생성되어 TRUE 가 되면 다른 인스턴스에서도 TRUE
-		if(!single) DontDestroyOnLoad(this.gameObject);
+		if(!single)
+		{
+			DontDestroyOnLoad(this.gameObject);
+			single = true;	
+		} 
 		else
 		{
 			Debug.LogWarning("중복된 게임매니저 파괴");
 			Destroy(this.gameObject);
 		} 
-			
 
-        _stageNum = _startStageNum;
+        //_stageNum = _startStageNum;
         foreach (var v in _stageInfo)
         {
             try
@@ -69,9 +72,7 @@ public class GameManager : MonoBehaviour {
 
         if (!_isSequential)
         {
-            StartMapRandomIdx(1, _stageMapCount[0]);
-            StartMapRandomIdx(2, _stageMapCount[1]);
-            StartMapRandomIdx(3, _stageMapCount[2]);
+			for(int i = 0; i < _stageMapCount.Length; i++) StartMapRandomIdx(i+1, _stageMapCount[i]);
         }
         else
         {
@@ -92,20 +93,19 @@ public class GameManager : MonoBehaviour {
 
     private void Start()
     {
-        //pausePage.SetActive(false);
 		saveManager = GetComponent<SaveLoadManager>();
-		_stageNum = SceneManager.GetActiveScene().buildIndex;
+		//_stageNum = SceneManager.GetActiveScene().buildIndex;
     }
 	
 
 	private void Update() 
 	{
 		//외부 요인으로 스테이지 변경시 자동으로 스테이지 추적. 에러확률 높음.
-		if(SceneManager.GetActiveScene().buildIndex != _stageNum && !_isLoadScene)
+		if(SceneManager.GetActiveScene().buildIndex != _stageNum && !_isLoadScene )
 		{
 			Debug.LogWarning("스테이지 외부요인에 의한 변경");
 			_stageNum = SceneManager.GetActiveScene().buildIndex;
-			GetStageInfo();
+			if(_stageNum > 0) GetStageInfo();
 		}
 
 		if(_playerInstance != null)
@@ -253,6 +253,7 @@ public class GameManager : MonoBehaviour {
 		for(int i = 0; i < _stageInfo[stageNum-1].stageEnableMapCount; i++)
 		{
 			tempStr = mapStr + _stageInfo[stageNum-1].stageEnableMapIdxs[i].ToString();
+			//print(tempStr);
 			_stageInfo[stageNum-1].stageMapList.Add(GameObject.Find(tempStr));
 		}
 	}

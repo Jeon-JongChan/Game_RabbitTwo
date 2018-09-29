@@ -24,7 +24,7 @@ public class VisibleEnableObject : ObjectInteraction {
 			if(sr != null)
 			{
 				srColor = sr.color;
-				srColor.a = 0;
+				srColor.a = 1;
 				sr.color = srColor;
 			}
 		}
