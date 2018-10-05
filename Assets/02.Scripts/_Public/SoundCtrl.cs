@@ -11,6 +11,8 @@ public class SoundCtrl : MonoBehaviour {
 	[SerializeField] AudioClip[] _audioClip;
 	[Tooltip("ALLPLAYCOUNTLOOP 선택 할 경우 반복할 횟수입니다.")]
 	[SerializeField] int _loopCount = 0;
+	[Tooltip("음악의 시작과 끝을 정합니다. \n Percent 기준입니다.")]
+	[SerializeField] Vector2 _audioStartEndTimePer = new Vector2(0,1);
 	[SerializeField] int _audioPlayNum = 0;
 
 	/* COMPONENTS */
@@ -18,7 +20,7 @@ public class SoundCtrl : MonoBehaviour {
 	/* PUBLIC VIRABLE */
 
 	/* INNER VARIABLE */
-	Coroutine retCoroutine;
+	Coroutine _retCoroutine;
 
 	private void Start() {
 		_audioSource = GetComponent<AudioSource>();
@@ -29,16 +31,16 @@ public class SoundCtrl : MonoBehaviour {
 			{
 				case AudioPlayType.NOMAL:
 					_audioSource.clip = _audioClip[_audioPlayNum];
-					_audioSource.Play();
+					_retCoroutine = StartCoroutine(AudioPlayControl(_audioSource,_audioStartEndTimePer));
 					break;
 				case AudioPlayType.ALLONEPLAY:
-					retCoroutine = StartCoroutine(AllPlayLoop(1));
+					_retCoroutine = StartCoroutine(AllPlayLoop(1));
 					break;
 				case AudioPlayType.ALLPLAYLOOP:
-					retCoroutine = StartCoroutine(AllPlayLoop(0));
+					_retCoroutine = StartCoroutine(AllPlayLoop(0));
 					break;
 				case AudioPlayType.ALLPLAYCOUNTLOOP:
-					retCoroutine = StartCoroutine(AllPlayLoop(_loopCount));
+					_retCoroutine = StartCoroutine(AllPlayLoop(_loopCount));
 					break;
 			}
 		}
@@ -53,6 +55,7 @@ public class SoundCtrl : MonoBehaviour {
 	IEnumerator AllPlayLoop(int loopCnt = 0)
 	{
 		WaitForSeconds wsDelay = new WaitForSeconds(0.1f);
+		Coroutine retCoroutine;
 		bool loopState = false;
 
 		if(loopCnt == 0) loopState = true;
@@ -62,15 +65,16 @@ public class SoundCtrl : MonoBehaviour {
 			if(_audioSource.clip == null) 
 			{
 				_audioSource.clip = _audioClip[_audioPlayNum++];
+				retCoroutine = StartCoroutine(AudioPlayControl(_audioSource,_audioStartEndTimePer));
 			}
 			else
 			{
 				if(!_audioSource.isPlaying)
 				{
 					_audioSource.clip = _audioClip[_audioPlayNum++];
+					retCoroutine = StartCoroutine(AudioPlayControl(_audioSource,_audioStartEndTimePer));
 				}
 			}
-			_audioSource.Play();
 			/* 전체곡을 한바퀴 돌았는지 확인 */
 			if(_audioPlayNum > _audioClip.Length - 1)
 			{
@@ -78,6 +82,29 @@ public class SoundCtrl : MonoBehaviour {
 				loopCnt--;
 			}
 			yield return wsDelay;
+		}
+	}
+	IEnumerator AudioPlayControl(AudioSource audioSource, Vector2 startEndTimePer)
+	{
+		WaitForFixedUpdate wf = new WaitForFixedUpdate();
+		float totalMusicTime = audioSource.clip.length;
+		float startTime = totalMusicTime * startEndTimePer.x;
+		float endTime = totalMusicTime * startEndTimePer.y;
+
+		if(startEndTimePer.x == 0 && startEndTimePer.y == 1) 
+		{
+			Debug.Log("SoundCtrl - entire play");
+			audioSource.Play();
+			yield break;
+		}
+		Debug.Log("SoundCtrl - no entire play " + totalMusicTime + " : " + startTime + " " + endTime);
+		audioSource.PlayDelayed(startTime);
+		if(totalMusicTime == endTime) yield break;
+
+		while(audioSource.isPlaying)
+		{
+			if(audioSource.time >= endTime) audioSource.Stop();
+			yield return wf;
 		}
 	}
 	enum AudioPlayType
