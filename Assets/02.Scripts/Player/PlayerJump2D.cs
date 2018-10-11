@@ -29,6 +29,9 @@ public class PlayerJump2D : ObjectMovement2D
         }
     }
     int jumpState = 0;
+    public int JumpState{
+        get{return jumpState;}
+    }
     //float gravity = 9.8f;
     bool jump = false;
 
@@ -50,7 +53,6 @@ public class PlayerJump2D : ObjectMovement2D
                 jumpState++;
                 jump = true;
             }
-
         }
     }
     /// <summary>

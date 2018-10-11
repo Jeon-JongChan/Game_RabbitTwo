@@ -13,7 +13,11 @@ public class SoundCtrl : MonoBehaviour {
 	[SerializeField] int _loopCount = 0;
 	[Tooltip("음악의 시작과 끝을 정합니다. \n Percent 기준입니다.")]
 	[SerializeField] Vector2 _audioStartEndTimePer = new Vector2(0,1);
+
+	[Header("PLAY SOUND STATE")]
 	[SerializeField] int _audioPlayNum = 0;
+	[SerializeField] float _audioPlayTime = 0;
+	[SerializeField] float _audioPlayTimePer = 0;
 
 	/* COMPONENTS */
 
@@ -23,8 +27,14 @@ public class SoundCtrl : MonoBehaviour {
 	Coroutine _retCoroutine;
 
 	private void Start() {
-		_audioSource = GetComponent<AudioSource>();
+		if(_audioSource == null)_audioSource = GetComponent<AudioSource>();
+		else print("오디오 존재");
 
+		PlayMusic();
+	}
+
+	public void PlayMusic()
+	{
 		if(_audioPlayNum >= 0 && _audioPlayNum < _audioClip.Length)
 		{
 			switch(_audioPlayType)
@@ -60,7 +70,7 @@ public class SoundCtrl : MonoBehaviour {
 
 		if(loopCnt == 0) loopState = true;
 		_audioSource.loop = false; //한가지 곡만 돌릴게 아니기에 loop를 꺼준다.
-		while(loopState || loopCnt > 0)
+		while(loopState || loopCnt-- > 0)
 		{
 			if(_audioSource.clip == null) 
 			{
@@ -79,8 +89,9 @@ public class SoundCtrl : MonoBehaviour {
 			if(_audioPlayNum > _audioClip.Length - 1)
 			{
 				_audioPlayNum = 0;
-				loopCnt--;
 			}
+			_audioPlayTime = _audioSource.time;
+			_audioPlayTimePer = _audioSource.time/_audioSource.clip.length;
 			yield return wsDelay;
 		}
 	}

@@ -10,10 +10,6 @@ public class PlayerCollision : MonoBehaviour {
     //Components
     PlayerJump2D pj;
 
-    //static 변수들. 플레이어 충돌체가 3개이므로 특정 상황마다 3번씩 실행되는것을 막음.
-    static bool stay = false;
-    static bool exit = false;
-
     //필요 변수들
 
 

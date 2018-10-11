@@ -1,15 +1,16 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
 
 public class EffectCtrl : MonoBehaviour {
 
 	/* INSPECTOR VIRABLE */
 	[SerializeField] EffectEventType _eventType = new EffectEventType();
-	[Tooltip("Key 순서와 같은 순서로 넣어주면 됩니다.")]
+	[Tooltip("Key 인덱스 순서와 같은 순서로 넣어주면 됩니다.")]
 	[SerializeField] Object[] _effectObject;
-	[SerializeField] UnityEvent _coliderEffectEvent;
+	[Tooltip("Colider Tag Name 의 인덱스 순서와 같은 순서로 넣어주면 됩니다.")]
+	[SerializeField] Object[] _effectColiderObject;
+	
 
 
 	/* COMPONENTS */
@@ -35,7 +36,7 @@ public class EffectCtrl : MonoBehaviour {
 				{
 					if(Input.GetKey(_eventType.effectKey[i]))
 					{
-						Debug.Log(_eventType.effectKey[i] + " Down");
+						//Debug.Log(_eventType.effectKey[i] + " Down");
 						if(_effectObject[i] is GameObject)
 						{
 							GameObject temp = (GameObject)_effectObject[i];
@@ -51,13 +52,41 @@ public class EffectCtrl : MonoBehaviour {
 	private void OnCollisionEnter2D(Collision2D other) {
 		if(_eventType.useColider)
 		{
-			_coliderEffectEvent.Invoke();
+			if(_eventType.coliderTagName.Length > 0)
+			{
+				for(int i = 0; i < _eventType.coliderTagName.Length; i++)
+				{
+					if(other.gameObject.CompareTag(_eventType.coliderTagName[i]))
+					{
+						if(_effectColiderObject[i] is GameObject)
+						{
+							GameObject temp = (GameObject)_effectColiderObject[i];
+							temp.SetActive(true);
+						}
+						break;
+					}
+				}
+			}
 		}
 	}
 	private void OnTriggerEnter2D(Collider2D other) {
 		if(_eventType.useColider)
 		{
-			_coliderEffectEvent.Invoke();
+			if(_eventType.coliderTagName.Length > 0)
+			{
+				for(int i = 0; i < _eventType.coliderTagName.Length; i++)
+				{
+					if(other.gameObject.CompareTag(_eventType.coliderTagName[i]))
+					{
+						if(_effectColiderObject[i] is GameObject)
+						{
+							GameObject temp = (GameObject)_effectColiderObject[i];
+							temp.SetActive(true);
+						}
+						break;
+					}
+				}
+			}
 		}
 	}
 }
@@ -66,4 +95,5 @@ class EffectEventType
 {
 	public KeyCode[] effectKey;
 	public bool useColider;
+	public string[] coliderTagName;
 }

@@ -20,8 +20,8 @@ public class PlayerInteraction : ObjectInteraction {
     public float buffTime = 1f;
     [Tooltip("작동후 끕니다.")]
     public bool disableTrigger = false;
-    [SerializeField] bool blankTrigger = false;
-    [SerializeField] float blankTime = 0;
+    [SerializeField] bool _reCreateTrigger = false;
+    [SerializeField] float _reCreateTime = 0;
 
     [Header("Selected JUMP")]
     public int addJumpLevel = 0;
@@ -75,10 +75,10 @@ public class PlayerInteraction : ObjectInteraction {
     IEnumerator TimeControl()
     {
         if(disableTrigger) DisableObject2D(srComponent,colComponent);
-        else if(blankTrigger)
+        else if(_reCreateTrigger)
         {
             DisableObject2D(srComponent,colComponent);
-            yield return new WaitForSeconds(blankTime);
+            yield return new WaitForSeconds(_reCreateTime);
             EnableObject2D(srComponent,colComponent);
         }
     }

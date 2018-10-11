@@ -11,6 +11,7 @@ TagManager:
   - BOUNCEBALL
   - MAP
   - MISSILE
+  - ITEM
   layers:
   - Default
   - TransparentFX

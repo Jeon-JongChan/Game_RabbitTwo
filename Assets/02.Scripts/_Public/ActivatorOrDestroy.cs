@@ -17,8 +17,8 @@ public enum SelectType
 public class ActivatorOrDestroy : MonoBehaviour {
     [SerializeField] bool isEnable = false;
     [SerializeField] SelectType type = SelectType.DESTROY;
-    [SerializeField] float lifeTime = 5f;
-    [SerializeField] float blankTime = 3f;
+    [SerializeField] float lifeTime = 1f;
+    [SerializeField] float blankTime = 0f;
     [SerializeField] Object[] targets;                       // The game object to affect. If none, the trigger work on this game object
     [SerializeField] GameObject replaceSource;
     private void OnEnable()

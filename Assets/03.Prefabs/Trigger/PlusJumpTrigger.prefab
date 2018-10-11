@@ -24,7 +24,7 @@ GameObject:
   - component: {fileID: 61723185123050554}
   m_Layer: 0
   m_Name: PlusJumpTrigger
-  m_TagString: Untagged
+  m_TagString: ITEM
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -36,7 +36,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1005080347048852}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 8.32, y: 2.81, z: 0}
+  m_LocalPosition: {x: -57.66, y: 1.73, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -82,8 +82,8 @@ MonoBehaviour:
   selectedType: 0
   buffTime: 1
   disableTrigger: 0
-  blankTrigger: 1
-  blankTime: 1
+  _reCreateTrigger: 1
+  _reCreateTime: 1
   addJumpLevel: 1
   limitPlayer: 0
   delayDamageTime: 3
