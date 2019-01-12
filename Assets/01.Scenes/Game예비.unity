@@ -478,6 +478,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e629f815e07a2f549acc22839d972998, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  useTrigger: 0
+  isRandom: 0
+  speed: 1
+  delayMoveTime: 1
+  paths: []
 --- !u!50 &91216794
 Rigidbody2D:
   serializedVersion: 4
@@ -591,6 +596,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e629f815e07a2f549acc22839d972998, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  useTrigger: 0
+  isRandom: 0
+  speed: 1
+  delayMoveTime: 1
+  paths: []
 --- !u!50 &93513387
 Rigidbody2D:
   serializedVersion: 4
@@ -704,6 +714,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e629f815e07a2f549acc22839d972998, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  useTrigger: 0
+  isRandom: 0
+  speed: 1
+  delayMoveTime: 1
+  paths: []
 --- !u!50 &95562173
 Rigidbody2D:
   serializedVersion: 4
@@ -1165,6 +1180,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e629f815e07a2f549acc22839d972998, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  useTrigger: 0
+  isRandom: 0
+  speed: 1
+  delayMoveTime: 1
+  paths: []
 --- !u!50 &166445139
 Rigidbody2D:
   serializedVersion: 4
@@ -1325,6 +1345,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e629f815e07a2f549acc22839d972998, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  useTrigger: 0
+  isRandom: 0
+  speed: 1
+  delayMoveTime: 1
+  paths: []
 --- !u!50 &179105924
 Rigidbody2D:
   serializedVersion: 4
@@ -1462,7 +1487,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 190992591}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -88, y: -69, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 424378903}
@@ -1473,7 +1498,6 @@ Transform:
   - {fileID: 1260745127}
   - {fileID: 2066738527}
   - {fileID: 837390943}
-  - {fileID: 1181278323}
   - {fileID: 754161957}
   - {fileID: 1537353177}
   - {fileID: 560650650}
@@ -1577,7 +1601,7 @@ Transform:
   - {fileID: 130903554}
   - {fileID: 1717488419}
   m_Father: {fileID: 190992592}
-  m_RootOrder: 14
+  m_RootOrder: 13
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &214744909
 GameObject:
@@ -1624,6 +1648,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e629f815e07a2f549acc22839d972998, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  useTrigger: 0
+  isRandom: 0
+  speed: 1
+  delayMoveTime: 1
+  paths: []
 --- !u!50 &214744912
 Rigidbody2D:
   serializedVersion: 4
@@ -1908,6 +1937,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e629f815e07a2f549acc22839d972998, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  useTrigger: 0
+  isRandom: 0
+  speed: 1
+  delayMoveTime: 1
+  paths: []
 --- !u!50 &231118242
 Rigidbody2D:
   serializedVersion: 4
@@ -2185,7 +2219,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 277928907}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -0.43}
+  m_LocalPosition: {x: -88, y: -69, z: -0.43}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -2287,6 +2321,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e629f815e07a2f549acc22839d972998, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  useTrigger: 0
+  isRandom: 0
+  speed: 1
+  delayMoveTime: 1
+  paths: []
 --- !u!50 &281594473
 Rigidbody2D:
   serializedVersion: 4
@@ -2729,104 +2768,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4773565811426798, guid: 9679dd9a113e2d648a825e43ed8a192d,
     type: 2}
   m_PrefabInternal: {fileID: 372238192}
---- !u!1001 &386740233
-Prefab:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 1181278323}
-    m_Modifications:
-    - target: {fileID: 4676671889217330, guid: cd4ee57b1de4a534fa34bb3b5c127c2a, type: 2}
-      propertyPath: m_LocalPosition.x
-      value: 0.99
-      objectReference: {fileID: 0}
-    - target: {fileID: 4676671889217330, guid: cd4ee57b1de4a534fa34bb3b5c127c2a, type: 2}
-      propertyPath: m_LocalPosition.y
-      value: -1.49
-      objectReference: {fileID: 0}
-    - target: {fileID: 4676671889217330, guid: cd4ee57b1de4a534fa34bb3b5c127c2a, type: 2}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4676671889217330, guid: cd4ee57b1de4a534fa34bb3b5c127c2a, type: 2}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4676671889217330, guid: cd4ee57b1de4a534fa34bb3b5c127c2a, type: 2}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4676671889217330, guid: cd4ee57b1de4a534fa34bb3b5c127c2a, type: 2}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4676671889217330, guid: cd4ee57b1de4a534fa34bb3b5c127c2a, type: 2}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4676671889217330, guid: cd4ee57b1de4a534fa34bb3b5c127c2a, type: 2}
-      propertyPath: m_RootOrder
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 1724985308984520, guid: cd4ee57b1de4a534fa34bb3b5c127c2a, type: 2}
-      propertyPath: m_Name
-      value: SteelThorn (1)
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: cd4ee57b1de4a534fa34bb3b5c127c2a, type: 2}
-  m_IsPrefabAsset: 0
---- !u!4 &386740234 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 4676671889217330, guid: cd4ee57b1de4a534fa34bb3b5c127c2a,
-    type: 2}
-  m_PrefabInternal: {fileID: 386740233}
---- !u!1001 &389867715
-Prefab:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 1181278323}
-    m_Modifications:
-    - target: {fileID: 4733907303605242, guid: 1af3677e484d38446b30ca67801726dc, type: 2}
-      propertyPath: m_LocalPosition.x
-      value: -1.82
-      objectReference: {fileID: 0}
-    - target: {fileID: 4733907303605242, guid: 1af3677e484d38446b30ca67801726dc, type: 2}
-      propertyPath: m_LocalPosition.y
-      value: 1.71
-      objectReference: {fileID: 0}
-    - target: {fileID: 4733907303605242, guid: 1af3677e484d38446b30ca67801726dc, type: 2}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4733907303605242, guid: 1af3677e484d38446b30ca67801726dc, type: 2}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4733907303605242, guid: 1af3677e484d38446b30ca67801726dc, type: 2}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4733907303605242, guid: 1af3677e484d38446b30ca67801726dc, type: 2}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4733907303605242, guid: 1af3677e484d38446b30ca67801726dc, type: 2}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4733907303605242, guid: 1af3677e484d38446b30ca67801726dc, type: 2}
-      propertyPath: m_RootOrder
-      value: 3
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 1af3677e484d38446b30ca67801726dc, type: 2}
-  m_IsPrefabAsset: 0
---- !u!4 &389867716 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 4733907303605242, guid: 1af3677e484d38446b30ca67801726dc,
-    type: 2}
-  m_PrefabInternal: {fileID: 389867715}
 --- !u!1001 &392891090
 Prefab:
   m_ObjectHideFlags: 0
@@ -2931,6 +2872,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e629f815e07a2f549acc22839d972998, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  useTrigger: 0
+  isRandom: 0
+  speed: 1
+  delayMoveTime: 1
+  paths: []
 --- !u!50 &403345306
 Rigidbody2D:
   serializedVersion: 4
@@ -3317,7 +3263,7 @@ Transform:
   - {fileID: 1017344447}
   - {fileID: 1369569580}
   m_Father: {fileID: 190992592}
-  m_RootOrder: 12
+  m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &440944093
 Prefab:
@@ -3415,6 +3361,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e629f815e07a2f549acc22839d972998, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  useTrigger: 0
+  isRandom: 0
+  speed: 1
+  delayMoveTime: 1
+  paths: []
 --- !u!50 &448539494
 Rigidbody2D:
   serializedVersion: 4
@@ -3528,6 +3479,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e629f815e07a2f549acc22839d972998, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  useTrigger: 0
+  isRandom: 0
+  speed: 1
+  delayMoveTime: 1
+  paths: []
 --- !u!50 &459306957
 Rigidbody2D:
   serializedVersion: 4
@@ -3641,6 +3597,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e629f815e07a2f549acc22839d972998, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  useTrigger: 0
+  isRandom: 0
+  speed: 1
+  delayMoveTime: 1
+  paths: []
 --- !u!50 &465920987
 Rigidbody2D:
   serializedVersion: 4
@@ -3805,6 +3766,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e629f815e07a2f549acc22839d972998, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  useTrigger: 0
+  isRandom: 0
+  speed: 1
+  delayMoveTime: 1
+  paths: []
 --- !u!50 &493658107
 Rigidbody2D:
   serializedVersion: 4
@@ -3918,6 +3884,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e629f815e07a2f549acc22839d972998, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  useTrigger: 0
+  isRandom: 0
+  speed: 1
+  delayMoveTime: 1
+  paths: []
 --- !u!50 &503904747
 Rigidbody2D:
   serializedVersion: 4
@@ -4031,6 +4002,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e629f815e07a2f549acc22839d972998, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  useTrigger: 0
+  isRandom: 0
+  speed: 1
+  delayMoveTime: 1
+  paths: []
 --- !u!50 &505828887
 Rigidbody2D:
   serializedVersion: 4
@@ -4348,7 +4324,7 @@ Transform:
   - {fileID: 716156411}
   - {fileID: 1083303243}
   m_Father: {fileID: 190992592}
-  m_RootOrder: 11
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &567746455
 GameObject:
@@ -4395,6 +4371,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e629f815e07a2f549acc22839d972998, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  useTrigger: 0
+  isRandom: 0
+  speed: 1
+  delayMoveTime: 1
+  paths: []
 --- !u!50 &567746458
 Rigidbody2D:
   serializedVersion: 4
@@ -4704,6 +4685,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e629f815e07a2f549acc22839d972998, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  useTrigger: 0
+  isRandom: 0
+  speed: 1
+  delayMoveTime: 1
+  paths: []
 --- !u!50 &608144298
 Rigidbody2D:
   serializedVersion: 4
@@ -5033,6 +5019,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e629f815e07a2f549acc22839d972998, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  useTrigger: 0
+  isRandom: 0
+  speed: 1
+  delayMoveTime: 1
+  paths: []
 --- !u!50 &656781257
 Rigidbody2D:
   serializedVersion: 4
@@ -5101,57 +5092,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!1001 &658131421
-Prefab:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 1181278323}
-    m_Modifications:
-    - target: {fileID: 4910672457343884, guid: ce8fd43398d53e44a83483fef74dfd81, type: 2}
-      propertyPath: m_LocalPosition.x
-      value: 3.71
-      objectReference: {fileID: 0}
-    - target: {fileID: 4910672457343884, guid: ce8fd43398d53e44a83483fef74dfd81, type: 2}
-      propertyPath: m_LocalPosition.y
-      value: -6.53
-      objectReference: {fileID: 0}
-    - target: {fileID: 4910672457343884, guid: ce8fd43398d53e44a83483fef74dfd81, type: 2}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4910672457343884, guid: ce8fd43398d53e44a83483fef74dfd81, type: 2}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4910672457343884, guid: ce8fd43398d53e44a83483fef74dfd81, type: 2}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4910672457343884, guid: ce8fd43398d53e44a83483fef74dfd81, type: 2}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4910672457343884, guid: ce8fd43398d53e44a83483fef74dfd81, type: 2}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4910672457343884, guid: ce8fd43398d53e44a83483fef74dfd81, type: 2}
-      propertyPath: m_RootOrder
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 4910672457343884, guid: ce8fd43398d53e44a83483fef74dfd81, type: 2}
-      propertyPath: m_LocalScale.x
-      value: 0.2615625
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: ce8fd43398d53e44a83483fef74dfd81, type: 2}
-  m_IsPrefabAsset: 0
---- !u!4 &658131422 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 4910672457343884, guid: ce8fd43398d53e44a83483fef74dfd81,
-    type: 2}
-  m_PrefabInternal: {fileID: 658131421}
 --- !u!1001 &672783361
 Prefab:
   m_ObjectHideFlags: 0
@@ -5248,6 +5188,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e629f815e07a2f549acc22839d972998, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  useTrigger: 0
+  isRandom: 0
+  speed: 1
+  delayMoveTime: 1
+  paths: []
 --- !u!50 &675210270
 Rigidbody2D:
   serializedVersion: 4
@@ -5460,7 +5405,7 @@ Transform:
   - {fileID: 1356901745}
   - {fileID: 1362526117}
   m_Father: {fileID: 190992592}
-  m_RootOrder: 9
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &772337863
 GameObject:
@@ -5492,7 +5437,7 @@ Transform:
   - {fileID: 158892486}
   - {fileID: 430257226}
   m_Father: {fileID: 190992592}
-  m_RootOrder: 15
+  m_RootOrder: 14
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &773078861
 Prefab:
@@ -5857,6 +5802,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e629f815e07a2f549acc22839d972998, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  useTrigger: 0
+  isRandom: 0
+  speed: 1
+  delayMoveTime: 1
+  paths: []
 --- !u!50 &848246401
 Rigidbody2D:
   serializedVersion: 4
@@ -5970,6 +5920,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e629f815e07a2f549acc22839d972998, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  useTrigger: 0
+  isRandom: 0
+  speed: 1
+  delayMoveTime: 1
+  paths: []
 --- !u!50 &861615448
 Rigidbody2D:
   serializedVersion: 4
@@ -6083,6 +6038,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e629f815e07a2f549acc22839d972998, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  useTrigger: 0
+  isRandom: 0
+  speed: 1
+  delayMoveTime: 1
+  paths: []
 --- !u!50 &863826952
 Rigidbody2D:
   serializedVersion: 4
@@ -6196,6 +6156,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e629f815e07a2f549acc22839d972998, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  useTrigger: 0
+  isRandom: 0
+  speed: 1
+  delayMoveTime: 1
+  paths: []
 --- !u!50 &864562450
 Rigidbody2D:
   serializedVersion: 4
@@ -32730,6 +32695,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e629f815e07a2f549acc22839d972998, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  useTrigger: 0
+  isRandom: 0
+  speed: 1
+  delayMoveTime: 1
+  paths: []
 --- !u!50 &966499446
 Rigidbody2D:
   serializedVersion: 4
@@ -32843,6 +32813,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e629f815e07a2f549acc22839d972998, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  useTrigger: 0
+  isRandom: 0
+  speed: 1
+  delayMoveTime: 1
+  paths: []
 --- !u!50 &977766834
 Rigidbody2D:
   serializedVersion: 4
@@ -33003,6 +32978,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e629f815e07a2f549acc22839d972998, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  useTrigger: 0
+  isRandom: 0
+  speed: 1
+  delayMoveTime: 1
+  paths: []
 --- !u!50 &1003344065
 Rigidbody2D:
   serializedVersion: 4
@@ -33167,6 +33147,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e629f815e07a2f549acc22839d972998, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  useTrigger: 0
+  isRandom: 0
+  speed: 1
+  delayMoveTime: 1
+  paths: []
 --- !u!50 &1026535988
 Rigidbody2D:
   serializedVersion: 4
@@ -33470,71 +33455,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4676671889217330, guid: cd4ee57b1de4a534fa34bb3b5c127c2a,
     type: 2}
   m_PrefabInternal: {fileID: 1090882892}
---- !u!1001 &1099330395
-Prefab:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 1181278323}
-    m_Modifications:
-    - target: {fileID: 4733907303605242, guid: 1af3677e484d38446b30ca67801726dc, type: 2}
-      propertyPath: m_LocalPosition.x
-      value: 7.61
-      objectReference: {fileID: 0}
-    - target: {fileID: 4733907303605242, guid: 1af3677e484d38446b30ca67801726dc, type: 2}
-      propertyPath: m_LocalPosition.y
-      value: -1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4733907303605242, guid: 1af3677e484d38446b30ca67801726dc, type: 2}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4733907303605242, guid: 1af3677e484d38446b30ca67801726dc, type: 2}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4733907303605242, guid: 1af3677e484d38446b30ca67801726dc, type: 2}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4733907303605242, guid: 1af3677e484d38446b30ca67801726dc, type: 2}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4733907303605242, guid: 1af3677e484d38446b30ca67801726dc, type: 2}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4733907303605242, guid: 1af3677e484d38446b30ca67801726dc, type: 2}
-      propertyPath: m_RootOrder
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 233086043103330454, guid: 1af3677e484d38446b30ca67801726dc,
-        type: 2}
-      propertyPath: m_ConnectedAnchor.x
-      value: 99.68
-      objectReference: {fileID: 0}
-    - target: {fileID: 233086043103330454, guid: 1af3677e484d38446b30ca67801726dc,
-        type: 2}
-      propertyPath: m_ConnectedAnchor.y
-      value: -28.29
-      objectReference: {fileID: 0}
-    - target: {fileID: 1050712542996306, guid: 1af3677e484d38446b30ca67801726dc, type: 2}
-      propertyPath: m_Name
-      value: ThornsBoard (1)
-      objectReference: {fileID: 0}
-    - target: {fileID: 4733907303605242, guid: 1af3677e484d38446b30ca67801726dc, type: 2}
-      propertyPath: m_LocalScale.x
-      value: 0.39999998
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 1af3677e484d38446b30ca67801726dc, type: 2}
-  m_IsPrefabAsset: 0
---- !u!4 &1099330396 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 4733907303605242, guid: 1af3677e484d38446b30ca67801726dc,
-    type: 2}
-  m_PrefabInternal: {fileID: 1099330395}
 --- !u!1001 &1110311833
 Prefab:
   m_ObjectHideFlags: 0
@@ -33770,11 +33690,11 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4465235765427478, guid: 44af0117abc819b4a9d1a301cdf25026, type: 2}
       propertyPath: m_LocalPosition.x
-      value: -1.5
+      value: -89.5
       objectReference: {fileID: 0}
     - target: {fileID: 4465235765427478, guid: 44af0117abc819b4a9d1a301cdf25026, type: 2}
       propertyPath: m_LocalPosition.y
-      value: -7
+      value: -76
       objectReference: {fileID: 0}
     - target: {fileID: 4465235765427478, guid: 44af0117abc819b4a9d1a301cdf25026, type: 2}
       propertyPath: m_LocalPosition.z
@@ -33848,6 +33768,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e629f815e07a2f549acc22839d972998, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  useTrigger: 0
+  isRandom: 0
+  speed: 1
+  delayMoveTime: 1
+  paths: []
 --- !u!50 &1140946183
 Rigidbody2D:
   serializedVersion: 4
@@ -34302,6 +34227,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e629f815e07a2f549acc22839d972998, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  useTrigger: 0
+  isRandom: 0
+  speed: 1
+  delayMoveTime: 1
+  paths: []
 --- !u!50 &1176274119
 Rigidbody2D:
   serializedVersion: 4
@@ -34476,42 +34406,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4910672457343884, guid: ce8fd43398d53e44a83483fef74dfd81,
     type: 2}
   m_PrefabInternal: {fileID: 1177256724}
---- !u!1 &1181278322
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1181278323}
-  m_Layer: 0
-  m_Name: Map09
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1181278323
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1181278322}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 101.5, y: -30, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 1749959622}
-  - {fileID: 1363751494}
-  - {fileID: 2006732539}
-  - {fileID: 389867716}
-  - {fileID: 1099330396}
-  - {fileID: 658131422}
-  - {fileID: 386740234}
-  - {fileID: 1794107682}
-  m_Father: {fileID: 190992592}
-  m_RootOrder: 8
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1196143961
 GameObject:
   m_ObjectHideFlags: 0
@@ -34557,6 +34451,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e629f815e07a2f549acc22839d972998, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  useTrigger: 0
+  isRandom: 0
+  speed: 1
+  delayMoveTime: 1
+  paths: []
 --- !u!50 &1196143964
 Rigidbody2D:
   serializedVersion: 4
@@ -34780,6 +34679,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e629f815e07a2f549acc22839d972998, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  useTrigger: 0
+  isRandom: 0
+  speed: 1
+  delayMoveTime: 1
+  paths: []
 --- !u!50 &1247075492
 Rigidbody2D:
   serializedVersion: 4
@@ -35115,6 +35019,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e629f815e07a2f549acc22839d972998, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  useTrigger: 0
+  isRandom: 0
+  speed: 1
+  delayMoveTime: 1
+  paths: []
 --- !u!50 &1293576358
 Rigidbody2D:
   serializedVersion: 4
@@ -35311,7 +35220,7 @@ Transform:
   - {fileID: 1920655192}
   - {fileID: 2009862513}
   m_Father: {fileID: 190992592}
-  m_RootOrder: 13
+  m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1323496156
 Prefab:
@@ -35413,6 +35322,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e629f815e07a2f549acc22839d972998, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  useTrigger: 0
+  isRandom: 0
+  speed: 1
+  delayMoveTime: 1
+  paths: []
 --- !u!50 &1345739895
 Rigidbody2D:
   serializedVersion: 4
@@ -35575,53 +35489,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4061001005930364, guid: 87cb8aa8850b8c54aa815add9d4d251f,
     type: 2}
   m_PrefabInternal: {fileID: 1362526116}
---- !u!1001 &1363751493
-Prefab:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 1181278323}
-    m_Modifications:
-    - target: {fileID: 4188192370937604, guid: 32f36da9b1045ee469abd3b0983f8fc6, type: 2}
-      propertyPath: m_LocalPosition.x
-      value: -2.4605408
-      objectReference: {fileID: 0}
-    - target: {fileID: 4188192370937604, guid: 32f36da9b1045ee469abd3b0983f8fc6, type: 2}
-      propertyPath: m_LocalPosition.y
-      value: 7.95784
-      objectReference: {fileID: 0}
-    - target: {fileID: 4188192370937604, guid: 32f36da9b1045ee469abd3b0983f8fc6, type: 2}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4188192370937604, guid: 32f36da9b1045ee469abd3b0983f8fc6, type: 2}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4188192370937604, guid: 32f36da9b1045ee469abd3b0983f8fc6, type: 2}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4188192370937604, guid: 32f36da9b1045ee469abd3b0983f8fc6, type: 2}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4188192370937604, guid: 32f36da9b1045ee469abd3b0983f8fc6, type: 2}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4188192370937604, guid: 32f36da9b1045ee469abd3b0983f8fc6, type: 2}
-      propertyPath: m_RootOrder
-      value: 1
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 32f36da9b1045ee469abd3b0983f8fc6, type: 2}
-  m_IsPrefabAsset: 0
---- !u!4 &1363751494 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 4188192370937604, guid: 32f36da9b1045ee469abd3b0983f8fc6,
-    type: 2}
-  m_PrefabInternal: {fileID: 1363751493}
 --- !u!1001 &1369569579
 Prefab:
   m_ObjectHideFlags: 0
@@ -35714,6 +35581,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e629f815e07a2f549acc22839d972998, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  useTrigger: 0
+  isRandom: 0
+  speed: 1
+  delayMoveTime: 1
+  paths: []
 --- !u!50 &1372310501
 Rigidbody2D:
   serializedVersion: 4
@@ -35827,6 +35699,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e629f815e07a2f549acc22839d972998, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  useTrigger: 0
+  isRandom: 0
+  speed: 1
+  delayMoveTime: 1
+  paths: []
 --- !u!50 &1403135311
 Rigidbody2D:
   serializedVersion: 4
@@ -35940,6 +35817,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e629f815e07a2f549acc22839d972998, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  useTrigger: 0
+  isRandom: 0
+  speed: 1
+  delayMoveTime: 1
+  paths: []
 --- !u!50 &1405141660
 Rigidbody2D:
   serializedVersion: 4
@@ -36053,6 +35935,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e629f815e07a2f549acc22839d972998, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  useTrigger: 0
+  isRandom: 0
+  speed: 1
+  delayMoveTime: 1
+  paths: []
 --- !u!50 &1424940623
 Rigidbody2D:
   serializedVersion: 4
@@ -36400,6 +36287,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e629f815e07a2f549acc22839d972998, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  useTrigger: 0
+  isRandom: 0
+  speed: 1
+  delayMoveTime: 1
+  paths: []
 --- !u!50 &1479747365
 Rigidbody2D:
   serializedVersion: 4
@@ -36547,6 +36439,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e629f815e07a2f549acc22839d972998, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  useTrigger: 0
+  isRandom: 0
+  speed: 1
+  delayMoveTime: 1
+  paths: []
 --- !u!50 &1514164642
 Rigidbody2D:
   serializedVersion: 4
@@ -36647,7 +36544,7 @@ Transform:
   - {fileID: 1141339904}
   - {fileID: 1146247112}
   m_Father: {fileID: 190992592}
-  m_RootOrder: 10
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1544328056
 GameObject:
@@ -36694,6 +36591,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e629f815e07a2f549acc22839d972998, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  useTrigger: 0
+  isRandom: 0
+  speed: 1
+  delayMoveTime: 1
+  paths: []
 --- !u!50 &1544328059
 Rigidbody2D:
   serializedVersion: 4
@@ -36796,7 +36698,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1546071579}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -88, y: -69, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 866819551}
@@ -36848,6 +36750,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e629f815e07a2f549acc22839d972998, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  useTrigger: 0
+  isRandom: 0
+  speed: 1
+  delayMoveTime: 1
+  paths: []
 --- !u!50 &1549104256
 Rigidbody2D:
   serializedVersion: 4
@@ -37012,6 +36919,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e629f815e07a2f549acc22839d972998, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  useTrigger: 0
+  isRandom: 0
+  speed: 1
+  delayMoveTime: 1
+  paths: []
 --- !u!50 &1585111459
 Rigidbody2D:
   serializedVersion: 4
@@ -37125,6 +37037,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e629f815e07a2f549acc22839d972998, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  useTrigger: 0
+  isRandom: 0
+  speed: 1
+  delayMoveTime: 1
+  paths: []
 --- !u!50 &1590737843
 Rigidbody2D:
   serializedVersion: 4
@@ -37378,6 +37295,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e629f815e07a2f549acc22839d972998, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  useTrigger: 0
+  isRandom: 0
+  speed: 1
+  delayMoveTime: 1
+  paths: []
 --- !u!50 &1654717013
 Rigidbody2D:
   serializedVersion: 4
@@ -37542,6 +37464,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e629f815e07a2f549acc22839d972998, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  useTrigger: 0
+  isRandom: 0
+  speed: 1
+  delayMoveTime: 1
+  paths: []
 --- !u!50 &1676877160
 Rigidbody2D:
   serializedVersion: 4
@@ -37757,6 +37684,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e629f815e07a2f549acc22839d972998, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  useTrigger: 0
+  isRandom: 0
+  speed: 1
+  delayMoveTime: 1
+  paths: []
 --- !u!50 &1697749314
 Rigidbody2D:
   serializedVersion: 4
@@ -37968,6 +37900,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e629f815e07a2f549acc22839d972998, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  useTrigger: 0
+  isRandom: 0
+  speed: 1
+  delayMoveTime: 1
+  paths: []
 --- !u!50 &1719624772
 Rigidbody2D:
   serializedVersion: 4
@@ -38132,6 +38069,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e629f815e07a2f549acc22839d972998, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  useTrigger: 0
+  isRandom: 0
+  speed: 1
+  delayMoveTime: 1
+  paths: []
 --- !u!50 &1733068381
 Rigidbody2D:
   serializedVersion: 4
@@ -38245,6 +38187,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e629f815e07a2f549acc22839d972998, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  useTrigger: 0
+  isRandom: 0
+  speed: 1
+  delayMoveTime: 1
+  paths: []
 --- !u!50 &1740706654
 Rigidbody2D:
   serializedVersion: 4
@@ -38313,53 +38260,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!1001 &1749959621
-Prefab:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 1181278323}
-    m_Modifications:
-    - target: {fileID: 4676671889217330, guid: cd4ee57b1de4a534fa34bb3b5c127c2a, type: 2}
-      propertyPath: m_LocalPosition.x
-      value: -4.96
-      objectReference: {fileID: 0}
-    - target: {fileID: 4676671889217330, guid: cd4ee57b1de4a534fa34bb3b5c127c2a, type: 2}
-      propertyPath: m_LocalPosition.y
-      value: -1.51
-      objectReference: {fileID: 0}
-    - target: {fileID: 4676671889217330, guid: cd4ee57b1de4a534fa34bb3b5c127c2a, type: 2}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4676671889217330, guid: cd4ee57b1de4a534fa34bb3b5c127c2a, type: 2}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4676671889217330, guid: cd4ee57b1de4a534fa34bb3b5c127c2a, type: 2}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4676671889217330, guid: cd4ee57b1de4a534fa34bb3b5c127c2a, type: 2}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4676671889217330, guid: cd4ee57b1de4a534fa34bb3b5c127c2a, type: 2}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4676671889217330, guid: cd4ee57b1de4a534fa34bb3b5c127c2a, type: 2}
-      propertyPath: m_RootOrder
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: cd4ee57b1de4a534fa34bb3b5c127c2a, type: 2}
-  m_IsPrefabAsset: 0
---- !u!4 &1749959622 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 4676671889217330, guid: cd4ee57b1de4a534fa34bb3b5c127c2a,
-    type: 2}
-  m_PrefabInternal: {fileID: 1749959621}
 --- !u!1001 &1750374687
 Prefab:
   m_ObjectHideFlags: 0
@@ -38511,6 +38411,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e629f815e07a2f549acc22839d972998, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  useTrigger: 0
+  isRandom: 0
+  speed: 1
+  delayMoveTime: 1
+  paths: []
 --- !u!50 &1766187469
 Rigidbody2D:
   serializedVersion: 4
@@ -38683,6 +38588,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e629f815e07a2f549acc22839d972998, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  useTrigger: 0
+  isRandom: 0
+  speed: 1
+  delayMoveTime: 1
+  paths: []
 --- !u!50 &1790493844
 Rigidbody2D:
   serializedVersion: 4
@@ -38751,53 +38661,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!1001 &1794107681
-Prefab:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 1181278323}
-    m_Modifications:
-    - target: {fileID: 4830979536354242, guid: 6c9568def0e10c842a1960649279542e, type: 2}
-      propertyPath: m_LocalPosition.x
-      value: -3.67
-      objectReference: {fileID: 0}
-    - target: {fileID: 4830979536354242, guid: 6c9568def0e10c842a1960649279542e, type: 2}
-      propertyPath: m_LocalPosition.y
-      value: -0.8
-      objectReference: {fileID: 0}
-    - target: {fileID: 4830979536354242, guid: 6c9568def0e10c842a1960649279542e, type: 2}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4830979536354242, guid: 6c9568def0e10c842a1960649279542e, type: 2}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4830979536354242, guid: 6c9568def0e10c842a1960649279542e, type: 2}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4830979536354242, guid: 6c9568def0e10c842a1960649279542e, type: 2}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4830979536354242, guid: 6c9568def0e10c842a1960649279542e, type: 2}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4830979536354242, guid: 6c9568def0e10c842a1960649279542e, type: 2}
-      propertyPath: m_RootOrder
-      value: 7
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 6c9568def0e10c842a1960649279542e, type: 2}
-  m_IsPrefabAsset: 0
---- !u!4 &1794107682 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 4830979536354242, guid: 6c9568def0e10c842a1960649279542e,
-    type: 2}
-  m_PrefabInternal: {fileID: 1794107681}
 --- !u!1001 &1795561762
 Prefab:
   m_ObjectHideFlags: 0
@@ -38988,6 +38851,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e629f815e07a2f549acc22839d972998, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  useTrigger: 0
+  isRandom: 0
+  speed: 1
+  delayMoveTime: 1
+  paths: []
 --- !u!50 &1822052214
 Rigidbody2D:
   serializedVersion: 4
@@ -39480,6 +39348,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e629f815e07a2f549acc22839d972998, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  useTrigger: 0
+  isRandom: 0
+  speed: 1
+  delayMoveTime: 1
+  paths: []
 --- !u!50 &1925321514
 Rigidbody2D:
   serializedVersion: 4
@@ -39644,6 +39517,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e629f815e07a2f549acc22839d972998, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  useTrigger: 0
+  isRandom: 0
+  speed: 1
+  delayMoveTime: 1
+  paths: []
 --- !u!50 &1940758893
 Rigidbody2D:
   serializedVersion: 4
@@ -39757,6 +39635,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e629f815e07a2f549acc22839d972998, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  useTrigger: 0
+  isRandom: 0
+  speed: 1
+  delayMoveTime: 1
+  paths: []
 --- !u!50 &1951037827
 Rigidbody2D:
   serializedVersion: 4
@@ -39972,6 +39855,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e629f815e07a2f549acc22839d972998, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  useTrigger: 0
+  isRandom: 0
+  speed: 1
+  delayMoveTime: 1
+  paths: []
 --- !u!50 &1982183802
 Rigidbody2D:
   serializedVersion: 4
@@ -40132,6 +40020,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e629f815e07a2f549acc22839d972998, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  useTrigger: 0
+  isRandom: 0
+  speed: 1
+  delayMoveTime: 1
+  paths: []
 --- !u!50 &2006451672
 Rigidbody2D:
   serializedVersion: 4
@@ -40200,53 +40093,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!1001 &2006732538
-Prefab:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 1181278323}
-    m_Modifications:
-    - target: {fileID: 4061001005930364, guid: 87cb8aa8850b8c54aa815add9d4d251f, type: 2}
-      propertyPath: m_LocalPosition.x
-      value: -10.675095
-      objectReference: {fileID: 0}
-    - target: {fileID: 4061001005930364, guid: 87cb8aa8850b8c54aa815add9d4d251f, type: 2}
-      propertyPath: m_LocalPosition.y
-      value: -4.6731453
-      objectReference: {fileID: 0}
-    - target: {fileID: 4061001005930364, guid: 87cb8aa8850b8c54aa815add9d4d251f, type: 2}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4061001005930364, guid: 87cb8aa8850b8c54aa815add9d4d251f, type: 2}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4061001005930364, guid: 87cb8aa8850b8c54aa815add9d4d251f, type: 2}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4061001005930364, guid: 87cb8aa8850b8c54aa815add9d4d251f, type: 2}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4061001005930364, guid: 87cb8aa8850b8c54aa815add9d4d251f, type: 2}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4061001005930364, guid: 87cb8aa8850b8c54aa815add9d4d251f, type: 2}
-      propertyPath: m_RootOrder
-      value: 2
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 87cb8aa8850b8c54aa815add9d4d251f, type: 2}
-  m_IsPrefabAsset: 0
---- !u!4 &2006732539 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 4061001005930364, guid: 87cb8aa8850b8c54aa815add9d4d251f,
-    type: 2}
-  m_PrefabInternal: {fileID: 2006732538}
 --- !u!1001 &2009862512
 Prefab:
   m_ObjectHideFlags: 0
@@ -40585,6 +40431,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e629f815e07a2f549acc22839d972998, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  useTrigger: 0
+  isRandom: 0
+  speed: 1
+  delayMoveTime: 1
+  paths: []
 --- !u!50 &2055290153
 Rigidbody2D:
   serializedVersion: 4
@@ -41044,6 +40895,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e629f815e07a2f549acc22839d972998, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  useTrigger: 0
+  isRandom: 0
+  speed: 1
+  delayMoveTime: 1
+  paths: []
 --- !u!50 &2131390553
 Rigidbody2D:
   serializedVersion: 4
