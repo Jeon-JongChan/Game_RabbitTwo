@@ -28,8 +28,8 @@ TagManager:
   - GROUND
   - IGNOREOBJ
   - 
-  - 
-  - 
+  - BG_DECO
+  - BACKGROUND
   - 
   - 
   - 
@@ -51,6 +51,9 @@ TagManager:
     locked: 0
   - name: BACKGROUND
     uniqueID: 3134457927
+    locked: 0
+  - name: BG_DECO
+    uniqueID: 262387687
     locked: 0
   - name: UI
     uniqueID: 964253243
