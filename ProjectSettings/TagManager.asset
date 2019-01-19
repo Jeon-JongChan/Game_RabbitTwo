@@ -12,6 +12,7 @@ TagManager:
   - MAP
   - MISSILE
   - ITEM
+  - StoneBall
   layers:
   - Default
   - TransparentFX

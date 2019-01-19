@@ -20,6 +20,8 @@ public class FadeInOut : ObjectInteraction
     public float liveTime = 1f;
     [Tooltip("collider가 존재하지 않는 시간")]
     public float hideTime = 1f;
+    [Tooltip("화면에 보일경우 첫 시작을 delay 시킬수 있는 인수입니다. default = 0")]
+    public float delayTime = 0;
     /* 세이브 변수 */
     bool colActive;
     bool srActive;
@@ -42,7 +44,7 @@ public class FadeInOut : ObjectInteraction
     /* 주요 기능*/
 
     IEnumerator FadeIn(SpriteRenderer srComponets, Color color,Collider2D col, float speedOfFade) {
-        while(srComponets.color.a < 1) {
+        while (srComponets.color.a < 1) {
             color.a += speedOfFade;
             srComponets.color = color;
             yield return new WaitForSeconds(speedOfFade);
@@ -54,6 +56,7 @@ public class FadeInOut : ObjectInteraction
     }
 
     IEnumerator FadeOut(SpriteRenderer srCompoents, Color color, Collider2D col, float speedOfFade) {
+        yield return new WaitForSeconds(delayTime);
         while (srComponets.color.a > 0)
         {
             color.a -= speedOfFade;

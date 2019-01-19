@@ -1,5 +1,4 @@
-﻿
-using UnityEngine;
+﻿using UnityEngine;
 
 public class BreakableWall : MonoBehaviour {
     [SerializeField] string[] targetTag;
@@ -16,7 +15,6 @@ public class BreakableWall : MonoBehaviour {
         particle = gameObject.GetComponent<ParticleSystem>();
         sprite = gameObject.GetComponent<SpriteRenderer>();
         boxCollider = gameObject.GetComponent<BoxCollider2D>();
-
     }
     void Enable() {
         if(isReActive && sprite != null)
@@ -39,9 +37,10 @@ public class BreakableWall : MonoBehaviour {
 
             foreach (var v in targetTag)
             {
+                print(v);
                 if (collision.gameObject.CompareTag(v))
                 {
-
+                    print("충돌");
                     particle.Play();
                     sprite.enabled = false;
                     boxCollider.enabled = false;
@@ -54,6 +53,4 @@ public class BreakableWall : MonoBehaviour {
             }
         }
     }
-
-
 }
